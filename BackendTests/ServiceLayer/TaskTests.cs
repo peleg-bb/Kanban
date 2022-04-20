@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using IntroSE.Kanban.Backend.ServiceLayer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Task = IntroSE.Kanban.Backend.ServiceLayer.Task;
 
 namespace BackendTests.ServiceLayer
