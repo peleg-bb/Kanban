@@ -8,21 +8,29 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class Task 
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string DueDate { get; set; }
+
         public string createTask(string title,string description, string dueDate)
         {
-            string json = JsonConvert.SerializeObject
-            (
-                {Title=title; Description=description; DueDate=dueDate;}
-                );
+            string json = "Not Implemented Yet";
             return json;
         }
         public string editTitle(string newTitle, string userMail, string boardName, string title)
         {
 
-            string json = 
+            string json = "Not Implemented Yet";
+            return json;
+
+        }
+        public string editDescription(string newDescription, string userMail, string boardName, string title)
+        {
+            string json = "Not Implemented Yet";
+            return json;
+
+        }
+        public string editDueDate(string newDueDate, string userMail, string boardName, string title)
+        {
+            string json = "Not Implemented Yet";
+            return json;
 
         }
     }
