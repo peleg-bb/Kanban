@@ -139,7 +139,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            Board board = new Board();
+            board.AddTask(email, boardName, title, description, dueDate.ToString());
+            return email;
         }
 
 
@@ -223,7 +225,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            Board board = new Board();
+            board.CreateBoard(name, email);
+            return "{}";
         }
 
 
@@ -235,7 +239,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string RemoveBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            Board board = new Board();
+            board.DeleteBoard(name, email);
+            return "{}";
         }
 
 
