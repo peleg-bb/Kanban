@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="name">The name of the board</param>
         /// <param name="userEmail">Email of the user. To connect between the new board to the user who made it.</param>
         /// <returns>Response with a command to create board, unless a board exists with the same name.</returns>
-        public string CreateBoard(string name, string userEmail)
+        public string CreateBoard( string name, string userEmail)
         {
             throw new NotImplementedException();
 
