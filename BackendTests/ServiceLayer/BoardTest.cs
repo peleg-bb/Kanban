@@ -31,6 +31,39 @@ namespace BackendTests.ServiceLayer
 
             board.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il");
         }
+
+        /// <summary>
+        /// This method tests a valid get of the limit of a specific column.
+        /// </summary>
+        [TestMethod]
+        public string ValidGetColumnLimitTest(string email, string boardName, int columnOrdinal)
+        {
+            board.GetColumnLimit("ptamar@post.bgu.ac.il", "schoolBorad", 0);
+        }
+        /// <summary>
+        /// This method tests a invalid get of the limit of a specific column.
+        /// </summary>
+        [TestMethod]
+        public string InvalidGetColumnLimitTest(string email, string boardName, int columnOrdinal)
+        {
+            board.GetColumnLimit("wront@post.bgu.ac.il", "schoolBorad", 0);
+        }
+        /// <summary>
+        /// This method tests a valid set of the limit of a specific column.
+        /// </summary>
+        [TestMethod]
+        public string ValidsetColumnLimitTest(string email, int newMaxLim, string boardName, int columnOrdinal)
+        {
+            board.SetColumnLimit("ptamar@post.bgu.ac.il",20, "schoolBorad", 0);
+        }
+        /// <summary>
+        /// This method tests a invalid set of the limit of a specific column.
+        /// </summary>
+        [TestMethod]
+        public string InvalidSetColumnLimitTest(string email, int newMaxLim, string boardName, int columnOrdinal)
+        {
+            board.SetColumnLimit("wrong@post.bgu.ac.il",0, "schoolBorad", 0);
+        }
         /// <summary>
         /// This method tests a valid add of a new Task to a board in the system according to requirement  12.
         /// check the task was added at the right place(backlog only), and its name is different from the other tasks at the board.

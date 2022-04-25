@@ -49,6 +49,29 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
         /// <summary>
+        /// This method get the limit of a specific column.
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns> jason with command to get limit.</returns>
+        public string GetColumnLimit(string email, string boardName, int columnOrdinal)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// This method set the limit of a specific column.
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="newMaxLim"> Set the new max lim of coulmn size.
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns> jason with command to get limit.</returns>
+        public string SetColumnLimit(string email,int newMaxLim,  string boardName, int columnOrdinal)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
         /// This method delete a board.
         /// </summary>
         /// <param name="name">The name of the board</param>

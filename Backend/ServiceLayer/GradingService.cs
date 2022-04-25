@@ -114,7 +114,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column limit value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Board board = new Board();
+            string lim=board.GetColumnLimit(email, boardName, columnOrdinal);
+            return lim;
         }
 
 
