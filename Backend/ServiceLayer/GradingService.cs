@@ -47,7 +47,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </para>
     /// </summary>
     public class GradingService
-    {
+    {   
+        User user1 = new User();
 
         public GradingService()
         {
@@ -63,7 +64,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            throw new NotImplementedException();
+            user1.createUser("johndoe@gmail.com", "123456");
+            return "{}";
         }
 
 
@@ -75,7 +77,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            throw new NotImplementedException();
+            user1.login("johndoe@gmail.com", "123456");
+            return "{}";
         }
 
 
