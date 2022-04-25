@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using IntroSE.Kanban.Backend.ServiceLayer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Task = IntroSE.Kanban.Backend.ServiceLayer.Task;
 
 namespace BackendTests.ServiceLayer
@@ -24,7 +18,7 @@ namespace BackendTests.ServiceLayer
             string duedate = "21.04.22";
             Task task = new Task();
             //act
-            Assert.Equals(task.createTask('Itay@gmail.com',"To Do", title, description, duedate),
+            Assert.Equals(task.createTask('""Itay@gmail.com',"To Do", title, description, duedate),
                 "{\"Title\" : \"New Task\", \"Description\" : \"this is check for new task\", \"DueDate\" : \"21.04.22\"}"
             );
         }
