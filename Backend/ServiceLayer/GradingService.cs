@@ -203,7 +203,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            Board board = new Board();
+            board.NextState(email, boardName, columnOrdinal, taskId);
+            return {};
         }
 
 

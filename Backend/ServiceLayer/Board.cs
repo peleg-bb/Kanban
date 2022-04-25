@@ -36,21 +36,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
         /// <summary>
-        /// This method delete the a task from .
-        /// </summary>
-        /// <param name="title">title of the task the user would like to delete. Must be logged in the spoken noard</param>
-        /// <returns>Response with a command to delete task, unless doesn't exists a task with the same name.</returns>
-        public string DeleteTask(string title)
-        {
-            throw new NotImplementedException();
-
-        }
-        /// <summary>
         /// This method updates the state of the  task.
         /// </summary>
-        /// <param name="taskName">the currnt state of the task, and will be change to the next possible state.</param>
+        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="state">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
-        public string NextState(string taskName)
+        public string NextState(tring email, string boardName, int state, int taskId)
         {
             throw new NotImplementedException();
 
