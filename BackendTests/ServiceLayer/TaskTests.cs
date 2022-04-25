@@ -18,7 +18,7 @@ namespace BackendTests.ServiceLayer
             string duedate = "21.04.22";
             Task task = new Task();
             //act
-            Assert.Equals(task.createTask('Itay@gmail.com',"To Do", title, description, duedate),
+            Assert.Equals(task.createTask('""Itay@gmail.com',"To Do", title, description, duedate),
                 "{\"Title\" : \"New Task\", \"Description\" : \"this is check for new task\", \"DueDate\" : \"21.04.22\"}"
             );
         }
