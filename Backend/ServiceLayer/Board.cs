@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="state">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
-        public string NextState(tring email, string boardName, int state, int taskId)
+        public string NextState(string email, string boardName, int state, int taskId)
         {
             throw new NotImplementedException();
 
