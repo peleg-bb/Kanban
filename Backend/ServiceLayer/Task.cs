@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="boardName">The name of the board</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="newTitle">New title for the task</param>
-        /// <returns>The string "{\"Title\" : \"newTitle\", \"Description\" : \"description\", \"DueDate\" : \"21.04.22\"}", unless an error occurs (see <see cref="GradingService"/>)</returns>
+        /// <returns>The string "}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string editTitle(string newTitle, string email, string boardName, string taskId)
         {
 
