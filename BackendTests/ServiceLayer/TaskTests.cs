@@ -49,7 +49,7 @@ namespace BackendTests.ServiceLayer
             string description = "this is check for new task";
             string duedate = "21.04.22";
             string taskid = "123";
-            int columnOrdinal = 1
+            int columnOrdinal = 1;
             Task task = new Task();
             string newTitle = "new title";
             //act
