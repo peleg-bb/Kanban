@@ -29,8 +29,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="boardName">The name of the board</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="newTitle">New title for the task</param>
-        /// <returns>The string "{\"Title\" : \"newTitle\", \"Description\" : \"description\", \"DueDate\" : \"21.04.22\"}", unless an error occurs (see <see cref="GradingService"/>)</returns>
-        public string editTitle(string email, string boardName,int columnOrdinal string taskId,string newTitle)
+        /// <returns>The string "{\"Title\" : \"newTitle\", \"Description\" : \"description\", \"DueDate\" : \"21.04.22\"}", unless an error occurs </returns>
+        public string editTitle(string email, int taskId,string newTitle)
         {
 
             throw new NotImplementedException();
@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="newDescription">New description for the task</param>
         /// <returns>The string "{\"Title\" : \"title\", \"Description\" : \"newDescription\", \"DueDate\" : \"21.04.22\"}", unless an error occurs (see <see cref="GradingService"/>)</returns>
-        public string editDescription(string email, string boardName,int columnOrdinal string taskId,string newDescription)
+        public string editDescription(string email, int taskId,string newDescription)
         {
             throw new NotImplementedException();
 
@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="newDueDate">The new due date of the column</param>
         /// <returns>The string "{\"Title\" : \"title\", \"Description\" : \"description\", \"DueDate\" : \"newDueDate"}", unless an error occurs (see <see cref="GradingService"/>)</returns>
-        public string editDueDate(string email, string boardName,int columnOrdinal string taskId,string newDueDate)
+        public string editDueDate(string email, int taskId,string newDueDate)
         {
             throw new NotImplementedException();
 
