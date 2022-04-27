@@ -162,7 +162,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
             Task task = new Task();
-            task.editDueDate(email, boardName, columnOrdinal, taskId, (string) dueDate)
+            task.EditDueDate(email, taskId, dueDate.ToString());
             throw new NotImplementedException();
         }
 
@@ -179,7 +179,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
             Task task = new Task();
-            task.editTitle(email, boardName, columnOrdinal, taskId, title)
+            task.EditTitle(email, taskId, title);
             throw new NotImplementedException();
         }
 
@@ -196,7 +196,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
             Task task = new Task();
-            task.editTitle(email, boardName, columnOrdinal, taskId, description)
+            task.EditDescription(email, taskId, description);
             throw new NotImplementedException();
         }
 
