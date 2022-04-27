@@ -20,7 +20,7 @@ namespace BackendTests.ServiceLayer
         public void ValidCreateBoardTest()
         {
 
-            board.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il");
+            Assert.Equals(board.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{}");
         }
         /// <summary>
         /// This method tests a invalid creation of a new board in the system according to requirement 9.
@@ -29,40 +29,7 @@ namespace BackendTests.ServiceLayer
         public void InvalidCreateBoardTest()
         {
 
-            board.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il");
-        }
-
-        /// <summary>
-        /// This method tests a valid get of the limit of a specific column.
-        /// </summary>
-        [TestMethod]
-        public string ValidGetColumnLimitTest(string email, string boardName, int columnOrdinal)
-        {
-            board.GetColumnLimit("ptamar@post.bgu.ac.il", "schoolBorad", 0);
-        }
-        /// <summary>
-        /// This method tests a invalid get of the limit of a specific column.
-        /// </summary>
-        [TestMethod]
-        public string InvalidGetColumnLimitTest(string email, string boardName, int columnOrdinal)
-        {
-            board.GetColumnLimit("wront@post.bgu.ac.il", "schoolBorad", 0);
-        }
-        /// <summary>
-        /// This method tests a valid set of the limit of a specific column.
-        /// </summary>
-        [TestMethod]
-        public string ValidsetColumnLimitTest(string email, int newMaxLim, string boardName, int columnOrdinal)
-        {
-            board.SetColumnLimit("ptamar@post.bgu.ac.il",20, "schoolBorad", 0);
-        }
-        /// <summary>
-        /// This method tests a invalid set of the limit of a specific column.
-        /// </summary>
-        [TestMethod]
-        public string InvalidSetColumnLimitTest(string email, int newMaxLim, string boardName, int columnOrdinal)
-        {
-            board.SetColumnLimit("wrong@post.bgu.ac.il",0, "schoolBorad", 0);
+            Assert.Equals(board.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il"),"Error");
         }
         /// <summary>
         /// This method tests a valid add of a new Task to a board in the system according to requirement  12.
@@ -71,7 +38,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddValidTaskTest()
         {
-            board.AddTask("ptamar@post.bgu.ac.il","schoolBorad","HW1", "first homewoek assignmemt", "23.04.22");
+            Assert.Equals( board.AddTask("ptamar@post.bgu.ac.il","schoolBorad","HW1", "first homewoek assignmemt", "23.04.22"),"{}");
         }
         /// <summary>
         /// This method tests a invalid add of a new Task to a board in the system according to requirement  12.
@@ -80,7 +47,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddInvalidTaskTest()
         {
-            board.AddTask("wrong@post.bgu.ac.il", "schoolBorad", "HW1", "first homewoek assignmemt", "23.04.22");
+            Assert.Equals(board.AddTask("wrong@post.bgu.ac.il", "schoolBorad", "HW1", "first homewoek assignmemt", "23.04.22"),"Error");
         }
         /// <summary>
         /// This method tests a valid change  state of a Task from one state to the next in the system according to requirement  13.
@@ -89,7 +56,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidNextStateTest()
         {
-            board.NextState("ptamar@post.bgu.ac.il", "schoolBorad", 0, 1281938);
+            Assert.Equals(board.NextState("ptamar@post.bgu.ac.il", "schoolBorad", 365879),"{}");
         }
         /// <summary>
         /// This method tests a invalid change  state of a Task from one state to the next in the system according to requirement  13.
@@ -98,7 +65,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void invalidNextStateTest()
         {
-            board.NextState("wrong@post.bgu.ac.il", "schoolBorad", 0, 1281938);
+            Assert.Equals(board.NextState("wrong@post.bgu.ac.il", "schoolBorad", 365879),"Error");
         }
         /// <summary>
         /// This method tests a valid deletion of a  board in the system according to requirement 9.
@@ -106,7 +73,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidDeleteBoardTest()
         {
-            board.DeleteBoard("schoolBorad","ptamar@post.bgu.ac.il");
+            Assert.Equals(board.DeleteBoard("schoolBorad","ptamar@post.bgu.ac.il"),"{}");
         }
         /// <summary>
         /// This method tests a invalid deletion of a  board in the system according to requirement 9.
