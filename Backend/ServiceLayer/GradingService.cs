@@ -89,7 +89,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            throw new NotImplementedException();
+            user1.logout("johndoe@gmail.com");
+            return "{}";
         }
 
         /// <summary>
@@ -212,7 +213,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Board board = new Board();
             board.NextState(email, boardName, columnOrdinal, taskId);
-            return {};
+            return "{}";
         }
 
 
@@ -264,7 +265,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the in progress tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string InProgressTasks(string email)
         {
-            throw new NotImplementedException();
+            user1.getInProgress("johndoe@gmail.com");
+            return "{}";
+
         }
     }
 }

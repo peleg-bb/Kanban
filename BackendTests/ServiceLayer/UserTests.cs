@@ -14,7 +14,8 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void createUserTest()
         {
-            user1.createUser("johndoe@gmail.com", "123456");
+
+            Assert.Equals(user1.createUser("johndoe@gmail.com", "123456"), "{}");
         }
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void validUserLoginTest()
         {
-            user1.login("johndoe@gmail.com", "123456");
+            Assert.Equals(user1.login("johndoe@gmail.com", "123456"), "{}");
         }
 
         /// <summary>
@@ -30,7 +31,8 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserLoginTest()
         {
-            user1.login("johndoe@gmail.com", "wrong_password");
+            Assert.Equals(user1.login("johndoe@gmail.com", "wrong_password"), "Error");
+            
         }
 
         /// <summary>
@@ -38,7 +40,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidLoginTest_2()
         {
-            user1.login("none@gmail.com", "wrong_password");
+            Assert.Equals(user1.login("none@gmail.com", "wrong_password"), "Error");
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserCreation()
         {
-            user1.createUser("none@gmail.com", "_");
+            Assert.Equals(user1.createUser("none@gmail.com", "_"), "Error");
         }
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserCreation_2()
         {
-            user1.createUser("johndoe@gmail.com", "123456");
+            Assert.Equals(user1.createUser("johndoe@gmail.com", "123456"), "Error");
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void createBoardTest()
         {
-            user1.newBoard("To do list");
+            Assert.Equals(user1.newBoard("To do list"), "{}");
         }
 
 
@@ -71,7 +73,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidCreateBoardTest()
         {
-            user1.newBoard("To do list");
+            Assert.Equals(user1.newBoard("To do list"), "Error");
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void logoutTest()
         {
-            user1.logout("johndoe@gmail.com");
+            Assert.Equals(user1.logout("johndoe@gmail.com"), "{}");
         }
 
 
@@ -88,7 +90,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidLogoutTest()
         {
-            user1.logout("johndoe@gmail.com");
+            Assert.Equals(user1.logout("johndoe@gmail.com"), "Error");
         }
 
         /// <summary>
@@ -96,7 +98,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void getInProgressTest()
         {
-            user1.getInProgress("johndoe@gmail.com");
+            Assert.Equals(user1.getInProgress("johndoe@gmail.com"), "{}");
 
         }
     }
