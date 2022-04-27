@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>Response with user-email, unless an error occurs .</returns>
-        public string AddTask(string email, string boardName, string title, string description, string dueDate)
+        public string AddTask(string email, string boardName, int taskId, string description, string dueDate)
         {
 
             throw new NotImplementedException();
