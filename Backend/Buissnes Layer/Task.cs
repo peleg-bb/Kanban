@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private string Description { set; get; }
         private string DueDate { set; get; }
         public readonly string CreationDate = DateTime.Now.ToString("'yyyy'-'MM'-'dd'");
-        private int State = 0;
+        private int State = 0; 
         private int TaskId { get; }
         private int ID = 0;
 
@@ -32,6 +32,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.Title = newTitle;
 
+        }
+
+        public int GetState()
+        {
+            return this.State;
+        }
+        public void SetState(int state)
+        {
+             this.State=state;
         }
 
         private void EditDescription(string newDescription)
