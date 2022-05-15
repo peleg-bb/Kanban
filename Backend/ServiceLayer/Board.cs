@@ -31,8 +31,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs .</returns>
         public string AddTask(string email, string boardName, int taskId, string description, string dueDate)
         {
-
-            throw new NotImplementedException();
+            Buissnes_Layer.Board b = new Buissnes_Layer.Board(boardName);
+            try
+            {
+                b.AddTask("taskId",description,dueDate);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);//return exception when reached max task limit
+                throw;
+            }
 
         }
         /// <summary>
@@ -45,7 +53,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
         public string NextState(string email, string boardName, int taskId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //NEED TO USE CHANGEsTATE
+                return "";
+            }
+            catch (Exception e)
+            {
+                //RETURN BAD JASON
+
+            }
 
         }
         /// <summary>

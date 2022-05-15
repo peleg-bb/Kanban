@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
-    internal class Board
+    public class Board
     {
-        private Task[] backlog;
-        private Task[] inProgress;
-        private Task[] done;
+        private Dictionary<int,Task> backlog;
+        private Dictionary<int, Task> inProgress;
+        private Dictionary<int, Task> done;
         public string name;
         private int maxTasks = -1;
-        private int indexNewTask = 0;
+        //private int indexNewTask = 0;
         private int numTasks = 0;
 
         public Board(string name, int maxTasks=-1)
@@ -37,27 +37,57 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.maxTasks = newMaxTask;
         }
-        public Task[] GetInProgress()   // property
+        public Dictionary<int,Task> GetInProgress()   // property
         {
             return inProgress;
         }
         public void SetBacklog(Task newTask)   // property
         {
-            this.inProgress[indexNewTask]=newTask;
-            indexNewTask++;
-            numTasks++;
+            if (numTasks<maxTasks)
+            {
+                this.inProgress.Add(newTask.GetId, newTask);
+                // indexNewTask++;
+                numTasks++;
+            }
+            else
+            {
+                throw new ArgumentException("REACHED MAX TASK LIMIT");
+            }
+            
         }
-
-
 
 
         public void AddTask(string title, string description, string dueDate)
         {
-
+            Task newTask = new Task(title, description, dueDate, 0);
+            try
+            {
+                SetBacklog(newTask);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+            
         }
 
         public void ChangeState(Task task)
         {
+            int state = task.GetState();
+            if (state == 0)
+            {
+                inProgress.Add(task.GetId,task);
+                backlog.Remove(task.GetId);
+            }
+            else if (state == 1)
+            {
+                done.Add(task.GetId, task);
+                inProgress.Remove(task.GetId);
+            }
+            else
+            {
+                throw new ArgumentException("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
+            }
 
         }
 
