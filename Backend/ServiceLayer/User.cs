@@ -60,6 +60,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         {
             log.Info("User created!");
+            log.Error("User already exists");
             throw new NotImplementedException();
 
         }

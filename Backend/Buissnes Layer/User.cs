@@ -11,13 +11,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     internal class User
     {
-        public string username
-        {
-            get
-            {
-                return username;
-            }
-        }
+        public string username;
         private string password;
         private Collection<Board> Boards;
         private Collection<Task> tasksInProgress;
@@ -41,11 +35,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-        public bool Login(string password)
+        public bool Login(string password) // This may be a redundant method as the UserController already contains it
         {
             return true;
         }
 
+        public bool ValidatePassword(string password)
+        {
+            return this.password == password;
+        }
 
 
 

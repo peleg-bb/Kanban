@@ -9,43 +9,112 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     internal class UserController
     {
-        private int next_id;
-        private Dictionary<int, User> users;
-        private Collection<User> loggedIn;
+        
+        private Dictionary<string, User> users;
+        private List<string> loggedIn;
 
 
         public void CreateUser(string email, string password)
         {
-            string u_name = "u_" + this.next_id.ToString();
-            User u = new User(email, password);
-            users[next_id] = u;
-            this.next_id++;
+            if (UserExists(email))
+            {
+                throw new ArgumentException("User already exists");
+            }
+            else
+            {
+                User u = new User(email, password);
+                users.Add(email, u);
+            }
         }
 
 
-        public void DeleteUser(){}
-
-        public bool UserExists()
+        public void DeleteUser(string email)
         {
-            return true;
+            if (users.ContainsKey(email))
+            {
+                users.Remove(email);
+            }
+            else
+            {
+                throw new ArgumentException("User does not exist");
+            }
+        }
+
+        public bool UserExists(string email)
+        {
+            return users.ContainsKey(email);
         }
 
         public User GetUser(string username)
         {
-            return users[0];
+            if (users.ContainsKey(username))
+            {
+                return users[username];
+            }
+            else
+            {
+                throw new ArgumentException("User does not exist");
+            }
+
         }
 
-        public bool ValidatePassword()
+        public bool ValidatePassword(string email, string password)
         {
-
-            return true;
+            if (users.ContainsKey(email))
+            {
+                return users[email].ValidatePassword(password);
+            }
+            return false;
         }
 
-        public void Login(){}
-        public void Logout(){}
+        public void Login(string email, string password)
+        {
+            if (!UserExists(email))
+            {
+                throw new ArgumentException("User does not exist");
+            }
 
+            else if (!ValidatePassword(email, password))
+            {
+                throw new ArgumentException("Wrong password");
+            }
 
+            else if (loggedIn.Contains(email))
 
+            {
+                throw new ArgumentException("User is already logged in");
+            }
+
+            else
+            {
+                loggedIn.Add(email);
+            }
+        }
+
+        public void Logout(string email)
+        {
+            if (!UserExists(email))
+            {
+                throw new ArgumentException("User does not exist");
+            }
+
+            else if (!loggedIn.Contains(email))
+
+            {
+                throw new ArgumentException("User is already logged out");
+            }
+
+            else
+            {
+                loggedIn.Remove(email);
+            }
+
+        }
+
+        public bool IsLoggedIn(string email)
+        {
+            return loggedIn.Contains(email);
+        }
 
     }
 }
