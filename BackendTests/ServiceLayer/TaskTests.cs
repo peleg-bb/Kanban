@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Task = IntroSE.Kanban.Backend.ServiceLayer.Task;
+﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BackendTests.ServiceLayer
 {[TestClass]
