@@ -49,6 +49,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class User
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         /// <summary>
         /// This method registers a new user to the system.
         /// </summary>
@@ -56,8 +57,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="password">The user password.</param>
         /// <returns>Response with a createUser task, unless user already exists.</returns>
         public string createUser(string email, string password)
+
         {
+            log.Info("User created!");
             throw new NotImplementedException();
+
         }
 
         /// <summary>
