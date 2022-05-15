@@ -14,7 +14,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Collection<User> loggedIn;
 
 
-        public void CreateUser(){}
+        public void CreateUser(string email, string password)
+        {
+            string u_name = "u_" + this.next_id.ToString();
+            User u = new User(email, password);
+            users[next_id] = u;
+            this.next_id++;
+        }
 
 
         public void DeleteUser(){}
@@ -24,13 +30,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return true;
         }
 
-        public User GetUser()
+        public User GetUser(string username)
         {
-            return new User();
+            return users[0];
         }
 
         public bool ValidatePassword()
         {
+
             return true;
         }
 

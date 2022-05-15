@@ -11,10 +11,22 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     internal class User
     {
-        public string username;
+        public string username
+        {
+            get
+            {
+                return username;
+            }
+        }
         private string password;
         private Collection<Board> Boards;
         private Collection<Task> tasksInProgress;
+
+        public User(string username, string password)
+        {
+            this.password = password;
+            this.username = username;
+        }
 
         public void ChangePassword(string oldP, string newP)
         {
@@ -33,7 +45,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             return true;
         }
-
 
 
 
