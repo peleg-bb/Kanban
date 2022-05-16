@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +12,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private string Title { set; get; }
 
         private string Description { set; get; }
-        private string DueDate { set; get; }
+        private DateTime DueDate { set; get; }
         public readonly string CreationDate = DateTime.Now.ToString("'yyyy'-'MM'-'dd'");
         private int State = 0; 
-        private int TaskId { get; }
-        private int ID = 0;
+        public int TaskId { get; }
+        private int ID = 0; 
 
-        public Task (string title, string description, string dueDate, int state)
+        public Task (string title, string description, DateTime dueDate, int state)
         {
             this.Title = title;
             this.Description = description;
@@ -30,7 +31,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         private void EditTitle(string newTitle)
         {
-            this.Title = newTitle;
+            if (newTitle == "")
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                this.Title = newTitle;
+            }
+            
 
         }
 
@@ -45,12 +54,30 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         private void EditDescription(string newDescription)
         {
-            this.Description = newDescription;
+            if (newDescription == "")
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+
+                this.Description = newDescription;
+            }
         }
 
-        private void EditDueDate(string newDueDate)
+        private void EditDueDate(DateTime newDueDate)
         {
-            this.DueDate = newDueDate;
+            if (DateTime.TryParseExact(newDueDate.ToString(),"dd/mm/yyyy",CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out newDueDate))
+            {
+                throw new ArgumentException();
+            }
+            else
+            {
+                this.DueDate = newDueDate;
+            }
         }
+        
     }
 }

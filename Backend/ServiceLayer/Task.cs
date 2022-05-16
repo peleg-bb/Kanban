@@ -2,7 +2,11 @@ using System;
 using System.Text.Json;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
+using log4net.Util;
 using Newtonsoft.Json;
+using IntroSE.Kanban.Backend.Buissnes_Layer;
+
 namespace IntroSE.Kanban.Backend.ServiceLayer
 
 {
@@ -33,9 +37,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{\"Title\" : \"newTitle\", \"Description\" : \"description\", \"DueDate\" : \"21.04.22\"}", unless an error occurs </returns>
         public string EditTitle(string email, int taskId,string newTitle)
         {
-
             throw new NotImplementedException();
-
         }
         /// <summary>
         /// This method updates the description of a task.
