@@ -17,6 +17,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
         //private Dictionary<int, Task> inProgress = new Dictionary<int, Task>();
         private List<Task> inProgress = new List<Task>();
+
         public string name;
         private int[] maxTasks = new int[] {-1,-1,-1};
         private int[] numTasks =new int[3];
@@ -93,6 +94,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
                 {
+
                     this.inProgress.Add(tasks[taskId]);
                     this.tasks[taskId].SetState(1);
                     this.numTasks[0]--;

@@ -49,6 +49,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 b.AddTask(title, description, dueDate);
+
                 string jsonString = JsonSerializer.Serialize(b);
                 Console.WriteLine(jsonString);
                 return jsonString;

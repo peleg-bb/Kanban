@@ -21,6 +21,7 @@ namespace BackendTests.ServiceLayer
         {
 
             Assert.Equals(board.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{schoolBorad}");
+
         }
         /// <summary>
         /// This method tests a invalid creation of a new board in the system according to requirement 9.
@@ -46,6 +47,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddInvalidTaskTest()
         {
+
             Assert.Equals(board.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW111", "first homewoek assignmemt", new DateTime(23 / 04 / 22)),"Error");
         }
         /// <summary>
