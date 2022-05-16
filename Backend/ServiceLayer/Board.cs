@@ -43,12 +43,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>Response with user-email, unless an error occurs .</returns>
-        public string AddTask(string email, string boardName, int taskId, string description, DateTime dueDate)
+        public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
             Buissnes_Layer.Board b = boardController.GetBoard(email,boardName);
             try
             {
-                b.AddTask("taskId", description, dueDate);
+                b.AddTask(title, description, dueDate);
                 string jsonString = JsonSerializer.Serialize(b);
                 Console.WriteLine(jsonString);
                 return jsonString;

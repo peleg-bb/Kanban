@@ -20,7 +20,7 @@ namespace BackendTests.ServiceLayer
         public void ValidCreateBoardTest()
         {
 
-            Assert.Equals(board.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{true}");
+            Assert.Equals(board.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{schoolBorad}");
         }
         /// <summary>
         /// This method tests a invalid creation of a new board in the system according to requirement 9.
@@ -38,7 +38,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddValidTaskTest()
         {
-            Assert.Equals( board.AddTask("ptamar@post.bgu.ac.il","schoolBorad", 365879, "first homewoek assignmemt", new DateTime(23/04/22)),"{}");
+            Assert.Equals( board.AddTask("ptamar@post.bgu.ac.il","schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23/04/22)),"{}");
         }
         /// <summary>
         /// This method tests a invalid add of a new Task to a board in the system according to requirement  12.
@@ -46,7 +46,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddInvalidTaskTest()
         {
-            Assert.Equals(board.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", -365879, "first homewoek assignmemt", new DateTime(23 / 04 / 22)),"Error");
+            Assert.Equals(board.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW111", "first homewoek assignmemt", new DateTime(23 / 04 / 22)),"Error");
         }
         /// <summary>
         /// This method tests a invalid add of a new Task to a board in the system according to requirement  12.
@@ -55,7 +55,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddInvalidTaskTest2()
         {
-            Assert.Equals(board.AddTask("wrong@post.bgu.ac.il", "schoolBorad", 365879, "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "Error");
+            Assert.Equals(board.AddTask("wrong@post.bgu.ac.il", "schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "Error");
         }
         /// <summary>
         /// This method tests a valid change  state of a Task from one state to the next in the system according to requirement  13.
