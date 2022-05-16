@@ -15,11 +15,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="name">The name of the board</param>
         /// <param name="userEmail">Email of the user. To connect between the new board to the user who made it.</param>
         /// <returns>Response with a command to create board, unless a board exists with the same name.</returns>
-        public string CreateBoard( string name, string userEmail)
+        public string CreateBoard(string name, string userEmail)
         {
             throw new NotImplementedException();
 
         }
+
         /// <summary>
         /// This method add new task.
         /// </summary>
@@ -34,15 +35,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Buissnes_Layer.Board b = new Buissnes_Layer.Board(boardName);
             try
             {
-                b.AddTask("taskId",description,dueDate);
+                b.AddTask("taskId", description, dueDate);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);//return exception when reached max task limit
+                Console.WriteLine(e.Message); //return exception when reached max task limit
                 throw;
             }
 
+            return "";
+
         }
+
         /// <summary>
         /// This method updates the state of the  task.
         /// </summary>
@@ -56,11 +60,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 //NEED TO USE CHANGEsTATE
+               // Buissnes_Layer.Board.ChangeState(taskId);
                 return "";
             }
             catch (Exception e)
             {
                 //RETURN BAD JASON
+                return "";
 
             }
 

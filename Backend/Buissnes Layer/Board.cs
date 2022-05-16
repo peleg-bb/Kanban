@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class Board
-    {
+    {/*
         private Dictionary<int,Task> backlog;
         private Dictionary<int, Task> inProgress;
-        private Dictionary<int, Task> done;
+        private Dictionary<int, Task> done;*/
+        private Dictionary<int, Task> tasks;
+        private Dictionary<int, Task> inProgress;
         public string name;
         private int maxTasks = -1;
         //private int indexNewTask = 0;
@@ -34,19 +36,22 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return this.maxTasks;
         }
         public void SetMaxTask(int newMaxTask)   // property
-        {
+        { //would i need to raise Exception if the max tasks is changed after exist tasks more then the max?? 
             this.maxTasks = newMaxTask;
         }
         public Dictionary<int,Task> GetInProgress()   // property
         {
             return inProgress;
         }
-        public void SetBacklog(Task newTask)   // property
+        public void SetTasks(Task newTask)   // property
         {
-            if (numTasks<maxTasks)
+            if (tasks.ContainsKey(newTask.TaskId))
             {
-                this.inProgress.Add(newTask.GetId, newTask);
-                // indexNewTask++;
+                throw new ArgumentException("TASK ALREADY EXIST");
+            } 
+            else if (numTasks < maxTasks)
+            {
+                tasks[newTask.TaskId] = newTask;
                 numTasks++;
             }
             else
@@ -62,7 +67,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             Task newTask = new Task(title, description, dueDate, 0);
             try
             {
-                SetBacklog(newTask);
+                SetTasks(newTask);
             }
             catch (Exception e)
             {
@@ -71,18 +76,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             
         }
 
-        public void ChangeState(Task task)
+        public void ChangeState(int taskId)
         {
-            int state = task.GetState();
+            int state = tasks[taskId].GetState();
             if (state == 0)
             {
-                inProgress.Add(task.GetId,task);
-                backlog.Remove(task.GetId);
+                inProgress.Add(taskId,tasks[taskId]);
+                tasks[taskId].SetState(1);
             }
             else if (state == 1)
             {
-                done.Add(task.GetId, task);
-                inProgress.Remove(task.GetId);
+                tasks[taskId].SetState(2);
+                inProgress.Remove(taskId);
             }
             else
             {
