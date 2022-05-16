@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
-    internal class Connections
+    internal static class Connections
     {
         private static List<string> ConnectedUsers;
 
@@ -20,12 +20,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return ConnectedUsers.Contains(email);
         }
 
-        public void LoginUser(string email)
+        public static void LoginUser(string email)
+
         {
             ConnectedUsers.Add(email);
         }
 
-        public void LogoutUser(string email)
+        public static void LogoutUser(string email)
         {
             ConnectedUsers.Remove(email);
         }

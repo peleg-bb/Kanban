@@ -9,10 +9,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     internal class UserController
     {
+        // To complete - change the loggedIn checks across this class.
         
         private Dictionary<string, User> users;
-        private List<string> loggedIn;
-        
+
 
         public void CreateUser(string email, string password)
         {
@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
                 if (IsLoggedIn(email)) // Remove from logged-in list
                 {
-                    loggedIn.Remove(email);
+                    Connections.LogoutUser(email);
                 }
             }
             else
@@ -87,7 +87,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException("Wrong password");
             }
 
-            else if (loggedIn.Contains(email))
+            else if (Connections.IsLoggedIn(email))
 
             {
                 throw new ArgumentException("User is already logged in");
@@ -95,18 +95,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             else
             {
-                loggedIn.Add(email);
+                Connections.LoginUser(email);
             }
         }
 
-        public void Logout(string email)
+        public void Logout(string email) //Contains the logic flow of logging out connected users
         {
             if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
             }
 
-            else if (!loggedIn.Contains(email))
+            else if (!Connections.IsLoggedIn(email))
 
             {
                 throw new ArgumentException("User is already logged out");
@@ -114,7 +114,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             else
             {
-                loggedIn.Remove(email);
+                Connections.LogoutUser(email);
             }
 
         }
@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (UserExists(email))
             {
-                return loggedIn.Contains(email);
+                return Connections.IsLoggedIn(email);
             }
             else
             {
