@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
-    internal class User
+    public class User
     {
         public string username;
         private string password;

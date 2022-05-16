@@ -7,18 +7,27 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
-    internal class UserController
+    public class UserController
     {
-        // To complete - change the loggedIn checks across this class.
-        
+
         private Dictionary<string, User> users;
+        private List<string> loggedIn;
+
+        public UserController()
+        {
+            this.users = new Dictionary<string, User>();
+            this.loggedIn = new List<string>();
+        }
 
 
         public void CreateUser(string email, string password)
         {
-            if (UserExists(email))
+            if (!(this.users == null))
             {
-                throw new ArgumentException("User already exists");
+                if (UserExists(email))
+                {
+                    throw new ArgumentException("User already exists");
+                }
             }
             else
             {
@@ -32,12 +41,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (users.ContainsKey(email))
             {
-                users.Remove(email); // Remove from existing users list
-
-                if (IsLoggedIn(email)) // Remove from logged-in list
-                {
-                    Connections.LogoutUser(email);
-                }
+                users.Remove(email);
             }
             else
             {
@@ -69,10 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return users[email].ValidatePassword(password);
             }
-            else
-            {
-                throw new ArgumentException("User does not exist");
-            }
+            return false;
         }
 
         public void Login(string email, string password)
@@ -87,7 +88,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException("Wrong password");
             }
 
-            else if (Connections.IsLoggedIn(email))
+            else if (loggedIn.Contains(email))
 
             {
                 throw new ArgumentException("User is already logged in");
@@ -95,18 +96,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             else
             {
-                Connections.LoginUser(email);
+                loggedIn.Add(email);
             }
         }
 
-        public void Logout(string email) //Contains the logic flow of logging out connected users
+        public void Logout(string email)
         {
             if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
             }
 
-            else if (!Connections.IsLoggedIn(email))
+            else if (!loggedIn.Contains(email))
 
             {
                 throw new ArgumentException("User is already logged out");
@@ -114,22 +115,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             else
             {
-                Connections.LogoutUser(email);
+                loggedIn.Remove(email);
             }
 
         }
 
         public bool IsLoggedIn(string email)
         {
-            if (UserExists(email))
-            {
-                return Connections.IsLoggedIn(email);
-            }
-            else
+            if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
             }
-            
+            return loggedIn.Contains(email);
         }
 
     }
