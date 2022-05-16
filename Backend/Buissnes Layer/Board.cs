@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class Board
@@ -13,8 +14,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<int, Task> inProgress;
         private Dictionary<int, Task> done;*/
         //private int indexNewTask = 0; 
-        private Dictionary<int, Task> tasks;
-        private Dictionary<int, Task> inProgress;
+        private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
+        private Dictionary<int, Task> inProgress = new Dictionary<int, Task>();
         public string name;
         private int[] maxTasks = new int[] {-1,-1,-1};
         private int[] numTasks =new int[3];
@@ -59,8 +60,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
            if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
            {
-                tasks[newTask.TaskId] = newTask;
-                numTasks[0]++;
+                this.tasks[newTask.TaskId] = newTask;
+                this.numTasks[0]++;
            }
            else
            {
@@ -86,15 +87,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void ChangeState(int taskId)
         {
-            int state = tasks[taskId].GetState();
+            int state = this.tasks[taskId].GetState();
             if (state == 0)
             {
                 if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
                 {
-                    inProgress.Add(taskId, tasks[taskId]);
-                    tasks[taskId].SetState(1);
-                    numTasks[0]--;
-                    numTasks[1]++;
+                    this.inProgress.Add(taskId, tasks[taskId]);
+                    this.tasks[taskId].SetState(1);
+                    this.numTasks[0]--;
+                    this.numTasks[1]++;
                 }
                 else
                 {
@@ -105,10 +106,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (numTasks[2] < maxTasks[2] || maxTasks[2] == -1)
                 {
-                    tasks[taskId].SetState(2);
-                    inProgress.Remove(taskId);
-                    numTasks[1]--;
-                    numTasks[2]++;
+                    this.tasks[taskId].SetState(2);
+                    this.inProgress.Remove(taskId);
+                    this.numTasks[1]--;
+                    this.numTasks[2]++;
                 }
                 else
                 {
