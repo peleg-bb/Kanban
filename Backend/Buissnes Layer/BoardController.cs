@@ -30,6 +30,34 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
               throw new ArgumentException("user not logged in");
             }
         }
+
+        public List<Task> GetAllInPrograss(string userEmail)
+        {
+            if (Connections.IsLoggedIn(userEmail))
+            {
+                if (Boards.ContainsKey(userEmail))
+                {
+                    Dictionary<string, Board> boards = Boards[userEmail];
+                    List<Task>  taskInProgList= new List<Task>();
+                    foreach (var item in boards.Keys)
+                    {
+                        taskInProgList.AddRange(boards[item].GetInProgress());
+                    }
+                    return taskInProgList;
+                }
+                else
+                {
+                    List<Task> taskInProgList = new List<Task>();
+                    return taskInProgList;
+                }
+               
+
+            }
+            else
+            {
+                throw new ArgumentException("user not logged in");
+            }
+        }
         public void CreateBoard(string userEmail, string boardName)
         { 
             if (Connections.IsLoggedIn(userEmail)) 

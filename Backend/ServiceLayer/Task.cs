@@ -39,8 +39,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             if (Connections.GetConnectedUsers().Contains(email))
             {
-
+                
             }
+
+            
         }
         /// <summary>
         /// This method updates the description of a task.
