@@ -9,15 +9,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class BoardController
     {
-        private Dictionary<string, Dictionary<string,Board>> Boards;
-       // private UserController userController = new UserController();  
+        private Dictionary<string, Dictionary<string,Board>> Boards = new Dictionary<string, Dictionary<string, Board>>();
+
         public bool Exists(string userEmail, string boardName)
         { 
-            if (userController.IsLoggedIn(userEmail))
+            if (Connections.IsLoggedIn(userEmail))
             {
                 if (Boards.ContainsKey(userEmail))
                 {
-                    return Boards[userEmail].ContainsKey(boardName);
+                    return this.Boards[userEmail].ContainsKey(boardName);
 
                 }
                 else
@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public void CreateBoard(string userEmail, string boardName)
         { 
-            if (userController.IsLoggedIn(userEmail)) 
+            if (Connections.IsLoggedIn(userEmail)) 
             {
                 if (Exists(userEmail, boardName))
                 {
@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
 
                     Board newBoard = new Board(boardName);
-                    Boards[userEmail].Add(boardName, newBoard);
+                    this.Boards[userEmail].Add(boardName, newBoard);
                 }
 
             }
@@ -55,11 +55,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public void DeleteBoard(string userEmail, string boardName)
         {
-            if (userController.IsLoggedIn(userEmail))
+            if (Connections.IsLoggedIn(userEmail))
             {
                 if (Exists(userEmail, boardName))
                 {
-                    Boards[userEmail].Remove(boardName);
+                    this.Boards[userEmail].Remove(boardName);
 
                 }
                 else
@@ -76,11 +76,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public Board GetBoard(string userEmail, string boardName)
         {
-            if (userController.IsLoggedIn(userEmail))
+            if (Connections.IsLoggedIn(userEmail))
             {
                 if(Exists(userEmail, boardName))
                 {
-                    return Boards[userEmail][boardName];
+                    return this.Boards[userEmail][boardName];
                 }
                 else
                 {
