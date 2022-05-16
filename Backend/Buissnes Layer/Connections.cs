@@ -10,10 +10,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         private static List<string> ConnectedUsers;
 
-        public static List<string> GetConnectedUsers()
-        {
-            return ConnectedUsers;
-        }
+        // public static List<string> GetConnectedUsers()
+        // {
+        //     return ConnectedUsers;
+        // }
 
         public static bool IsLoggedIn(string email)
         {

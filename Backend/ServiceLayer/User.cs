@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 using log4net;
@@ -71,7 +72,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
         }
-        public string createUser(string email, string password)
+        public string CreateUser(string email, string password)
 
         {
             try
@@ -80,13 +81,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 String msg = String.Format("User created! email = {0}", email);
                 log.Info(msg);
                 
-                return "GoodJson";
+                Response response = new Response(null, userController.GetUser(email));
+                // If successful returns user object in JSON
+                return response.OKJson();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                log.Error(e.Message);
-                return "bad json";
+                log.Warn(e.Message);
+                Response response = new Response(e.Message, false);
+                
+                return response.BadJson();
 
             }
             
@@ -103,9 +108,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="oldP">The old password of the user. Must match with existing password in database.</param>
         /// <param name="newP">The new password of the user. Must match with password rules.</param>
         /// <returns> Response with changePassword task, unless an error occurs.</returns>
-        public string changePassword(string username, string oldP, string newP)
+        public string ChangePassword(string username, string oldP, string newP)
         {
-            throw new NotImplementedException();
+            try
+            {
+                userController.GetUser(username).ChangePassword(oldP, newP);
+                String msg = String.Format("Password changed successfully for user - {0}", username);
+                log.Info(msg);
+                Response response = new Response(null, true);
+
+                return response.OKJson(); 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                log.Warn(e.Message);
+                Response response = new Response(e.Message, false);
+
+                return response.BadJson(); 
+            }
         }
 
 
@@ -115,9 +136,28 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="username">The email address of the user to login</param>
         /// <param name="password">The password of the user to login</param>
         /// <returns> Response with user email, unless an error occurs</returns>
-        public string login(string username, string password)
+        public string Login(string username, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                userController.Login(username, password);
+                String msg = String.Format("Login successful for user - {0}", username);
+                log.Info(msg);
+                Response response = new Response(null, userController.GetUser(username));
+
+                return response.OKJson();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
+                log.Error(e.Message);
+                Response response = new Response(e.Message, false);
+
+                return response.BadJson();
+            }
+
+            ;
         }
 
 
@@ -149,7 +189,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs </returns>
         public string logout(string username)
         {
-            throw new NotImplementedException();
+            try
+            {
+                userController.Logout(username);
+                String msg = String.Format("Logout successful for user - {0}", username);
+                log.Info(msg);
+                Response response = new Response(null, true);
+
+                return response.OKJson();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
+                log.Warn(e.Message);
+                Response response = new Response(e.Message, false);
+
+                return response.BadJson();
+            }
+
         }
 
     }
