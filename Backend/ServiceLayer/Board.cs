@@ -1,14 +1,16 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.Buissnes_Layer;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-
     public class Board
     {
+        private BoardController boardController = new BoardController();
         /// <summary>
         /// This method creates a new board.
         /// </summary>
@@ -17,7 +19,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with a command to create board, unless a board exists with the same name.</returns>
         public string CreateBoard(string name, string userEmail)
         {
-            throw new NotImplementedException();
+            try
+            {
+                boardController.CreateBoard(name, userEmail);
+                return "good jason";
+            }
+            catch(Exception e)
+            {
+                return e.Message;
+            }
 
         }
 
@@ -32,18 +42,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs .</returns>
         public string AddTask(string email, string boardName, int taskId, string description, string dueDate)
         {
-            Buissnes_Layer.Board b = new Buissnes_Layer.Board(boardName);
+            Buissnes_Layer.Board b = boardController.GetBoard(email,boardName);
             try
             {
                 b.AddTask("taskId", description, dueDate);
+                return "good jason";
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message); //return exception when reached max task limit
-                throw;
+                return e.Message; //return exception when reached max task limit
             }
-
-            return "";
 
         }
 
@@ -61,12 +69,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 //NEED TO USE CHANGEsTATE
                // Buissnes_Layer.Board.ChangeState(taskId);
-                return "";
+               boardController.GetBoard(email,boardName).ChangeState(taskId);
+               return "good jason";
             }
             catch (Exception e)
             {
                 //RETURN BAD JASON
-                return "";
+                return e.Message;
 
             }
 
@@ -79,8 +88,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with a command to delete board, unless doesn't exists a board with the same name.</returns>
         public string DeleteBoard(string name, string userEmail)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //NEED TO USE CHANGEsTATE
+                // Buissnes_Layer.Board.ChangeState(taskId);
+                boardController.DeleteBoard(userEmail, name);
+                return "good jason";
+            }
+            catch (Exception e)
+            {
+                //RETURN BAD JASON
+                return e.Message;
 
+            }
         }
     }
 }
