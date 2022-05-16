@@ -34,10 +34,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-        public bool Login(string password) // This may be a redundant method as the UserController already contains it
-        {
-            return true;
-        }
 
         public bool ValidatePassword(string password)
         {
