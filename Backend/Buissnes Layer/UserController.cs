@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         
         private Dictionary<string, User> users;
         private List<string> loggedIn;
-
+        
 
         public void CreateUser(string email, string password)
         {
@@ -32,7 +32,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (users.ContainsKey(email))
             {
-                users.Remove(email);
+                users.Remove(email); // Remove from existing users list
+
+                if (IsLoggedIn(email)) // Remove from logged-in list
+                {
+                    loggedIn.Remove(email);
+                }
             }
             else
             {
@@ -64,7 +69,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return users[email].ValidatePassword(password);
             }
-            return false;
+            else
+            {
+                throw new ArgumentException("User does not exist");
+            }
         }
 
         public void Login(string email, string password)
@@ -113,7 +121,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public bool IsLoggedIn(string email)
         {
-            return loggedIn.Contains(email);
+            if (UserExists(email))
+            {
+                return loggedIn.Contains(email);
+            }
+            else
+            {
+                throw new ArgumentException("User does not exist");
+            }
+            
         }
 
     }

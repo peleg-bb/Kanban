@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.ServiceLayer;
-using Task = IntroSE.Kanban.Backend.ServiceLayer.Task;
+
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
