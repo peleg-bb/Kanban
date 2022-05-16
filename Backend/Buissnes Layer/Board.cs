@@ -41,7 +41,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public Dictionary<int,Task> GetInProgress()   // property
         {
-            return inProgress;
+            return this.inProgress;
+        }
+        public Dictionary<int, Task> GetTasks()   // property
+        {
+            return this.tasks;
         }
         public void SetTasks(Task newTask)   // property
         {
@@ -62,9 +66,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
 
 
-        public void AddTask(string title, string description, string dueDate)
+        public void AddTask(string title, string description, DateTime dueDate)
         {
-            Task newTask = new Task(title, description, dueDate, 0);
+            Task newTask = new Task(title, description, dueDate,0);
             try
             {
                 SetTasks(newTask);
