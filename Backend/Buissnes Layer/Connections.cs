@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         private static List<string> ConnectedUsers;
 
-        public List<string> GetConnectedUsers()
+        public static List<string> GetConnectedUsers()
         {
             return ConnectedUsers;
         }
