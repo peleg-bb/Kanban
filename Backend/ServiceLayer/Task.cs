@@ -37,7 +37,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{\"Title\" : \"newTitle\", \"Description\" : \"description\", \"DueDate\" : \"21.04.22\"}", unless an error occurs </returns>
         public string EditTitle(string email, int taskId,string newTitle)
         {
-            throw new NotImplementedException();
+            if (Connections.GetConnectedUsers().Contains(email))
+            {
+
+            }
         }
         /// <summary>
         /// This method updates the description of a task.
