@@ -65,9 +65,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="password">The user password.</param>
         /// <returns>Response with a createUser task, unless user already exists.</returns>
 
-        public User()
+        public User(UserController UC)
         {
-            userController = new UserController();
+            this.userController = UC; 
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");

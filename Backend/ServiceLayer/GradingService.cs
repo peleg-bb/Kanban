@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using IntroSE.Kanban.Backend.Buissnes_Layer;
 
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -48,11 +49,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class GradingService
     {   
-        User user1 = new User();
+        UserController userController;
 
         public GradingService()
         {
-            throw new NotImplementedException();
+            this.userController = new UserController();
         }
 
 
@@ -64,7 +65,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            user1.createUser("johndoe@gmail.com", "123456");
+            
             return "{}";
         }
 
