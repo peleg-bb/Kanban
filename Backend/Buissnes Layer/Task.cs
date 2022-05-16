@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public readonly string CreationDate = DateTime.Now.ToString("'yyyy'-'MM'-'dd'");
         private int State = 0; 
         public int TaskId { get; }
-        private int ID = 0; 
+        private int ID = 0;
 
         public Task (string title, string description, DateTime dueDate, int state)
         {

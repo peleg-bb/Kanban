@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class Board
@@ -11,17 +12,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<int,Task> backlog;
         private Dictionary<int, Task> inProgress;
         private Dictionary<int, Task> done;*/
+        //private int indexNewTask = 0; 
         private Dictionary<int, Task> tasks;
         private Dictionary<int, Task> inProgress;
         public string name;
-        private int maxTasks = -1;
-        //private int indexNewTask = 0;
-        private int numTasks = 0;
+        private int[] maxTasks = new int[] {-1,-1,-1};
+        private int[] numTasks =new int[3];
 
-        public Board(string name, int maxTasks=-1)
+        public Board(string name)
         {
             this.name = name;
-           this. maxTasks = maxTasks;
         }
         public string GetName()   // property
         {
@@ -31,13 +31,21 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.name = newName;
         }
-        public int GetMaxTask()   // property
+        public int GetMaxTask(int whichBoard)   // property
         {
-            return this.maxTasks;
+            return this.maxTasks[whichBoard];
         }
-        public void SetMaxTask(int newMaxTask)   // property
-        { //would i need to raise Exception if the max tasks is changed after exist tasks more then the max?? 
-            this.maxTasks = newMaxTask;
+        public void SetMaxTask(int newMaxTask, int whichBoard)   // property
+        {
+            if (this.maxTasks[whichBoard] != -1)
+            {
+                this.maxTasks[whichBoard] = newMaxTask;
+            }
+            else
+            {
+                throw new ArgumentException("CAN'T CHANGE MAX, MAX ALREADY BEEN CHANGED");
+            }
+           
         }
         public Dictionary<int,Task> GetInProgress()   // property
         {
@@ -47,21 +55,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             return this.tasks;
         }
-        public void SetTasks(Task newTask)   // property
+        private void SetTasks(Task newTask)   // property
         {
-            if (tasks.ContainsKey(newTask.TaskId))
-            {
-                throw new ArgumentException("TASK ALREADY EXIST");
-            } 
-            else if (numTasks < maxTasks)
-            {
+           if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
+           {
                 tasks[newTask.TaskId] = newTask;
-                numTasks++;
-            }
-            else
-            {
+                numTasks[0]++;
+           }
+           else
+           {
                 throw new ArgumentException("REACHED MAX TASK LIMIT");
-            }
+           }
             
         }
 
@@ -85,13 +89,31 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             int state = tasks[taskId].GetState();
             if (state == 0)
             {
-                inProgress.Add(taskId,tasks[taskId]);
-                tasks[taskId].SetState(1);
+                if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
+                {
+                    inProgress.Add(taskId, tasks[taskId]);
+                    tasks[taskId].SetState(1);
+                    numTasks[0]--;
+                    numTasks[1]++;
+                }
+                else
+                {
+                    throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
+                }
             }
             else if (state == 1)
             {
-                tasks[taskId].SetState(2);
-                inProgress.Remove(taskId);
+                if (numTasks[2] < maxTasks[2] || maxTasks[2] == -1)
+                {
+                    tasks[taskId].SetState(2);
+                    inProgress.Remove(taskId);
+                    numTasks[1]--;
+                    numTasks[2]++;
+                }
+                else
+                {
+                    throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
+                }
             }
             else
             {
