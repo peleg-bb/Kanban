@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     public class BoardController
     {
         private Dictionary<string, Dictionary<string,Board>> Boards;
-        private UserController userController = new UserController();  
+       // private UserController userController = new UserController();  
         public bool Exists(string userEmail, string boardName)
         { 
             if (userController.IsLoggedIn(userEmail))

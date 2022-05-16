@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>Response with user-email, unless an error occurs .</returns>
-        public string AddTask(string email, string boardName, int taskId, string description, string dueDate)
+        public string AddTask(string email, string boardName, int taskId, string description, DateTime dueDate)
         {
             Buissnes_Layer.Board b = boardController.GetBoard(email,boardName);
             try
@@ -60,7 +60,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="email">Email of user. Must be logged in</param>
         /// <param name="boardName">The name of the board</param>
-        /// <param name="state">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
         public string NextState(string email, string boardName, int taskId)

@@ -21,6 +21,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
 
         public static void LoginUser(string email)
+
         {
             ConnectedUsers.Add(email);
         }
