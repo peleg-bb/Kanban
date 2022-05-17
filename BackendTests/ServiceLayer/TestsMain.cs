@@ -36,6 +36,7 @@ namespace BackendTests.ServiceLayer
             boardService.AddTask(email, boardName, title, description, dueDate);
             TaskTests tests = new TaskTests(taskService, userService, boardService);
         }
+
         [TestMethod()]
         static void Main(string[] args)
         {

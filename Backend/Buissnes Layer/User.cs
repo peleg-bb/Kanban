@@ -16,8 +16,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public User(string username, string password)
         {
-            this.password = password;
             this.username = username;
+            this.password = password;
         }
 
         public void ChangePassword(string oldP, string newP)

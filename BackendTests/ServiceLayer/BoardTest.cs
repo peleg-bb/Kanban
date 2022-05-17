@@ -1,4 +1,3 @@
-
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,7 @@ namespace BackendTests.ServiceLayer
 {
     internal class BoardTest
     {
+
         private BoardService _boardService;
         public BoardTest(BoardService BS)
         {
@@ -51,7 +51,6 @@ namespace BackendTests.ServiceLayer
             string boardName = "testNameDiff";
             _boardService.CreateBoard(boardName, email);
             Assert.Equals(_boardService.CreateBoard(boardName, email), "{\"Error Message\" : \"BOARD IS ALREADY EXIST AT THIS USER, CAN'T CREATE ANOTHER WITH THE SAME NAME! \"}");
-
         }
         /// <summary>
         /// This method tests a valid add of a new Task to a boardService in the system according to requirement  12.
@@ -60,7 +59,6 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddValidTaskTest()
         {
-
             Assert.Equals( _boardService.AddTask("ptamar@post.bgu.ac.il","schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23/04/22)),"{}");
 
         }
@@ -92,6 +90,7 @@ namespace BackendTests.ServiceLayer
         public void ValidNextStateTest()
         {
 
+
             Assert.Equals(_boardService.NextState("ptamar@post.bgu.ac.il", "schoolBorad", 365879),"{}");
 
         }
@@ -102,6 +101,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InvalidNextStateTest()
         {
+
 
             Assert.Equals(_boardService.NextState("wrong@post.bgu.ac.il", "schoolBorad", 365879),"Error");
 
@@ -124,6 +124,7 @@ namespace BackendTests.ServiceLayer
 
             Assert.Equals(_boardService.DeleteBoard("schoolBorad","ptamar@post.bgu.ac.il"),"{}");
 
+
         }
         /// <summary>
         /// This method tests a invalid deletion of a  boardService in the system according to requirement 9.
@@ -131,6 +132,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InvalidDeleteBoardTest()
         {
+
             _boardService.DeleteBoard("NotExist", "ptamar@post.bgu.ac.il");
         }
     }
