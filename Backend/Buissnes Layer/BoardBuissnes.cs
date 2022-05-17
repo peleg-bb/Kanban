@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void AddTask(string title, string description, DateTime dueDate)
         {
-            Task newTask = new Task(title, description, dueDate);
+            Task newTask = new Task(title, dueDate, description);
             try
             {
                 SetTasks(newTask);

@@ -7,17 +7,27 @@ using log4net.Util;
 using Newtonsoft.Json;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 using Task = IntroSE.Kanban.Backend.Buissnes_Layer.Task;
+using AutoMapper.Internal.Mappers;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 
 {
+
     public class TaskService
     {
         private BoardController boardController;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public TaskService(BoardController BC)
         {
             this.boardController = BC;
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
+
         }
 
         ///// <summary>
@@ -55,16 +65,23 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     task.EditTitle(newTitle);
                     Response response = new Response(null, task);
+                    String msg = String.Format("Task title edited! new title = {0}", newTitle);
+                    log.Info(msg);
+                    Console.WriteLine(msg);
                     return response.OKJson();
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     Response response = new Response(ex.Message, task);
                     return response.BadJson();
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                log.Warn(ex.Message);
                 Response response = new Response(ex.Message, false);
                 return response.BadJson();
             }
@@ -83,20 +100,28 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Task task = boardController.GetBoard(email, boardName).GetTask(taskId);
+
                 try
                 {
                     task.EditDescription(newDescription);
                     Response response = new Response(null, task);
+                    String msg = String.Format("Task description edited! new description = {0}", newDescription);
+                    log.Info(msg);
+                    Console.WriteLine(msg);
                     return response.OKJson();
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     Response response = new Response(ex.Message, task);
                     return response.BadJson();
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                log.Warn(ex.Message);
                 Response response = new Response(ex.Message, false);
                 return response.BadJson();
             }
@@ -119,16 +144,23 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     task.EditDueDate(newDueDate);
                     Response response = new Response(null, task);
+                    String msg = String.Format("Task due date edited! new due date = {0}", newDueDate);
+                    log.Info(msg);
+                    Console.WriteLine(msg);
                     return response.OKJson();
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     Response response = new Response(ex.Message, task);
                     return response.BadJson();
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                log.Warn(ex.Message);
                 Response response = new Response(ex.Message, false);
                 return response.BadJson();
             }
