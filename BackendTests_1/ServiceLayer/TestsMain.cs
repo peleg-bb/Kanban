@@ -57,7 +57,9 @@ namespace BackendTests.ServiceLayer
             boardService.AddTask(email, boardName, title, description, dueDate);
             Console.WriteLine("bye");
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
-            //BoardTest boraTest = new BoardTest(boardService);
+            BoardTest boraTest = new BoardTest(boardService);
+            boraTest.AddInvalidTaskTest();
+
 
         }
 
