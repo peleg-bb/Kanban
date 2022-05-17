@@ -290,7 +290,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                List<Buissnes_Layer.Task> allCol = boardService.boardController.GetBoard(email, boardName).GlList(columnOrdinal);
+                List<Buissnes_Layer.Task> allCol = boardService.boardController.GetBoard(email, boardName).GEtColList(columnOrdinal);
                 Response r = new Response(null, allCol);
                 return r.OKJson();
             }
@@ -338,7 +338,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardService.DeleteBoard(name, email);
-                Response r = new Response(null, boardService);
+                Response r = new Response(null, true);
                 return r.OKJson();
             }
             catch (Exception e)

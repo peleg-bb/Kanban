@@ -61,20 +61,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs .</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            Buissnes_Layer.Board b = boardController.GetBoard(email,boardName);
             try
             {
-                b.AddTask(title, description, dueDate);
+                Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
+                try
+                {
+                    b.AddTask(title, description, dueDate);
 
-                Response r = new Response(null, b);
-                return r.OKJson();
+                    Response r = new Response(null, email);
+                    return r.OKJson();
+                }
+                catch (Exception e)
+                {
+                    Response r = new Response(e.Message, b);
+                    return r.BadJson(); //return exception when reached max task limit
+                }
+
             }
             catch (Exception e)
             {
-                Response r = new Response(e.Message, b);
-                return r.BadJson(); //return exception when reached max task limit
-            }
+                Response r = new Response(e.Message, false);
+                log.Warn(e.Message);
 
+                return r.BadJson();
+            }
+           
         }
 
         /// <summary>
@@ -138,7 +149,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
 
                 //RETURN BAD JASON
-                Response r = new Response(e.Message, boardController.GetBoard(userEmail,name));
+                Response r = new Response(e.Message, false);
                 log.Warn(e.Message);
                 return r.BadJson();
 
