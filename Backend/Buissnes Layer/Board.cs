@@ -58,6 +58,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             return this.tasks;
         }
+        public Task GetTask(int taskId)   // property
+        {
+            return this.tasks[taskId];
+        }
         private void SetTasks(Task newTask)   // property
         {
            if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
