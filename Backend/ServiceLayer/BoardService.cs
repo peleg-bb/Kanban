@@ -2,10 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -13,10 +17,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
 
         public BoardController boardController;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public BoardService(UserController UC)
         {
             this.boardController = new BoardController(UC);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
         /// <summary>
         /// This method creates a new board.
@@ -84,13 +92,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 try
                 {
                     b.ChangeState(taskId);
-                    Response r = new Response(null, b);
+                    Response r = new Response(null, b.GetTask(taskId).GetState());
+                    String msg = String.Format("task changed state Successfully! to state :{0}", b.GetTask(taskId).GetState());
+                    log.Info(msg);
+
                     return r.OKJson();
                 }
                 catch (Exception e)
                 {
                     //RETURN BAD JASON
-                    Response r = new Response(e.Message, b);
+                    Response r = new Response(e.Message, b.GetTask(taskId).GetState());
+                    log.Warn(e.Message);
+
                     return r.BadJson();
 
                 }
@@ -116,12 +129,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //NEED TO USE CHANGEsTATE
                 boardController.DeleteBoard(userEmail, name);
                 Response r = new Response(null, true);
+                String msg = String.Format("BoardService deleted! userEmail = {0} deleted board :{1}", userEmail, name);
+                log.Info(msg);
+
                 return r.OKJson();
             }
             catch (Exception e)
             {
+
                 //RETURN BAD JASON
-                Response r = new Response(e.Message, false);
+                Response r = new Response(e.Message, boardController.GetBoard(userEmail,name));
+                log.Warn(e.Message);
                 return r.BadJson();
 
             }

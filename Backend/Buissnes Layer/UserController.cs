@@ -28,6 +28,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     throw new ArgumentException("User already exists");
                 }
+
+                else
+                {
+                    User u = new User(email, password);
+                    users.Add(email, u);
+                }
             }
             else
             {

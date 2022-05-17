@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (Boards.ContainsKey(userEmail))
                 {
+
                     return this.Boards[userEmail].ContainsKey(boardName);
 
                 }

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 
 namespace BackendTests.ServiceLayer
 {
-    [TestClass()]
+    // [TestClass()]
     internal class TestsMain
     {
         private UserController userController;
@@ -34,10 +34,9 @@ namespace BackendTests.ServiceLayer
 
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
-            TaskTests tests = new TaskTests(taskService, userService, boardService);
+            //TaskTests tests = new TaskTests(taskService, userService, boardService);
         }
-
-        [TestMethod()]
+        // [TestMethod()]
         static void Main(string[] args)
         {
             // Display the number of command line arguments.
@@ -57,7 +56,7 @@ namespace BackendTests.ServiceLayer
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
-            BoardTest boraTest = new BoardTest(boardService);
+            //BoardTest boraTest = new BoardTest(boardService);
 
         }
 

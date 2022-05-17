@@ -115,3 +115,9 @@ namespace BackendTests.ServiceLayer
 }
     }
 // }
+
+//            Assert.Equals(user1.getInProgress("johndoe@gmail.com"), "{}");
+//        }
+//    }
+//}
+
