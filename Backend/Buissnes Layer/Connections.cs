@@ -6,26 +6,27 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
-    internal class Connections
+    internal static class Connections
     {
         private static List<string> ConnectedUsers;
 
-        public static List<string> GetConnectedUsers()
-        {
-            return ConnectedUsers;
-        }
+        // public static List<string> GetConnectedUsers()
+        // {
+        //     return ConnectedUsers;
+        // }
 
         public static bool IsLoggedIn(string email)
         {
             return ConnectedUsers.Contains(email);
         }
 
-        public void LoginUser(string email)
+        public static void LoginUser(string email)
+
         {
             ConnectedUsers.Add(email);
         }
 
-        public void LogoutUser(string email)
+        public static void LogoutUser(string email)
         {
             ConnectedUsers.Remove(email);
         }

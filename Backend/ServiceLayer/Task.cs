@@ -42,8 +42,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             if (Connections.IsLoggedIn(email))
             {
-
+                
             }
+
+            
         }
         /// <summary>
         /// This method updates the description of a task.

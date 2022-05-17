@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using IntroSE.Kanban.Backend.Buissnes_Layer;
 
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -48,11 +49,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class GradingService
     {   
-        User user1 = new User();
+        UserController userController;
 
         public GradingService()
         {
-            throw new NotImplementedException();
+            this.userController = new UserController();
         }
 
 
@@ -64,7 +65,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            user1.createUser("johndoe@gmail.com", "123456");
+            
             return "{}";
         }
 
@@ -144,9 +145,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            Board board = new Board();
-            board.AddTask(email, boardName, title, description, dueDate.ToString());
-            return email;
+            Board b = new Board();
+            try
+            {
+                b.AddTask(email, boardName, title, description, dueDate);
+                return email;
+            }
+            catch (Exception e)
+            {
+               // Console.WriteLine(e);
+                throw new ArgumentException(e.Message);
+            }
+            
         }
 
 
@@ -211,9 +221,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            Board board = new Board();
-            board.NextState(email, boardName, columnOrdinal, taskId);
-            return "{}";
+            try
+            {
+                Board board = new Board();
+                board.NextState(email, boardName, taskId);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+
         }
 
 
@@ -238,9 +256,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddBoard(string email, string name)
         {
-            Board board = new Board();
-            board.CreateBoard(name, email);
-            return "{}";
+            try
+            {
+                Board board = new Board();
+                board.CreateBoard(name, email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException(e.Message);
+            }
+            
         }
 
 
@@ -252,9 +279,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string RemoveBoard(string email, string name)
         {
-            Board board = new Board();
-            board.DeleteBoard(name, email);
-            return "{}";
+            try
+            {
+                Board board = new Board();
+                board.DeleteBoard(name, email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException(e.Message);
+            }
         }
 
 
@@ -265,8 +300,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the in progress tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string InProgressTasks(string email)
         {
-            user1.getInProgress("johndoe@gmail.com");
-            return "{}";
+            try
+            {
+                return user1.getInProgress(email);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException(e.Message);
+            }
+
 
         }
     }

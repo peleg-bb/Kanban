@@ -7,18 +7,27 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
-    internal class UserController
+    public class UserController
     {
-        
+
         private Dictionary<string, User> users;
         private List<string> loggedIn;
-        
+
+        public UserController()
+        {
+            this.users = new Dictionary<string, User>();
+            this.loggedIn = new List<string>();
+        }
+
 
         public void CreateUser(string email, string password)
         {
-            if (UserExists(email))
+            if (!(this.users == null))
             {
-                throw new ArgumentException("User already exists");
+                if (UserExists(email))
+                {
+                    throw new ArgumentException("User already exists");
+                }
             }
             else
             {
@@ -32,12 +41,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (users.ContainsKey(email))
             {
-                users.Remove(email); // Remove from existing users list
-
-                if (IsLoggedIn(email)) // Remove from logged-in list
-                {
-                    loggedIn.Remove(email);
-                }
+                users.Remove(email);
             }
             else
             {
@@ -69,10 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return users[email].ValidatePassword(password);
             }
-            else
-            {
-                throw new ArgumentException("User does not exist");
-            }
+            return false;
         }
 
         public void Login(string email, string password)
@@ -121,15 +122,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public bool IsLoggedIn(string email)
         {
-            if (UserExists(email))
-            {
-                return loggedIn.Contains(email);
-            }
-            else
+            if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
             }
-            
+            return loggedIn.Contains(email);
         }
 
     }
