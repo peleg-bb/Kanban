@@ -29,11 +29,14 @@ namespace BackendTests.ServiceLayer
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(14 / 07 / 2025);
-
+            Console.WriteLine("yayy");
             userService.CreateUser(email, password);
+            userService.Login(email, password);
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
-            TaskTests tests = new TaskTests(taskService, userService, boardService);
+            //TaskTests tests = new TaskTests(taskService, userService, boardService);
+            BoardTest boraTest = new BoardTest(this.boardService);
+
         }
 
 

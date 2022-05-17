@@ -264,12 +264,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
+                //return user1.getInProgress(email);
                 boardService.NextState(email, boardName, taskId);
-                return "{}";
+                Response r = new Response(null, true);
+                return r.OKJson();
             }
             catch (Exception e)
             {
-                throw new ArgumentException(e.Message);
+
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
             }
 
         }

@@ -17,28 +17,39 @@ namespace BackendTests.ServiceLayer
             this._boardService = BS;
         }
 
-        public Board b = new Board("Test");
-
              /// <summary>
              /// This method tests a valid creation of a new boardService in the system according to requirement 9.
              /// </summary>
              [TestMethod()]
          public void ValidCreateBoardTest()
         {
-
-
-            Assert.Equals(_boardService.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{schoolBorad}");
+            string email = "test@gmail";
+            string boardName = "testName";
+            Assert.Equals(_boardService.CreateBoard(boardName, email), "{\"boardName\" : \"testName\"}");
 
         }
+
         /// <summary>
         /// This method tests a invalid creation of a new boardService in the system according to requirement 9.
         /// </summary>
         [TestMethod()]
         public void InvalidCreateBoardTest()
         {
+            string email = "test@gmail";
+            string boardName = "testName";
+            Assert.Equals(_boardService.CreateBoard(boardName, "wrong@post.bgu.ac.il"), "{\"Error Message\" : \"user not logged in \"}");
 
-
-            Assert.Equals(_boardService.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il"),"Error");
+        }
+        /// <summary>
+        /// This method tests a invalid creation of a new boardService with the same name of a board that already exist  according to requirement  6.
+        /// </summary>
+        [TestMethod()]
+        public void InvalidCreateBoardTest2()
+        {
+            string email = "test@gmail";
+            string boardName = "testNameDiff";
+            _boardService.CreateBoard(boardName, email);
+            Assert.Equals(_boardService.CreateBoard(boardName, email), "{\"Error Message\" : \"BOARD IS ALREADY EXIST AT THIS USER, CAN'T CREATE ANOTHER WITH THE SAME NAME! \"}");
 
         }
         /// <summary>
@@ -119,7 +130,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InvalidDeleteBoardTest()
         {
-            _boardService.DeleteBoard("NotExcist", "ptamar@post.bgu.ac.il");
+            _boardService.DeleteBoard("NotExist", "ptamar@post.bgu.ac.il");
         }
     }
 }
