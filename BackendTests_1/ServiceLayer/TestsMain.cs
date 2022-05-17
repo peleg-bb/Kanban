@@ -44,8 +44,8 @@ namespace BackendTests.ServiceLayer
             UserService userService = new UserService(userController);
             BoardService boardService = new BoardService(userController);
             TaskService taskService = new TaskService(boardService.boardController);
-            string email = "test@gmail.com";
-            string password = "1234";
+            string email = "tamar@gmail.com";
+            string password = "123456";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
@@ -55,17 +55,24 @@ namespace BackendTests.ServiceLayer
             userService.Login(email, password);
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
-            Console.WriteLine("bye");
-            TaskTests tests = new TaskTests(taskService, userService, boardService);
 
-            tests.ValidEditDescriptionTest();
-            tests.ValidEditDueDateTest();
-            tests.ValidEditTitleTest();
-            tests.InValidEditDueDateTest();
-            tests.InvalidEditDescriptionTest();
-            tests.ValidEditTitleTest();
-            tests.InvalidEditTitleTest();
+            //TaskTests tests = new TaskTests(taskService, userService, boardService);
+
+//             BoardTest boraTest = new BoardTest(boardService);
+//             boraTest.ValidCreateBoardTest();
+//             boraTest.InvalidCreateBoardTest();
+//             boraTest.InvalidCreateBoardTest2();
+//             boraTest.AddValidTaskTest();
+//             Console.WriteLine("bye");
+
             //BoardTest boraTest = new BoardTest(boardService);
+            //boraTest.AddInvalidTaskTest();
+            UserTests userTests = new UserTests(userController, userService);
+            userTests.createUserTest();
+            userTests.validUserLoginTest();
+            userTests.invalidUserLoginTest();
+
+
 
         }
 
