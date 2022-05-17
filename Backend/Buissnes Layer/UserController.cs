@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
@@ -19,6 +20,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.loggedIn = new List<string>();
         }
 
+        public bool IsValidEmail(string email)
+        {
+            Regex regex = new Regex(
+                @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
+            return regex.IsMatch(email);
+        }
 
         public void CreateUser(string email, string password)
         {
@@ -28,7 +35,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     throw new ArgumentException("User already exists");
                 }
-
+                else if (!IsValidEmail(email))
+                {
+                    throw new ArgumentException("Not a valid email address");
+                }
                 else
                 {
                     User u = new User(email, password);
@@ -37,8 +47,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                User u = new User(email, password);
-                users.Add(email, u);
+               
+                if (!IsValidEmail(email))
+                {
+                    throw new ArgumentException("Not a valid email address");
+                }
+                else
+                {
+                    User u = new User(email, password);
+                    users.Add(email, u);
+                }
+                
             }
         }
 
@@ -73,6 +92,20 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
+        public bool IsLegalPassword(string password)
+        {
+            if (password.Length < 6)
+            {
+                throw new ArgumentException("Suggested password is too short!");
+            }
+            else if (password.Length > 20 )
+            {
+                throw new ArgumentException("Suggested password is too short!");
+            }
+
+            return false;
+        }
+        
         public bool ValidatePassword(string email, string password)
         {
             if (users.ContainsKey(email))
