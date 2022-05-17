@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             ID += 1;
 
         }
-        private void EditTitle(string newTitle)
+        public void EditTitle(string newTitle)
         {
 
             if (newTitle == "")
@@ -53,7 +53,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
              this.State=state;
         }
 
-        private void EditDescription(string newDescription)
+        public void EditDescription(string newDescription)
         {
             if (newDescription == "")
             {
@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-        private void EditDueDate(DateTime newDueDate)
+        public void EditDueDate(DateTime newDueDate)
         {
             if (!DateTime.TryParseExact(newDueDate.ToString(),"dd/mm/yyyy",CultureInfo.InvariantCulture,
                     DateTimeStyles.None,
