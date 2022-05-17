@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using IntroSE.Kanban.Backend.Buissnes_Layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,14 +11,21 @@ namespace BackendTests.ServiceLayer
 {
     internal class BoardTest
     {
-        BoardService _boardService = new BoardService();
-
-        /// <summary>
-        /// This method tests a valid creation of a new boardService in the system according to requirement 9.
-        /// </summary>
-        [TestMethod()]
-        public void ValidCreateBoardTest()
+        private BoardService _boardService;
+        public BoardTest(BoardService BS)
         {
+            this._boardService = BS;
+        }
+
+        public Board b = new Board("Test");
+
+             /// <summary>
+             /// This method tests a valid creation of a new boardService in the system according to requirement 9.
+             /// </summary>
+             [TestMethod()]
+         public void ValidCreateBoardTest()
+        {
+
 
             Assert.Equals(_boardService.CreateBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{schoolBorad}");
 
@@ -29,7 +37,9 @@ namespace BackendTests.ServiceLayer
         public void InvalidCreateBoardTest()
         {
 
-            Assert.Equals(_boardService.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il"), "Error");
+
+            Assert.Equals(_boardService.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il"),"Error");
+
         }
         /// <summary>
         /// This method tests a valid add of a new Task to a boardService in the system according to requirement  12.
@@ -38,7 +48,9 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddValidTaskTest()
         {
-            Assert.Equals(_boardService.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "{}");
+
+            Assert.Equals( _boardService.AddTask("ptamar@post.bgu.ac.il","schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23/04/22)),"{}");
+
         }
         /// <summary>
         /// This method tests a invalid add of a new Task to a boardService in the system according to requirement  12.
@@ -47,7 +59,9 @@ namespace BackendTests.ServiceLayer
         public void AddInvalidTaskTest()
         {
 
-            Assert.Equals(_boardService.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW111", "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "Error");
+
+            Assert.Equals(_boardService.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW111", "first homewoek assignmemt", new DateTime(23 / 04 / 22)),"Error");
+
         }
         /// <summary>
         /// This method tests a invalid add of a new Task to a boardService in the system according to requirement  12.
@@ -65,7 +79,9 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidNextStateTest()
         {
-            Assert.Equals(_boardService.NextState("ptamar@post.bgu.ac.il", "schoolBorad", 365879), "{}");
+
+            Assert.Equals(_boardService.NextState("ptamar@post.bgu.ac.il", "schoolBorad", 365879),"{}");
+
         }
         /// <summary>
         /// This method tests a invalid change state of a TaskService from one state to the next in the system according to requirement  13.
@@ -74,7 +90,9 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InvalidNextStateTest()
         {
-            Assert.Equals(_boardService.NextState("wrong@post.bgu.ac.il", "schoolBorad", 365879), "Error");
+
+            Assert.Equals(_boardService.NextState("wrong@post.bgu.ac.il", "schoolBorad", 365879),"Error");
+
         }
         /// <summary>
         /// This method tests a invalid change  state of a TaskService from one state to the next in the system according to requirement  13.
@@ -91,7 +109,9 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidDeleteBoardTest()
         {
-            Assert.Equals(_boardService.DeleteBoard("schoolBorad", "ptamar@post.bgu.ac.il"), "{}");
+
+            Assert.Equals(_boardService.DeleteBoard("schoolBorad","ptamar@post.bgu.ac.il"),"{}");
+
         }
         /// <summary>
         /// This method tests a invalid deletion of a  boardService in the system according to requirement 9.
