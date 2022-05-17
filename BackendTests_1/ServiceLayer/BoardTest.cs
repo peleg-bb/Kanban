@@ -24,9 +24,11 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void ValidCreateBoardTest()
         {
-            string email = "test@gmail";
-            string boardName = "testName";
-            Assert.Equals(_boardService.CreateBoard(boardName, email), "{\"boardName\" : \"testName\"}");
+
+            Response r = new Response(null, true);
+            string email = "test@gmail.com";
+            string boardName = "test2";
+            Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.OKJson());
 
         }
 
@@ -36,9 +38,10 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void InvalidCreateBoardTest()
         {
-            string email = "test@gmail";
+            Response r = new Response("User does not exist", false);
+            string email = "tamar@gmail.com";
             string boardName = "testName";
-            Assert.Equals(_boardService.CreateBoard(boardName, "wrong@post.bgu.ac.il"), "{\"Error Message\" : \"user not logged in \"}");
+            Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.BadJson());
 
         }
         /// <summary>
@@ -47,10 +50,11 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void InvalidCreateBoardTest2()
         {
-            string email = "test@gmail";
-            string boardName = "testNameDiff";
-            _boardService.CreateBoard(boardName, email);
-            Assert.Equals(_boardService.CreateBoard(boardName, email), "{\"Error Message\" : \"BOARD IS ALREADY EXIST AT THIS USER, CAN'T CREATE ANOTHER WITH THE SAME NAME! \"}");
+            Response r = new Response("USER CANNOT CREATE A THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY", false);
+            string email = "test@gmail.com";
+            string boardName = "testName";
+            //_boardService.CreateBoard(boardName, email);
+            Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.BadJson());
 
         }
         /// <summary>
@@ -60,8 +64,13 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddValidTaskTest()
         {
-
-            Assert.Equals(_boardService.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "{}");
+            Response r = new Response(null, "{}");
+            string email = "test@gmail.com";
+            string boardName = "testName";
+            string title = "HW";
+            string description = "EX3";
+            DateTime dueDate = new DateTime(14 / 07 / 2025);
+            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), r.OKJson());
 
         }
         /// <summary>
@@ -70,9 +79,15 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddInvalidTaskTest()
         {
+            Response r = new Response(null, true);
+            string email = "test@gmail.com";
+            string password = "1234";
+            string boardName = "testName";
+            string title = "HW";
+            string description = "EX3";
+            DateTime dueDate = new DateTime(14 / 07 / 2025);
 
-
-            Assert.Equals(_boardService.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW111", "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "Error");
+            Assert.Equals(_boardService.AddTask(email, boardName, title, description, dueDate), r.OKJson());
 
         }
         /// <summary>

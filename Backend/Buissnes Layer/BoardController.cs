@@ -17,28 +17,64 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.userController = UC;
         }
 
-        public bool BoardExists(string userEmail, string boardName) //checks if board exists
-        { 
+        public bool UserHasAnyBoard(string userEmail) //checks if user has any board
+        {
+            if (Boards.ContainsKey(userEmail))
+            {
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
+        public bool UserHasThisBoard(string userEmail,string boardName) //checks if board exists
+        {
+            if (this.Boards[userEmail].ContainsKey(boardName))
+            { 
+                return true;
+            }
+            else 
+            { 
+                return false;
+            }
+
+            
+        }
+
+        public void CreateBoard(string userEmail, string boardName)
+        {
             if (userController.IsLoggedIn(userEmail))
             {
-                if (Boards.ContainsKey(userEmail))
+                if (UserHasAnyBoard(userEmail))
                 {
-
-                    return this.Boards[userEmail].ContainsKey(boardName);
+                    if (!UserHasThisBoard(userEmail, boardName))
+                    {
+                        Board newBoard = new Board(boardName);
+                        this.Boards[userEmail].Add(boardName, newBoard);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("USER CANNOT CREATE A THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY");
+                    }
 
                 }
                 else
                 {
-                    Board board = new Board(boardName);
-                    Dictionary<string,Board> boardname = new Dictionary<string,Board>();
-                    this.Boards.Add(userEmail,boardname);
-                    return true;
+                    Board newBoard = new Board(boardName);
+                    Dictionary<string, Board> board = new Dictionary<string, Board>();
+                    board.Add(boardName, newBoard);
+                    Boards.Add(userEmail, board);
                 }
-                
+
             }
             else
             {
-              throw new ArgumentException("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
         }
 
@@ -69,33 +105,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException("user not logged in");
             }
         }
-        public void CreateBoard(string userEmail, string boardName)
-        { 
-            if (userController.IsLoggedIn(userEmail)) 
-            {
-                if (BoardExists(userEmail, boardName))
-                {
-                    Board newBoard = new Board(boardName);
-                    this.Boards[userEmail].Add(boardName, newBoard);
 
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        "BOARD IS ALREADY EXIST AT THIS USER , CAN'T CREATE ANOTHER WITH THE SAME NAME! ");
-                }
-
-            }
-            else
-            {
-                throw new ArgumentException("user not logged in");
-            }
-        }
         public void DeleteBoard(string userEmail, string boardName)
         {
             if (userController.IsLoggedIn(userEmail))
             {
-                if (BoardExists(userEmail, boardName))
+                if (UserHasThisBoard(userEmail, boardName))
                 {
                     this.Boards[userEmail].Remove(boardName);
 
@@ -116,7 +131,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (userController.IsLoggedIn(userEmail))
             {
-                if(BoardExists(userEmail, boardName))
+                if(UserHasThisBoard(userEmail, boardName))
                 {
                     return this.Boards[userEmail][boardName];
                 }
