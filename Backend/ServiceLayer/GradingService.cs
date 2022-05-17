@@ -50,6 +50,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class GradingService
     {   
         private UserController userController = new UserController();
+        private Board b = new Board();
         
 
         public GradingService()
