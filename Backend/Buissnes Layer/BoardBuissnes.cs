@@ -53,14 +53,24 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public List<Task> GlList(int columnO)
         {
             List<Task> taskListO = new List<Task>();
-            for (int i = 0; i < this.tasks.Count; i++)
+            if (columnO == 1)
             {
-                if (this.tasks[i].GetState() == columnO)
-                {
-                    taskListO.Add(this.tasks[i]);
-                }
+                return GetInProgress();
             }
-            return taskListO;
+            else
+            {
+
+
+                for (int i = 0; i < this.tasks.Count; i++)
+                {
+                    if (this.tasks[i].GetState() == columnO)
+                    {
+                        taskListO.Add(this.tasks[i]);
+                    }
+                }
+
+                return taskListO;
+            }
         }
 
         public string GetNameOrdinal(int coulumnO)
