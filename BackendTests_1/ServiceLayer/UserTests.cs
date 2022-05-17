@@ -12,12 +12,10 @@ namespace BackendTests.ServiceLayer
         private UserController userController;
         public UserService userService;
 
-        public UserTests()
+        public UserTests(UserController UC, UserService US)
         {
-            this.userController = new UserController();
-            this.userService = new UserService(this.userController);
-
-
+            this.userController = UC;
+            this.userService = US;
         }
 
 

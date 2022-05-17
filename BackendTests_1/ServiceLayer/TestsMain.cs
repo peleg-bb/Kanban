@@ -59,6 +59,8 @@ namespace BackendTests.ServiceLayer
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
             BoardTest boraTest = new BoardTest(boardService);
             boraTest.AddInvalidTaskTest();
+            UserTests userTests = new UserTests(userController, userService);
+            userTests.createUserTest();
 
 
         }
