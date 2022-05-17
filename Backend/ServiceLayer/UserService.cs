@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class UserService
     {
-        private readonly UserController userController;
+        public readonly UserController userController;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -68,6 +68,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public UserService(UserController UC)
         {
             this.userController = UC; 
+
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");

@@ -12,8 +12,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         public string username;
         private string password;
-        private Collection<BoardBuissnes> Boards;
-        private Collection<Task> tasksInProgress;
+     
 
         public User(string username, string password)
         {

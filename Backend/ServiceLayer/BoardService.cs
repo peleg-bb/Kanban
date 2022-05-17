@@ -11,7 +11,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class BoardService
     {
-        public BoardController boardController = new BoardController();
+
+        public BoardController boardController;
+
+        public BoardService(UserController UC)
+        {
+            this.boardController = new BoardController(UC);
+        }
         /// <summary>
         /// This method creates a new board.
         /// </summary>
