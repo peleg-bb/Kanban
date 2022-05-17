@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardController.CreateBoard(name, userEmail);
+                boardController.CreateBoard(userEmail, name);
                 Response r = new Response(null, true);
                 // return JsonSerializer.Serialize(true);
                 return r.OKJson();

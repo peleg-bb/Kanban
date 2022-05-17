@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.userController = UC;
         }
 
-        public bool Exists(string userEmail, string boardName)
+        public bool BoardExists(string userEmail, string boardName) //checks if board exists
         { 
             if (userController.IsLoggedIn(userEmail))
             {
@@ -29,8 +29,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    throw new ArgumentException("user exist");
+                    Board board = new Board(boardName);
+                    Dictionary<string,Board> boardname = new Dictionary<string,Board>();
+                    this.Boards.Add(userEmail,boardname);
+                    return true;
                 }
+                
             }
             else
             {
@@ -69,17 +73,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         { 
             if (userController.IsLoggedIn(userEmail)) 
             {
-                if (Exists(userEmail, boardName))
+                if (BoardExists(userEmail, boardName))
                 {
+                    Board newBoard = new Board(boardName);
+                    this.Boards[userEmail].Add(boardName, newBoard);
 
-                    throw new ArgumentException(
-                        "BOARD IS ALREADY EXIST AT THIS USER , CAN'T CREATE ANOTHER WITH THE SAME NAME! ");
                 }
                 else
                 {
-
-                    Board newBoard = new Board(boardName);
-                    this.Boards[userEmail].Add(boardName, newBoard);
+                    throw new ArgumentException(
+                        "BOARD IS ALREADY EXIST AT THIS USER , CAN'T CREATE ANOTHER WITH THE SAME NAME! ");
                 }
 
             }
@@ -92,7 +95,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (userController.IsLoggedIn(userEmail))
             {
-                if (Exists(userEmail, boardName))
+                if (BoardExists(userEmail, boardName))
                 {
                     this.Boards[userEmail].Remove(boardName);
 
@@ -113,7 +116,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (userController.IsLoggedIn(userEmail))
             {
-                if(Exists(userEmail, boardName))
+                if(BoardExists(userEmail, boardName))
                 {
                     return this.Boards[userEmail][boardName];
                 }
