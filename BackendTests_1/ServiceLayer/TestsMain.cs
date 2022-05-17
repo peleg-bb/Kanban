@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
-using Task = IntroSE.Kanban.Backend.Buissnes_Layer.Task;
+using Microsoft.VisualBasic;
 
 namespace BackendTests.ServiceLayer
 {
@@ -45,35 +44,35 @@ namespace BackendTests.ServiceLayer
             UserService userService = new UserService(userController);
             BoardService boardService = new BoardService(userController);
             TaskService taskService = new TaskService(boardService.boardController);
-            UserTests userTests = new UserTests(userController, userService);
+//             UserTests userTests = new UserTests(userController, userService);
+
 
             string email = "tamar@gmail.com";
             string password = "123456";
-
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
-            DateTime dueDate = new DateTime(14 / 07 / 2025);
+            DateTime dueDate = new DateTime(2025,6,15);
             Console.WriteLine("Hello");
             userService.CreateUser(email, password);
             userService.Login(email, password);
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
-           // int taskId = boardService.boardController.GetBoard(userEmail: email, boardName).AddTask( "title", "description", new DateTime(14 / 07 / 2026));
+
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
 
             BoardTest boraTest = new BoardTest(boardService);
-            boraTest.ValidCreateBoardTest();
-            boraTest.InvalidCreateBoardTest();
-            boraTest.InvalidCreateBoardTest2();
-            boraTest.AddValidTaskTest();
-            boraTest.AddInvalidTaskTest2();
-            //boraTest.ValidNextStateTest();
-            //boraTest.InvalidNextStateTest();
-            //boraTest.InvalidNextStateTest2();
-            boraTest.ValidDeleteBoardTest();
-            boraTest.InvalidDeleteBoardTest();
-            Console.WriteLine("bye");
+//             boraTest.ValidCreateBoardTest();
+//             boraTest.InvalidCreateBoardTest();
+//             boraTest.InvalidCreateBoardTest2();
+//             boraTest.AddValidTaskTest();
+//             boraTest.AddInvalidTaskTest2();
+//             //boraTest.ValidNextStateTest();
+//             //boraTest.InvalidNextStateTest();
+//             //boraTest.InvalidNextStateTest2();
+//             boraTest.ValidDeleteBoardTest();
+//             boraTest.InvalidDeleteBoardTest();
+//             Console.WriteLine("bye");
 
             //BoardTest boraTest = new BoardTest(boardService);
             //boraTest.AddInvalidTaskTest();

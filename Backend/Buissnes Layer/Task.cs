@@ -2,37 +2,48 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
+    [Serializable, DataContract]
     public class Task
     {
-        private string Title { set; get; }
-
-        private string Description { set; get; }
-        private DateTime DueDate { set; get; }
-        public readonly string CreationDate;
-        private int State; 
+        [DataMember]
         public int TaskId { get; }
+        [DataMember(Order = 1 )]
+        public readonly DateTime CreationDate;
+        [DataMember(Order = 1)]
+        private string Title { set; get; }
+        [DataMember(Order = 1)]
+        private string Description { set; get; }
+        [DataMember(Order = 1)]
+        private DateTime DueDate { set; get; }
+        [JsonIgnore]
+        private int State;
+        [JsonIgnore]
         private int ID = 0;
 
-        public Task (string title, string description, DateTime dueDate)
+        public Task (string title, DateTime dueDate, string description="")
         {
+            this.TaskId = ID;
+            this.CreationDate = DateTime.Today;
             this.Title = title;
             this.Description = description;
             this.DueDate = dueDate;
-            this.CreationDate = DateTime.Now.ToString("'yyyy'-'MM'-'dd'");
+            
             this.State = 0;
-            this.TaskId = ID;
+
             ID += 1;
 
         }
         public void EditTitle(string newTitle)
         {
 
-            if (newTitle == "")
+            if (newTitle.Length==0 || newTitle.Length>50)
             {
                 throw new ArgumentNullException();
             }
@@ -55,7 +66,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void EditDescription(string newDescription)
         {
-            if (newDescription == "")
+            if (newDescription.Length>300)
             {
                 throw new ArgumentNullException();
             }
@@ -68,9 +79,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void EditDueDate(DateTime newDueDate)
         {
-            if (!DateTime.TryParseExact(newDueDate.ToString(),"dd/mm/yyyy",CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out newDueDate))
+            if (newDueDate<=this.CreationDate)
             {
                 throw new ArgumentException();
             }
