@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -89,13 +90,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidEditTitleTest()
         {
-            string title = "New TaskService";
-            string description = "this is check for new taskService";
-            string duedate = "21.04.22";
-            int taskid = 123;
+            string email = "test@gmail";
+            string boardName = "testName";
+            int taskId = 0;
             string newTitle = "new title";
             //act
-            string jsonup = this.taskService.EditTitle("Itay@gmail.com", taskid, newTitle);
+            string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
             Assert.Equals(jsonup,
                 "{\"Title\" : \"new title\", \"Description\" : \"this is check for new taskService\", \"DueDate\" : \"21.04.22\"}"
             );
@@ -107,12 +107,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InvalidEditTitleTest()
         {
-            string description = "this is check for new taskService";
-            string duedate = "21.04.22";
-            int taskid = 123;
+            string email = "test@gmail";
+            string boardName = "testName";
+            int taskId = 0;
             string newTitle = "";
             //act
-            string jsonup = this.taskService.EditTitle("Itay@gmail.com", boardName, taskid, newTitle);
+            string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
             Assert.Equals(jsonup,
                 "some Exception"
             );
@@ -124,13 +124,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidEditDescriptionTest()
         {
-            string title = "New TaskService";
-            string description = "this is check for new taskService";
-            string duedate = "21.04.22";
-            int taskid = 123;
+            string email = "test@gmail";
+            string boardName = "testName";
+            int taskId = 0;
             string newDescription = "Does it change?";
             //act
-            string jsonup = this.taskService.EditDescription("Itay@gmail.com", taskid, newDescription);
+            string jsonup = this.taskService.EditDescription(email, boardName, taskId, newDescription);
             Assert.Equals(jsonup,
                 "{\"Title\" : \"New TaskService\", \"Description\" : \"Does it change?\", \"DueDate\" : \"21.04.22\"}"
             );
@@ -142,13 +141,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InvalidEditDescriptionTest()
         {
-            string title = "New TaskService";
-            string description = "this is check for new taskService";
-            string duedate = "21.04.22";
-            int taskid = 123;
+            string email = "test@gmail";
+            string boardName = "testName";
+            int taskId = 0;
             string newDescription = "";
             //act
-            string jsonup = this.taskService.EditDescription("Itay@gmail.com", taskid, newDescription);
+            string jsonup = this.taskService.EditDescription(email, boardName, taskId, newDescription);
             Assert.Equals(jsonup,
                 "some Exception"
             );
@@ -160,13 +158,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void ValidEditDueDateTest()
         {
-            string title = "New TaskService";
-            string description = "this is check for new taskService";
-            string duedate = "21.04.22";
-            int taskid = 123;
-            string newDueDate = "22.04.22";
+            string email = "test@gmail";
+            string boardName = "testName";
+            int taskId = 0;
+            DateTime newDueDate = new DateTime(14 / 08 / 2025);
             //act
-            string jsonup = this.taskService.EditDueDate("Itay@gmail.com", taskid, newDueDate);
+            string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
             Assert.Equals(jsonup,
                 "{\"Title\" : \"New TaskService\", \"Description\" : \"this is check for new taskService\", \"DueDate\" : \"22.04.22\"}"
             );
@@ -178,13 +175,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod]
         public void InValidEditDueDateTest()
         {
-            string title = "New TaskService";
-            string description = "this is check for new taskService";
-            string duedate = "21.04.22";
-            int taskid = 123;
-            string newDueDate = "220422";
+            string email = "test@gmail";
+            string boardName = "testName";
+            int taskId = 0;
+            DateTime newDueDate = new DateTime(2025 / 08 / 14);
             //act
-            string jsonup = this.taskService.EditDueDate("Itay@gmail.com", taskid, newDueDate);
+            string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
             Assert.Equals(jsonup,
                 "some Exception"
             );
