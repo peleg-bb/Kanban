@@ -10,12 +10,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class Board
     {/*
-        private Dictionary<int,Task> backlog;
-        private Dictionary<int, Task> inProgress;
-        private Dictionary<int, Task> done;*/
+        private Dictionary<int,TaskService> backlog;
+        private Dictionary<int, TaskService> inProgress;
+        private Dictionary<int, TaskService> done;*/
         //private int indexNewTask = 0; 
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
-        //private Dictionary<int, Task> inProgress = new Dictionary<int, Task>();
+        //private Dictionary<int, TaskService> inProgress = new Dictionary<int, TaskService>();
         private List<Task> inProgress = new List<Task>();
 
         public string name;
@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void AddTask(string title, string description, DateTime dueDate)
         {
-            Task newTask = new Task(title, description, dueDate,0);
+            Task newTask = new Task(title, description, dueDate);
             try
             {
                 SetTasks(newTask);

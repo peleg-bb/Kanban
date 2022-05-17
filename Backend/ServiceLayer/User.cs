@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </list>
     /// </para>
     /// <para>
-    /// The structure of the JSON of a Task, is:
+    /// The structure of the JSON of a TaskService, is:
     /// <code>
     /// {
     ///     "Id": &lt;int&gt;,

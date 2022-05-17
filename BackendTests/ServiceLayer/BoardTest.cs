@@ -33,7 +33,7 @@ namespace BackendTests.ServiceLayer
             Assert.Equals(board.CreateBoard("schoolBorad", "wrong@post.bgu.ac.il"),"Error");
         }
         /// <summary>
-        /// This method tests a valid add of a new Task to a board in the system according to requirement  12.
+        /// This method tests a valid add of a new TaskService to a board in the system according to requirement  12.
         /// check the task was added at the right place(backlog only), and its name is different from the other tasks at the board.
         /// </summary>
         [TestMethod()]
@@ -42,7 +42,7 @@ namespace BackendTests.ServiceLayer
             Assert.Equals( board.AddTask("ptamar@post.bgu.ac.il","schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23/04/22)),"{}");
         }
         /// <summary>
-        /// This method tests a invalid add of a new Task to a board in the system according to requirement  12.
+        /// This method tests a invalid add of a new TaskService to a board in the system according to requirement  12.
         /// check the task was added at the right place(backlog only) and has invalid taskId.
         [TestMethod()]
         public void AddInvalidTaskTest()
@@ -51,7 +51,7 @@ namespace BackendTests.ServiceLayer
             Assert.Equals(board.AddTask("ptamar@post.bgu.ac.il", "schoolBorad", "HW111", "first homewoek assignmemt", new DateTime(23 / 04 / 22)),"Error");
         }
         /// <summary>
-        /// This method tests a invalid add of a new Task to a board in the system according to requirement  12.
+        /// This method tests a invalid add of a new TaskService to a board in the system according to requirement  12.
         /// check the task was added at the right place(backlog only) and has invalid email.
         /// </summary>
         [TestMethod()]
@@ -60,7 +60,7 @@ namespace BackendTests.ServiceLayer
             Assert.Equals(board.AddTask("wrong@post.bgu.ac.il", "schoolBorad", "HW", "first homewoek assignmemt", new DateTime(23 / 04 / 22)), "Error");
         }
         /// <summary>
-        /// This method tests a valid change  state of a Task from one state to the next in the system according to requirement  13.
+        /// This method tests a valid change  state of a TaskService from one state to the next in the system according to requirement  13.
         /// check the task mooved for the right next test.
         /// </summary>
         [TestMethod]
@@ -69,7 +69,7 @@ namespace BackendTests.ServiceLayer
             Assert.Equals(board.NextState("ptamar@post.bgu.ac.il", "schoolBorad", 365879),"{}");
         }
         /// <summary>
-        /// This method tests a invalid change state of a Task from one state to the next in the system according to requirement  13.
+        /// This method tests a invalid change state of a TaskService from one state to the next in the system according to requirement  13.
         /// check the task mooved for the right next test and invalid email user.
         /// </summary>
         [TestMethod]
@@ -78,7 +78,7 @@ namespace BackendTests.ServiceLayer
             Assert.Equals(board.NextState("wrong@post.bgu.ac.il", "schoolBorad", 365879),"Error");
         }
         /// <summary>
-        /// This method tests a invalid change  state of a Task from one state to the next in the system according to requirement  13.
+        /// This method tests a invalid change  state of a TaskService from one state to the next in the system according to requirement  13.
         /// check the task mooved for the right next test and invalid taskId.
         /// </summary>
         [TestMethod]
