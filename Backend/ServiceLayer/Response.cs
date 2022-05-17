@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    internal class Response
+    public class Response
     {
         private string ErrorMessage;
         private object ReturnValue;
