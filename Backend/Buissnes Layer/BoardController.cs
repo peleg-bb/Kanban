@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,103 +49,135 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void CreateBoard(string userEmail, string boardName)
         {
-            if (userController.IsLoggedIn(userEmail))
+            try
             {
-                if (UserHasAnyBoard(userEmail))
+                if (userController.IsLoggedIn(userEmail))
                 {
-                    if (!UserHasThisBoard(userEmail, boardName))
+                    if (UserHasAnyBoard(userEmail))
                     {
-                        Board newBoard = new Board(boardName);
-                        this.Boards[userEmail].Add(boardName, newBoard);
+                        if (!UserHasThisBoard(userEmail, boardName))
+                        {
+                            Board newBoard = new Board(boardName);
+                            this.Boards[userEmail].Add(boardName, newBoard);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("USER CANNOT CREATE A THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY");
+                        }
+
                     }
                     else
                     {
-                        throw new ArgumentException("USER CANNOT CREATE A THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY");
+                        Board newBoard = new Board(boardName);
+                        Dictionary<string, Board> board = new Dictionary<string, Board>();
+                        board.Add(boardName, newBoard);
+                        Boards.Add(userEmail, board);
                     }
 
                 }
                 else
                 {
-                    Board newBoard = new Board(boardName);
-                    Dictionary<string, Board> board = new Dictionary<string, Board>();
-                    board.Add(boardName, newBoard);
-                    Boards.Add(userEmail, board);
+                    throw new ArgumentException("user not logged in");
                 }
-
             }
-            else
+            catch (Exception e)
             {
-                throw new ArgumentException("user not logged in");
+                throw new ArgumentException(e.Message);
             }
+            
         }
 
         public List<Task> GetAllInPrograss(string userEmail)
         {
-            if (userController.IsLoggedIn(userEmail))
+            try
             {
-                if (Boards.ContainsKey(userEmail))
+                if (userController.IsLoggedIn(userEmail))
                 {
-                    Dictionary<string, Board> boards = Boards[userEmail];
-                    List<Task>  taskInProgList= new List<Task>();
-                    foreach (var item in boards.Keys)
+                    if (Boards.ContainsKey(userEmail))
                     {
-                        taskInProgList.AddRange(boards[item].GetInProgress());
+                        Dictionary<string, Board> boards = Boards[userEmail];
+                        List<Task> taskInProgList = new List<Task>();
+                        foreach (var item in boards.Keys)
+                        {
+                            taskInProgList.AddRange(boards[item].GetInProgress());
+                        }
+                        return taskInProgList;
                     }
-                    return taskInProgList;
+                    else
+                    {
+                        List<Task> taskInProgList = new List<Task>();
+                        return taskInProgList;
+                    }
+
+
                 }
                 else
                 {
-                    List<Task> taskInProgList = new List<Task>();
-                    return taskInProgList;
+                    throw new ArgumentException("user not logged in");
                 }
-               
-
             }
-            else
+            catch (Exception e)
             {
-                throw new ArgumentException("user not logged in");
+                throw new ArgumentException(e.Message);
             }
+            
         }
 
         public void DeleteBoard(string userEmail, string boardName)
         {
-            if (userController.IsLoggedIn(userEmail))
+            try
             {
-                if (UserHasThisBoard(userEmail, boardName))
+                if (userController.IsLoggedIn(userEmail))
                 {
-                    this.Boards[userEmail].Remove(boardName);
+                    if (UserHasThisBoard(userEmail, boardName))
+                    {
+                        this.Boards[userEmail].Remove(boardName);
+
+                    }
+                    else
+                    {
+                        throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
+                    }
 
                 }
                 else
                 {
-                    throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
+                    throw new ArgumentException("user not logged in");
                 }
-
             }
-            else
+            catch (Exception e)
             {
-                throw new ArgumentException("user not logged in");
+                throw new ArgumentException(e.Message);
             }
+
 
         }
         public Board GetBoard(string userEmail, string boardName)
         {
-            if (userController.IsLoggedIn(userEmail))
+            try
             {
-                if(UserHasThisBoard(userEmail, boardName))
+                if (userController.IsLoggedIn(userEmail))
                 {
-                    return this.Boards[userEmail][boardName];
+                    if (UserHasThisBoard(userEmail, boardName))
+                    {
+                        return this.Boards[userEmail][boardName];
+                    }
+                    else
+                    {
+                        throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
+                    }
+
                 }
                 else
                 {
-                    throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
+                    throw new ArgumentException("user not logged in");
                 }
-
             }
-            else
+            catch (Exception e)
             {
-                throw new ArgumentException("user not logged in");
+                throw new ArgumentException(e.Message);
             }
+          
         }
 
     }

@@ -27,12 +27,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public string GetName()   // property
         {
-            return this.name; 
+            return this.name;
         }
         public void SetName(string newName)   // property
         {
             this.name = newName;
         }
+
         public int GetMaxTask(int whichBoard)   // property
         {
             return this.maxTasks[whichBoard];
@@ -50,7 +51,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
            
         }
 
-        public List<Task> GlList(int columnO)
+        public List<Task> GEtColList(int columnO)
         {
             List<Task> taskListO = new List<Task>();
             if (columnO == 1)
