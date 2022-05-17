@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
@@ -12,7 +13,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         public string username { get; }
         private string password;
-     
+
 
         public User(string username, string password)
         {
@@ -39,7 +40,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return this.password == password;
         }
 
-
-
+        
     }
 }
