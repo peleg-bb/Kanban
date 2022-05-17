@@ -13,24 +13,25 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         private string Description { set; get; }
         private DateTime DueDate { set; get; }
-        public readonly string CreationDate = DateTime.Now.ToString("'yyyy'-'MM'-'dd'");
-        private int State = 0; 
+        public readonly string CreationDate;
+        private int State; 
         public int TaskId { get; }
         private int ID = 0;
 
-        public Task (string title, string description, DateTime dueDate, int state)
+        public Task (string title, string description, DateTime dueDate)
         {
             this.Title = title;
             this.Description = description;
             this.DueDate = dueDate;
             this.CreationDate = DateTime.Now.ToString("'yyyy'-'MM'-'dd'");
-            this.State = state;
+            this.State = 0;
             this.TaskId = ID;
             ID += 1;
 
         }
         private void EditTitle(string newTitle)
         {
+
             if (newTitle == "")
             {
                 throw new ArgumentNullException();
@@ -67,7 +68,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         private void EditDueDate(DateTime newDueDate)
         {
-            if (DateTime.TryParseExact(newDueDate.ToString(),"dd/mm/yyyy",CultureInfo.InvariantCulture,
+            if (!DateTime.TryParseExact(newDueDate.ToString(),"dd/mm/yyyy",CultureInfo.InvariantCulture,
                     DateTimeStyles.None,
                     out newDueDate))
             {

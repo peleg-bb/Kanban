@@ -10,8 +10,9 @@ using IntroSE.Kanban.Backend.Buissnes_Layer;
 namespace IntroSE.Kanban.Backend.ServiceLayer
 
 {
-    public class Task 
+    public class Task
     {
+        private BoardController boardController = new BoardController();
         ///// <summary>
         ///// This method creates a new task.
         ///// </summary>
@@ -38,14 +39,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="newTitle">New title for the task</param>
 
         /// <returns>The string "{\"Title\" : \"newTitle\", \"Description\" : \"description\", \"DueDate\" : \"21.04.22\"}", unless an error occurs </returns>
-        public string EditTitle(string email, int taskId,string newTitle)
+        public string EditTitle(string email,string boardName, int taskId,string newTitle)
         {
-            if (Connections.IsLoggedIn(email))
-            {
-                
-            }
+            Dictionary <>boardController.GetBoard(email, boardName).GetTask();
 
-            
+
         }
         /// <summary>
         /// This method updates the description of a task.
