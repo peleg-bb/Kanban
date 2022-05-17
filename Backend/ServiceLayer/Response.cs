@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Formatting = System.Xml.Formatting;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class Response
     {
+
+
         private string ErrorMessage;
         private object ReturnValue;
 
@@ -31,7 +37,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string OKJson()
         {
-            string json = JsonSerializer.Serialize(this.ReturnValue);
+            string json = JsonConvert.SerializeObject(this.ReturnValue);
             return json;
         }
 
