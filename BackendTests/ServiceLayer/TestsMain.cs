@@ -13,17 +13,27 @@ namespace BackendTests.ServiceLayer
     internal class TestsMain
     {
         private UserController userController;
-        private BoardController boardController;
         public UserService userService;
         public BoardService boardService;
+        public TaskService taskService;
 
         public TestsMain()
         {
             this.userController = new UserController();
             this.userService = new UserService(this.userController);
             this.boardService = new BoardService(this.userController);
+            this.taskService = new TaskService(boardService.boardController);
+            string email = "test@gmail";
+            string password = "1234";
+            string boardName = "testName";
+            string title = "HW";
+            string description = "EX3";
+            DateTime dueDate = new DateTime(14 / 07 / 2025);
 
-
+            userService.CreateUser(email, password);
+            boardService.CreateBoard(boardName, email);
+            boardService.AddTask(email, boardName, title, description, dueDate);
+            TaskTests tests = new TaskTests(taskService, userService, boardService);
         }
 
 
