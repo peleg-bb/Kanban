@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class User
     {
-        public string username;
+        public string username { get; }
         private string password;
      
 
