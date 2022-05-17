@@ -56,6 +56,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class UserService
     {
         public readonly UserController userController;
+
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -79,6 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.CreateUser(email, password);
+
                 String msg = String.Format("UserService created! email = {0}", email);
                 log.Info(msg);
                 
@@ -90,6 +92,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 Console.WriteLine(e.Message);
                 log.Warn(e.Message);
+
                 Response response = new Response(e.Message, false);
                 
                 return response.BadJson();
