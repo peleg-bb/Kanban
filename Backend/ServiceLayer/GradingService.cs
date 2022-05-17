@@ -331,8 +331,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                BoardService boardService = new BoardService();
-                boardService.DeleteBoard(name, email);
+                b.DeleteBoard(name, email);
                 Response r = new Response(null, b);
                 return r.OKJson();
             }
@@ -355,14 +354,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 //return user1.getInProgress(email);
-                return null;
+                List<Buissnes_Layer.Task> proCol = b.boardController.GetAllInPrograss(email);
+                Response r = new Response(null, proCol);
+                return r.OKJson();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw new ArgumentException(e.Message);
-            }
 
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
+            }
 
         }
     }
