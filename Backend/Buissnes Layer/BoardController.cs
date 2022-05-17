@@ -10,10 +10,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     public class BoardController
     {
         private Dictionary<string, Dictionary<string,Board>> Boards = new Dictionary<string, Dictionary<string, Board>>();
+        private UserController userController;
+
+        public BoardController(UserController UC)
+        {
+            this.userController = UC;
+        }
 
         public bool Exists(string userEmail, string boardName)
         { 
-            if (Connections.IsLoggedIn(userEmail))
+            if (userController.IsLoggedIn(userEmail))
             {
                 if (Boards.ContainsKey(userEmail))
                 {
@@ -33,7 +39,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public List<Task> GetAllInPrograss(string userEmail)
         {
-            if (Connections.IsLoggedIn(userEmail))
+            if (userController.IsLoggedIn(userEmail))
             {
                 if (Boards.ContainsKey(userEmail))
                 {
@@ -60,7 +66,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public void CreateBoard(string userEmail, string boardName)
         { 
-            if (Connections.IsLoggedIn(userEmail)) 
+            if (userController.IsLoggedIn(userEmail)) 
             {
                 if (Exists(userEmail, boardName))
                 {
@@ -83,7 +89,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public void DeleteBoard(string userEmail, string boardName)
         {
-            if (Connections.IsLoggedIn(userEmail))
+            if (userController.IsLoggedIn(userEmail))
             {
                 if (Exists(userEmail, boardName))
                 {
@@ -104,7 +110,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public Board GetBoard(string userEmail, string boardName)
         {
-            if (Connections.IsLoggedIn(userEmail))
+            if (userController.IsLoggedIn(userEmail))
             {
                 if(Exists(userEmail, boardName))
                 {

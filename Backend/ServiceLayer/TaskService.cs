@@ -13,7 +13,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class TaskService
     {
-        private BoardController boardController = new BoardController();
+        private BoardController boardController;
+
+        public TaskService(BoardController BC)
+        {
+            this.boardController = BC;
+        }
+
         ///// <summary>
         ///// This method creates a new task.
         ///// </summary>
@@ -27,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         //{
         //    if (Connections.IsLoggedIn(email))
         //    {
-        //        if(Board.)
+        //        if(BoardService.)
         //    }
 
         //}
