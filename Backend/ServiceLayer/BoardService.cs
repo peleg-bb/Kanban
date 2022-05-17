@@ -9,9 +9,9 @@ using System.Text.Json;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class Board
+    public class BoardService
     {
-        private BoardController boardController = new BoardController();
+        public BoardController boardController = new BoardController();
         /// <summary>
         /// This method creates a new board.
         /// </summary>
@@ -23,13 +23,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.CreateBoard(name, userEmail);
-                return JsonSerializer.Serialize(true);
+                Response r = new Response(null, true);
+                // return JsonSerializer.Serialize(true);
+                return r.OKJson();
             }
             catch (Exception e)
             {
                 //RETURN BAD JASON
-                return e.Message;
-
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
             }
 
         }
@@ -50,14 +52,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 b.AddTask(title, description, dueDate);
 
-                string jsonString = JsonSerializer.Serialize(b);
-                Console.WriteLine(jsonString);
-                return jsonString;
+                Response r = new Response(null, b);
+                return r.OKJson();
             }
             catch (Exception e)
             {
-                string jsonString = JsonSerializer.Serialize(e.Message);
-                return jsonString; //return exception when reached max task limit
+                Response r = new Response(e.Message, b);
+                return r.BadJson(); //return exception when reached max task limit
             }
 
         }
@@ -74,17 +75,26 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
-                b.ChangeState(taskId);
-                string jsonString = JsonSerializer.Serialize(b);
-                return jsonString;
+                try
+                {
+                    b.ChangeState(taskId);
+                    Response r = new Response(null, b);
+                    return r.OKJson();
+                }
+                catch (Exception e)
+                {
+                    //RETURN BAD JASON
+                    Response r = new Response(e.Message, b);
+                    return r.BadJson();
+
+                }
             }
             catch (Exception e)
             {
-                //RETURN BAD JASON
-                string jsonString = JsonSerializer.Serialize(e.Message);
-                return jsonString;
-
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
             }
+           
 
         }
         /// <summary>
@@ -98,14 +108,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 //NEED TO USE CHANGEsTATE
-                // Buissnes_Layer.Board.ChangeState(taskId);
                 boardController.DeleteBoard(userEmail, name);
-                return JsonSerializer.Serialize(true);
+                Response r = new Response(null, true);
+                return r.OKJson();
             }
             catch (Exception e)
             {
                 //RETURN BAD JASON
-                return e.Message;
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
 
             }
         }

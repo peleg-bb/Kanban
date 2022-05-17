@@ -50,10 +50,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class GradingService
     {   
         UserController userController;
-
+        BoardService b = new BoardService();
         public GradingService()
         {
             this.userController = new UserController();
+            
         }
 
 
@@ -104,7 +105,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            try
+            {
+                b.boardController.GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
+                Response r = new Response(null, true);
+                // return JsonSerializer.Serialize(true);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+                Response r = new Response(e.Message, false);
+                // return JsonSerializer.Serialize(true);
+                return r.BadJson();
+            }
         }
 
         /// <summary>
@@ -116,7 +129,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column limit value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            try
+            {
+               int colVal= b.boardController.GetBoard(email, boardName).GetMaxTask(columnOrdinal);
+               Response r = new Response(null, colVal);
+               // return JsonSerializer.Serialize(true);
+               return r.OKJson();
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e);
+                Response r = new Response(e.Message, false);
+                // return JsonSerializer.Serialize(true);
+                return r.BadJson();
+            }
 
         }
 
@@ -130,7 +156,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column name value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string colVal = b.boardController.GetBoard(email, boardName).GetNameOrdinal(columnOrdinal);
+                Response r = new Response(null, colVal);
+                // return JsonSerializer.Serialize(true);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e);
+                Response r = new Response(e.Message, false);
+                // return JsonSerializer.Serialize(true);
+                return r.BadJson();
+            }
         }
 
 
@@ -145,7 +184,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            Board b = new Board();
+            
             try
             {
                 b.AddTask(email, boardName, title, description, dueDate);
@@ -223,8 +262,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Board board = new Board();
-                board.NextState(email, boardName, taskId);
+                b.NextState(email, boardName, taskId);
                 return "{}";
             }
             catch (Exception e)
@@ -244,7 +282,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the column's tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumn(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Buissnes_Layer.Task> allCol = b.boardController.GetBoard(email, boardName).GlList(columnOrdinal);
+                Response r = new Response(null, allCol);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+               
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
+            }
         }
 
 
@@ -258,14 +307,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Board board = new Board();
-                board.CreateBoard(name, email);
-                return "{}";
+                b.CreateBoard(name, email);
+                Response r = new Response(null, b);
+                return r.OKJson();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw new ArgumentException(e.Message);
+
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
             }
             
         }
@@ -281,14 +331,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Board board = new Board();
-                board.DeleteBoard(name, email);
-                return "{}";
+                BoardService boardService = new BoardService();
+                boardService.DeleteBoard(name, email);
+                Response r = new Response(null, b);
+                return r.OKJson();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw new ArgumentException(e.Message);
+
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
             }
         }
 

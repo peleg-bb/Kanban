@@ -17,7 +17,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
         //private Dictionary<int, Task> inProgress = new Dictionary<int, Task>();
         private List<Task> inProgress = new List<Task>();
-
         public string name;
         private int[] maxTasks = new int[] {-1,-1,-1};
         private int[] numTasks =new int[3];
@@ -49,6 +48,35 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException("CAN'T CHANGE MAX, MAX ALREADY BEEN CHANGED");
             }
            
+        }
+
+        public List<Task> GlList(int columnO)
+        {
+            List<Task> taskListO = new List<Task>();
+            for (int i = 0; i < this.tasks.Count; i++)
+            {
+                if (this.tasks[i].GetState() == columnO)
+                {
+                    taskListO.Add(this.tasks[i]);
+                }
+            }
+            return taskListO;
+        }
+
+        public string GetNameOrdinal(int coulumnO)
+        {
+            if (coulumnO == 0)
+            {
+                return "backlog";
+            }
+            else if (coulumnO == 1)
+            {
+                return "in progress";
+            }
+            else
+            {
+                return "Done";
+            }
         }
         public List<Task> GetInProgress()   // property
         {

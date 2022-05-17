@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         //{
         //    if (Connections.IsLoggedIn(email))
         //    {
-        //        if(Board.)
+        //        if(BoardService.)
         //    }
 
         //}

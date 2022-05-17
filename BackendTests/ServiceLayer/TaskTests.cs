@@ -10,66 +10,66 @@ namespace BackendTests.ServiceLayer
         /// This method test if we can create a new task and we get it in the JSON format
         /// for requirement 17 and requirement 4
         /// </summary>
-        [TestMethod]
-        public void ValidCreateTaskTest()
-        {
-            string title = "New Task";
-            string description = "this is check for new task";
-            string duedate = "21.04.22";
-            Task task = new Task();
-            //act
-            Assert.Equals(task.CreateTask("Itay@gmail.com","To Do", title, description, duedate),
-                "{\"Title\" : \"New Task\", \"Description\" : \"this is check for new task\", \"DueDate\" : \"21.04.22\"}"
-            );
-        }
-        /// <summary>
-        /// This method test if we get exception when create a new task with invalid title
-        /// for requirement 17 and requirement 4
-        /// </summary>
-        [TestMethod]
-        public void InvalidCreateTaskTest1()
-        {
-            string title = "";
-            string description = "this is check for new task";
-            string duedate = "21.04.22";
-            Task task = new Task();
-            //act
-            Assert.Equals(task.CreateTask("Itay@gmail.com","To Do", title, description, duedate),
-                "some Exception"
-            );
-        }
-        /// <summary>
-        /// This method test if we get exception when create a new task with invalid description
-        /// for requirement 17 and requirement 4
-        /// </summary>
-        [TestMethod]
-        public void InvalidCreateTaskTest2()
-        {
-            string title = "hello";
-            string description = "";
-            string duedate = "21.04.22";
-            Task task = new Task();
-            //act
-            Assert.Equals(task.CreateTask("Itay@gmail.com", "To Do", title, description, duedate),
-                "some Exception"
-            );
-        }
-        /// <summary>
-        /// This method test if we get exception when create a new task with invalid due date
-        /// for requirement 17 and requirement 4
-        /// </summary>
-        [TestMethod]
-        public void InvalidCreateTaskTest3()
-        {
-            string title = "hello";
-            string description = "new test for new task";
-            string duedate = "210422";
-            Task task = new Task();
-            //act
-            Assert.Equals(task.CreateTask("Itay@gmail.com", "To Do", title, description, duedate),
-                "some Exception"
-            );
-        }
+        //[TestMethod]
+        //public void ValidCreateTaskTest()
+        //{
+        //    string title = "New Task";
+        //    string description = "this is check for new task";
+        //    string duedate = "21.04.22";
+        //    Task task = new Task();
+        //    //act
+        //    Assert.Equals(task.CreateTask("Itay@gmail.com","To Do", title, description, duedate),
+        //        "{\"Title\" : \"New Task\", \"Description\" : \"this is check for new task\", \"DueDate\" : \"21.04.22\"}"
+        //    );
+        //}
+        ///// <summary>
+        ///// This method test if we get exception when create a new task with invalid title
+        ///// for requirement 17 and requirement 4
+        ///// </summary>
+        //[TestMethod]
+        //public void InvalidCreateTaskTest1()
+        //{
+        //    string title = "";
+        //    string description = "this is check for new task";
+        //    string duedate = "21.04.22";
+        //    Task task = new Task();
+        //    //act
+        //    Assert.Equals(task.CreateTask("Itay@gmail.com","To Do", title, description, duedate),
+        //        "some Exception"
+        //    );
+        //}
+        ///// <summary>
+        ///// This method test if we get exception when create a new task with invalid description
+        ///// for requirement 17 and requirement 4
+        ///// </summary>
+        //[TestMethod]
+        //public void InvalidCreateTaskTest2()
+        //{
+        //    string title = "hello";
+        //    string description = "";
+        //    string duedate = "21.04.22";
+        //    Task task = new Task();
+        //    //act
+        //    Assert.Equals(task.CreateTask("Itay@gmail.com", "To Do", title, description, duedate),
+        //        "some Exception"
+        //    );
+        //}
+        ///// <summary>
+        ///// This method test if we get exception when create a new task with invalid due date
+        ///// for requirement 17 and requirement 4
+        ///// </summary>
+        //[TestMethod]
+        //public void InvalidCreateTaskTest3()
+        //{
+        //    string title = "hello";
+        //    string description = "new test for new task";
+        //    string duedate = "210422";
+        //    Task task = new Task();
+        //    //act
+        //    Assert.Equals(task.CreateTask("Itay@gmail.com", "To Do", title, description, duedate),
+        //        "some Exception"
+        //    );
+        //}
         /// <summary>
         /// This method test if we can edit the title of task and we get it in the JSON format
         /// for requirement 17 and requirement 14,15
