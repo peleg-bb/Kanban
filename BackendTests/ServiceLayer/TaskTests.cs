@@ -1,13 +1,16 @@
+
 ﻿using System;
 using System.Runtime.CompilerServices;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BackendTests.ServiceLayer
-{
-    [TestClass]
-    internal class TaskTests
+
+//namespace BackendTests.ServiceLayer
+//{
+//    [TestClass]
+//    internal class TaskTests
+
 
     {
         private readonly TaskService taskService;
@@ -188,7 +191,7 @@ namespace BackendTests.ServiceLayer
     };
 
 
-}
+//}
 
 
 
