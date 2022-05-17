@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (UserExists(email))
                 {
-                    throw new ArgumentException("User already exists");
+                    throw new ArgumentException("UserService already exists");
                 }
             }
             else
@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                throw new ArgumentException("User does not exist");
+                throw new ArgumentException("UserService does not exist");
             }
         }
 
@@ -62,7 +62,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                throw new ArgumentException("User does not exist");
+                throw new ArgumentException("UserService does not exist");
             }
 
         }
@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (!UserExists(email))
             {
-                throw new ArgumentException("User does not exist");
+                throw new ArgumentException("UserService does not exist");
             }
 
             else if (!ValidatePassword(email, password))
@@ -91,7 +91,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             else if (loggedIn.Contains(email))
 
             {
-                throw new ArgumentException("User is already logged in");
+                throw new ArgumentException("UserService is already logged in");
             }
 
             else
@@ -104,13 +104,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (!UserExists(email))
             {
-                throw new ArgumentException("User does not exist");
+                throw new ArgumentException("UserService does not exist");
             }
 
             else if (!loggedIn.Contains(email))
 
             {
-                throw new ArgumentException("User is already logged out");
+                throw new ArgumentException("UserService is already logged out");
             }
 
             else
@@ -124,7 +124,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (!UserExists(email))
             {
-                throw new ArgumentException("User does not exist");
+                throw new ArgumentException("UserService does not exist");
             }
             return loggedIn.Contains(email);
         }

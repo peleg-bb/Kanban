@@ -13,7 +13,7 @@ using log4net.Config;
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
-    /// A class for calling the User class in the BussinessLayer.
+    /// A class for calling the UserService class in the BussinessLayer.
     /// <para>
     /// Each of the class' methods should return a JSON string with the following structure (see <see cref="System.Text.Json"/>):
     /// <code>
@@ -53,7 +53,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </code>
     /// </para>
     /// </summary>
-    public class User
+    public class UserService
     {
         private readonly UserController userController;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -65,7 +65,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="password">The user password.</param>
         /// <returns>Response with a createUser task, unless user already exists.</returns>
 
-        public User(UserController UC)
+        public UserService(UserController UC)
         {
             this.userController = UC; 
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -78,7 +78,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.CreateUser(email, password);
-                String msg = String.Format("User created! email = {0}", email);
+                String msg = String.Format("UserService created! email = {0}", email);
                 log.Info(msg);
                 
                 Response response = new Response(null, userController.GetUser(email));

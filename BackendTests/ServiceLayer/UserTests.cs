@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
-using User = IntroSE.Kanban.Backend.ServiceLayer.User;
 
 namespace BackendTests.ServiceLayer
 {
@@ -9,12 +8,12 @@ namespace BackendTests.ServiceLayer
     public class UserTests
     {
         private UserController userController;
-        public User userService;
+        public UserService UserServiceService;
 
         public UserTests()
         {
             this.userController = new UserController();
-            this.userService = new User(this.userController);
+            this.UserServiceService = new UserService(this.userController);
 
 
         }
@@ -26,8 +25,8 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void createUserTest()
         {
-            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "123456"), "{'username':'johndoe@gmail.com', 'password': '123456'}");
-            //Assert.Equals(userService.CreateUser("johndoe@gmail.com", "123456"), "{'username':'johndoe@gmail.com', 'password': '123456'}");
+            Assert.AreEqual(UserServiceService.CreateUser("johndoe@gmail.com", "123456"), "{'username':'johndoe@gmail.com', 'password': '123456'}");
+            //Assert.Equals(UserServiceService.CreateUser("johndoe@gmail.com", "123456"), "{'username':'johndoe@gmail.com', 'password': '123456'}");
             ;
 
         }
