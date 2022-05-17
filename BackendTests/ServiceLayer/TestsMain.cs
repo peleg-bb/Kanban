@@ -16,7 +16,6 @@ namespace BackendTests.ServiceLayer
         public UserService userService;
         public BoardService boardService;
         public TaskService taskService;
-
         public TestsMain()
         {
             this.userController = new UserController();
@@ -32,13 +31,33 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine("yayy");
             userService.CreateUser(email, password);
             userService.Login(email, password);
+
+            boardService.CreateBoard(boardName, email);
+            boardService.AddTask(email, boardName, title, description, dueDate);
+            TaskTests tests = new TaskTests(taskService, userService, boardService);
+        }
+        static void Main(string[] args)
+        {
+            // Display the number of command line arguments.
+            UserController userController = new UserController();
+            UserService userService = new UserService(userController);
+            BoardService boardService = new BoardService(userController);
+            TaskService taskService = new TaskService(boardService.boardController);
+            string email = "test@gmail";
+            string password = "1234";
+            string boardName = "testName";
+            string title = "HW";
+            string description = "EX3";
+            DateTime dueDate = new DateTime(14 / 07 / 2025);
+            Console.WriteLine("Hello");
+            userService.CreateUser(email, password);
+            userService.Login(email, password);
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
             BoardTest boraTest = new BoardTest(this.boardService);
 
         }
-
 
     }
 }
