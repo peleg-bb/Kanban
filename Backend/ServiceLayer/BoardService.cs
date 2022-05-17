@@ -2,10 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -13,10 +17,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
 
         public BoardController boardController;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public BoardService(UserController UC)
         {
             this.boardController = new BoardController(UC);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
         /// <summary>
         /// This method creates a new board.

@@ -36,6 +36,7 @@ namespace BackendTests.ServiceLayer
             boardService.AddTask(email, boardName, title, description, dueDate);
             TaskTests tests = new TaskTests(taskService, userService, boardService);
         }
+        [TestMethod()]
         static void Main(string[] args)
         {
             // Display the number of command line arguments.
@@ -55,7 +56,7 @@ namespace BackendTests.ServiceLayer
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
-            BoardTest boraTest = new BoardTest(this.boardService);
+            BoardTest boraTest = new BoardTest(boardService);
 
         }
 
