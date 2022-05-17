@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </list>
     /// </para>
     /// <para>
-    /// The structure of the JSON of a Task, is:
+    /// The structure of the JSON of a TaskService, is:
     /// <code>
     /// {
     ///     "Id": &lt;int&gt;,
@@ -48,7 +48,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </para>
     /// </summary>
     public class GradingService
-    {   
+    {
         UserController userController;
         BoardService b = new BoardService();
         public GradingService()
@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            user1.login("johndoe@gmail.com", "123456");
+            //user1.Login("johndoe@gmail.com", "123456");
             return "{}";
         }
 
@@ -91,7 +91,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            user1.logout("johndoe@gmail.com");
+            //user1.logout("johndoe@gmail.com");
             return "{}";
         }
 
@@ -210,8 +210,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            Task task = new Task();
-            task.EditDueDate(email, taskId, dueDate.ToString());
+            TaskService taskService = new TaskService();
+            taskService.EditDueDate(email,boardName, taskId, dueDate);
             throw new NotImplementedException();
         }
 
@@ -227,8 +227,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            Task task = new Task();
-            task.EditTitle(email, taskId, title);
+            TaskService taskService = new TaskService();
+            taskService.EditTitle(email,boardName, taskId, title);
             throw new NotImplementedException();
         }
 
@@ -244,8 +244,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            Task task = new Task();
-            task.EditDescription(email, taskId, description);
+            TaskService taskService = new TaskService();
+            taskService.EditDescription(email,boardName, taskId, description);
             throw new NotImplementedException();
         }
 
@@ -354,7 +354,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                return user1.getInProgress(email);
+                //return user1.getInProgress(email);
+                return null;
             }
             catch (Exception e)
             {
