@@ -73,6 +73,16 @@ namespace BackendTests.ServiceLayer
             //boraTest.InvalidNextStateTest3();
             //boraTest.ValidDeleteBoardTest();
             //boraTest.InvalidDeleteBoardTest();
+            //boraTest.ValidGetColum();
+            //boraTest.InvalidGetColum();
+            //boraTest.ValidGetColumnLimit();
+            //boraTest.InvalidGetColumnLimit();
+            //boraTest.ValidGetColumnName();
+            //boraTest.InvalidGetColumnName();
+            //boraTest.ValidInProgress();
+            //boraTest.InvalidInProgress();
+            //boraTest.ValidLimitColumn();
+            //boraTest.InvalidLimitColumn();
             Console.WriteLine("bye");
 
             //BoardTest boraTest = new BoardTest(boardService);
