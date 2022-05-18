@@ -155,7 +155,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
            if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
            {
-                this.tasks[newTask.TaskId] = newTask;
+                this.tasks[newTask.Id] = newTask;
                 this.numTasks[0]++;
            }
            else
