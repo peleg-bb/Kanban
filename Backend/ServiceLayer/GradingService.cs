@@ -136,7 +136,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            return boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+            try
+            {
+                boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
         }
 
         /// <summary>
@@ -148,7 +157,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column limit value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            return boardService.GetColumnLimit(email, boardName, columnOrdinal);
+            try
+            {
+                string limVal= boardService.GetColumnLimit(email, boardName, columnOrdinal);
+                return limVal;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
 
         }
 
@@ -162,7 +180,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column name value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            return boardService.GetColumnName(email, boardName, columnOrdinal);
+            try
+            {
+                string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
+                return colName;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
+            
         }
 
 
@@ -177,8 +205,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
+            try
+            {
+                boardService.AddTask(email, boardName, title, description, dueDate);
+                return email;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
+
             
-                return boardService.AddTask(email, boardName, title, description, dueDate);
                 
         }
 
@@ -242,8 +280,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            
-            return boardService.NextState(email, boardName, taskId);
+            try
+            {
+                boardService.NextState(email, boardName, taskId);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
+
 
         }
 
@@ -257,8 +304,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the column's tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumn(string email, string boardName, int columnOrdinal)
         {
-
-            return boardService.GetColum(email, boardName, columnOrdinal);
+            try
+            {
+                return boardService.GetColum(email, boardName, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
 
         }
 
@@ -271,8 +325,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddBoard(string email, string name)
         {
-           
-            return boardService.CreateBoard(name, email);
+            try
+            {
+                boardService.CreateBoard(name, email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
+            
            
             
         }
@@ -286,7 +349,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string RemoveBoard(string email, string name)
         {
-            return boardService.DeleteBoard(name, email);
+            try
+            {
+                boardService.DeleteBoard(name, email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
+            
               
         }
 
@@ -298,8 +371,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the in progress tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string InProgressTasks(string email)
         {
-            return boardService.InProgress(email);
-
+            try
+            {
+                return boardService.InProgress(email);
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
+            
         }
     }
 }
