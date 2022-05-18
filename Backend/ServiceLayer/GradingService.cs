@@ -231,9 +231,45 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
+            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            {
+                try
+                {
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                        columnOrdinal)
+                    {
+                        try
+                        {
+                            taskService.EditDueDate(email, boardName, taskId, dueDate);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            Response response = new Response(e.Message, null);
+                            return response.GradingMessage();
+                        }
+                    }
+                    else
+                    {
+                        Response response = new Response("Not the right colomn number", null);
+                        return response.GradingMessage();
+                    }
 
-            return taskService.EditDueDate(email, boardName, taskId, dueDate);
-            
+                }
+                catch (Exception e)
+                {
+                    Response response = new Response(e.Message, null);
+                    return response.GradingMessage();
+                }
+
+            }
+            else
+            {
+                Response response = new Response("Not available colomn number", null);
+                return response.GradingMessage();
+            }
+
+
         }
 
 
@@ -248,8 +284,45 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            return taskService.EditTitle(email, boardName, taskId, title);
-            
+            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            {
+                try
+                {
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                        columnOrdinal)
+                    {
+                        try
+                        {
+                            taskService.EditTitle(email, boardName, taskId, title);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            Response response = new Response(e.Message, null);
+                            return response.GradingMessage();
+                        }
+                    }
+                    else
+                    {
+                        Response response = new Response("Not the right colomn number", null);
+                        return response.GradingMessage();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Response response = new Response(e.Message, null);
+                    return response.GradingMessage();
+                }
+
+            }
+            else
+            {
+                Response response = new Response("Not available colomn number", null);
+                return response.GradingMessage();
+            }
+
+
         }
 
 
@@ -264,8 +337,45 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            
-            return taskService.EditDescription(email, boardName, taskId, description); 
+            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            {
+                try
+                {
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                        columnOrdinal)
+                    {
+                        try
+                        {
+                            taskService.EditDescription(email, boardName, taskId, description);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            Response response = new Response(e.Message, null);
+                            return response.GradingMessage();
+                        }
+                    }
+                    else
+                    {
+                        Response response = new Response("Not the right colomn number", null);
+                        return response.GradingMessage();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Response response = new Response(e.Message, null);
+                    return response.GradingMessage();
+                }
+
+            }
+            else
+            {
+                Response response = new Response("Not available colomn number", null);
+                return response.GradingMessage();
+            }
+
+
         }
 
 
