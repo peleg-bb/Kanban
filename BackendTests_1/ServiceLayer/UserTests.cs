@@ -22,7 +22,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void createUserTest()
         {
-            Response response = new Response(null, new User("johndoe@gmail.com", "Ai1234"));
+            Response response = new Response(null, true);
             Console.WriteLine(response.OKJson());
             Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Ai1234"), response.OKJson());
             Console.WriteLine("User created successfully!");
@@ -34,7 +34,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void validUserLoginTest()
         {
-            Response response = new Response(null, new User("johndoe@gmail.com", "Ai1234"));
+            Response response = new Response(null, true);
             Console.WriteLine(response.OKJson());
 
             Assert.AreEqual(userService.Login("johndoe@gmail.com", "Ai1234"), response.OKJson());

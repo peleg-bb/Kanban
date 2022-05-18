@@ -51,7 +51,24 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
             return regex.IsMatch(email);
         }
+        bool IsValidEmail2(string email)
+        {
+            var trimmedEmail = email.Trim();
 
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false; // suggested by @TK-421
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         /// <summary>
         /// Creates a user. A new user's email must not preexist in the system and must have a valid email and password.
         /// </summary>
@@ -63,7 +80,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     throw new ArgumentException("User already exists");
                 }
-                if (!IsValidEmail(email) || IsHebrew(email))
+                if (!IsValidEmail(email) || IsHebrew(email)||!IsValidEmail2(email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
