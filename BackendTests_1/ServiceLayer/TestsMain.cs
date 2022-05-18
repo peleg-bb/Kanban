@@ -63,6 +63,30 @@ namespace BackendTests.ServiceLayer
             // tests.ValidEditDescriptionTest();
 
             BoardTest boraTest = new BoardTest(boardService);
+
+//             boraTest.ValidCreateBoardTest();
+//             boraTest.InvalidCreateBoardTest();
+//             boraTest.InvalidCreateBoardTest2();
+//             boraTest.AddValidTaskTest();
+//             boraTest.AddInvalidTaskTest2();
+//             boraTest.ValidNextStateTest();
+//             boraTest.InvalidNextStateTest();
+//             boraTest.InvalidNextStateTest2();
+//             boraTest.InvalidNextStateTest3();
+//             boraTest.InvalidDeleteBoardTest();
+//             boraTest.ValidGetColum();
+//             boraTest.InvalidGetColum();
+//             boraTest.ValidGetColumnLimit();
+//             boraTest.InvalidGetColumnLimit();
+//             boraTest.ValidGetColumnName();
+//             boraTest.InvalidGetColumnName();
+//             boraTest.ValidInProgress();
+//             boraTest.InvalidInProgress();
+//             boraTest.ValidLimitColumn();
+//             boraTest.InvalidLimitColumn();
+//             boraTest.ValidDeleteBoardTest();
+//             Console.WriteLine("bye");
+
             GradingService gradingService = new GradingService();
             string email = "tamar@gmail.com";
             string board = "one";
@@ -139,9 +163,20 @@ namespace BackendTests.ServiceLayer
 
 
 
+
             //BoardTest boraTest = new BoardTest(boardService);
             //boraTest.AddInvalidTaskTest();
             //UserTests userTests = new UserTests(userController, userService);
+
+            //userTests.createUserTest();
+            //userTests.validUserLoginTest();
+            //userTests.invalidUserLoginTest();
+            //userTests.invalidUserCreation();
+            //userTests.invalidLoginTest_2();
+            //userTests.invalidUserCreation_2();
+            //userTests.logoutTest();
+            //userTests.invalidLogoutTest();
+
             // userTests.createUserTest();
             // userTests.validUserLoginTest();
             // userTests.invalidUserLoginTest();
@@ -152,6 +187,7 @@ namespace BackendTests.ServiceLayer
             // userTests.invalidLogoutTest();
             Console.WriteLine(" ");
             Console.WriteLine("bye bye!");
+
 
 
 

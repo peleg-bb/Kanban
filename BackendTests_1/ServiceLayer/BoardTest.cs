@@ -53,7 +53,7 @@ namespace BackendTests.ServiceLayer
             Response r = new Response("USER CANNOT CREATE A THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY", false);
             string email = "tamar@gmail.com";
             string boardName = "testName";
-            //_boardService.CreateBoard(boardName, email);
+            _boardService.CreateBoard(boardName, email);
             Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.BadJson());
 
         }
@@ -217,7 +217,6 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             int columnOrdinal = 3;
             Response r = new Response("this column state does not exist!", false);
-
             Assert.AreEqual(_boardService.GetColum(email, boardName, columnOrdinal), r.BadJson());
         }
         /// <summary>
@@ -261,7 +260,7 @@ namespace BackendTests.ServiceLayer
             int columnOrdinal = 0;
             string colVal = _boardService.boardController.GetBoard(email, boardName).GetNameOrdinal(columnOrdinal);
             Response r = new Response(null, colVal);
-            Assert.AreEqual(_boardService.GetColumnName(email, boardName, columnOrdinal), r.OKJson());
+            Assert.AreEqual(_boardService.GetColumnName(email, boardName, columnOrdinal), "backlog");
         }
         /// <summary>
         /// This method tests a invalid change
@@ -288,7 +287,7 @@ namespace BackendTests.ServiceLayer
             int columnOrdinal = 2;
             int colVal = _boardService.boardController.GetBoard(email, boardName).GetMaxTask(columnOrdinal);
             Response r = new Response(null, colVal);
-            Assert.AreEqual(_boardService.GetColumnLimit(email, boardName,columnOrdinal), r.OKJson());
+            Assert.AreEqual(_boardService.GetColumnLimit(email, boardName,columnOrdinal),"-1");
 
         }
         /// <summary>
