@@ -47,21 +47,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         public bool IsValidEmail(string email)
         {
-            var trimmedEmail = email.Trim();
-
-                if (trimmedEmail.EndsWith("."))
-                {
-                    return false; // suggested by @TK-421
-                }
-                try
-                {
-                    var addr = new System.Net.Mail.MailAddress(email);
-                    return addr.Address == trimmedEmail;
-                }
-                catch
-                {
-                    return false;
-                }
+            Regex regex = new Regex(
+                @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
+            return regex.IsMatch(email);
         }
 
         /// <summary>

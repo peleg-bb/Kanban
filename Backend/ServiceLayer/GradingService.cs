@@ -60,7 +60,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardService = new BoardService(this.userController);
             this.userService = new UserService(this.userController);
             this.taskService = new TaskService(this.boardService.boardController);
-
         }
 
 
@@ -80,7 +79,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                return e.Message;
+                Response response = new Response(e.Message, false);
+                return response.GradingMessage();
             }
         }
 
@@ -96,13 +96,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.Login(email, password);
-                Response response = new Response(null, email);
-                return response.OKJson();
+                return email;
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
         }
 
@@ -121,7 +120,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                return e.Message;
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
         }
 
