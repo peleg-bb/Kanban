@@ -48,7 +48,7 @@ namespace BackendTests.ServiceLayer
 
 
             string email = "tamar@gmail.com";
-            string password = "123456";
+            string password = "Ai123456";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
@@ -56,31 +56,36 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine("Hello");
             userService.CreateUser(email, password);
             userService.Login(email, password);
-            boardService.CreateBoard(boardName, email);
-            boardService.AddTask(email, boardName, title, description, dueDate);
+            //boardService.CreateBoard(boardName, email);
+            //boardService.AddTask(email, boardName, title, description, dueDate);
 
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
 
-            BoardTest boraTest = new BoardTest(boardService);
-            boraTest.ValidCreateBoardTest();
-            boraTest.InvalidCreateBoardTest();
-            boraTest.InvalidCreateBoardTest2();
-            boraTest.AddValidTaskTest();
-            boraTest.AddInvalidTaskTest2();
-            boraTest.ValidNextStateTest();
-            boraTest.InvalidNextStateTest();
-            boraTest.InvalidNextStateTest2();
-            boraTest.InvalidNextStateTest3();
-            boraTest.ValidDeleteBoardTest();
-            boraTest.InvalidDeleteBoardTest();
+            //BoardTest boraTest = new BoardTest(boardService);
+            //boraTest.ValidCreateBoardTest();
+            //boraTest.InvalidCreateBoardTest();
+            //boraTest.InvalidCreateBoardTest2();
+            //boraTest.AddValidTaskTest();
+            //boraTest.AddInvalidTaskTest2();
+            //boraTest.ValidNextStateTest();
+            //boraTest.InvalidNextStateTest();
+            //boraTest.InvalidNextStateTest2();
+            //boraTest.InvalidNextStateTest3();
+            //boraTest.ValidDeleteBoardTest();
+            //boraTest.InvalidDeleteBoardTest();
             Console.WriteLine("bye");
 
             //BoardTest boraTest = new BoardTest(boardService);
             //boraTest.AddInvalidTaskTest();
             // UserTests userTests = new UserTests(userController, userService);
-            //userTests.createUserTest();
-            //userTests.validUserLoginTest();
-            //userTests.invalidUserLoginTest();
+            userTests.createUserTest();
+            userTests.validUserLoginTest();
+            userTests.invalidUserLoginTest();
+            userTests.invalidUserCreation();
+            userTests.invalidLoginTest_2();
+            userTests.invalidUserCreation_2();
+            userTests.logoutTest();
+            userTests.invalidLogoutTest();
 
 
 
