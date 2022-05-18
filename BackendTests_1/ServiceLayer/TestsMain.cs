@@ -114,42 +114,42 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(gradingService.Register("klk", "EEew12221!"));
             Console.WriteLine(gradingService.Register("klk", "EEew12221!"));
 
-            // Console.WriteLine(gradingService.AddBoard(email, "one"));
-            // Console.WriteLine(gradingService.AddTask(email, "one", "bRAND", "HELLOW WORLD", DateTime.Now));
-            // Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 0));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 1));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 1, 0));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 1, 1));
-            // Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 2, 0));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 0)); // no such task in column 0
-            // Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 2));
-            // Console.WriteLine(gradingService.InProgressTasks(email));
-            // Console.WriteLine(gradingService.LimitColumn(email, board, 1, 5));
-            // Console.WriteLine(gradingService.LimitColumn(email, board, 1, 4));
-            // Console.WriteLine(gradingService.LimitColumn(email, board, 1, 10));
-            // Console.WriteLine(gradingService.GetColumnLimit(email, board, 1));
-            // Console.WriteLine(gradingService.GetColumnName(email, board, 5)); // INVALID NUMBER
-            // Console.WriteLine(gradingService.AddTask(email, "three", "new", "HELLOW WORLD", DateTime.Now)); // no such board three
-            // Console.WriteLine(gradingService.UpdateTaskDueDate(email, "one", 1, 0, DateTime.Now));// not good , changes to task that not in true coloumn number
-            // Console.WriteLine(gradingService.UpdateTaskDueDate(email, "one", 9, 2, DateTime.Now));// not good , changes to invalid coloumn number
-            // Console.WriteLine(gradingService.RemoveBoard(email, "one"));
-            // Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
-            //
-            // Console.WriteLine(gradingService.AddBoard(email, "two"));
-            // Console.WriteLine(gradingService.AddTask(email, "two", "new", "HELLOW WORLD", DateTime.Now));
-            // Console.WriteLine(gradingService.UpdateTaskDueDate(email, "two", 0, 0, DateTime.Now));//
-            // Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 0, 0, "new title"));//
-            // Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 0, 1, "new title"));//no such task
-            // Console.WriteLine(gradingService.AdvanceTask(email, "two", 0, 0));
-            // Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 1, 0, "new title"));//
-            // Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 1, 0, invalid));//invalid title
-            // Console.WriteLine(gradingService.UpdateTaskDescription(email, "two", 1, 0, "new descp"));
-            // Console.WriteLine(gradingService.UpdateTaskDescription(email, "two", 1, 0, invalid));//
-            // Console.WriteLine(gradingService.LimitColumn(email, "two", 1, 1));
-            // Console.WriteLine(gradingService.AddTask(email, "two", "new task", "HELLOW WORLD", DateTime.Now));
-            // Console.WriteLine(gradingService.AdvanceTask(email, "two", 0, 1)); // the column in full
+            Console.WriteLine(gradingService.AddBoard(email, "one"));
+            Console.WriteLine(gradingService.AddTask(email, "one", "bRAND", "HELLOW WORLD", DateTime.Now));
+            Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 0));
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 1));
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 1, 0));
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 1, 1));
+            Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 2, 0));
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 0)); // no such task in column 0
+            Console.WriteLine(gradingService.AdvanceTask(email, "one", 0, 2));
+            Console.WriteLine(gradingService.InProgressTasks(email));
+            Console.WriteLine(gradingService.LimitColumn(email, board, 1, 5));
+            Console.WriteLine(gradingService.LimitColumn(email, board, 1, 4));
+            Console.WriteLine(gradingService.LimitColumn(email, board, 1, 10));
+            Console.WriteLine(gradingService.GetColumnLimit(email, board, 1));
+            Console.WriteLine(gradingService.GetColumnName(email, board, 5)); // INVALID NUMBER
+            Console.WriteLine(gradingService.AddTask(email, "three", "new", "HELLOW WORLD", DateTime.Now)); // no such board three
+            Console.WriteLine(gradingService.UpdateTaskDueDate(email, "one", 1, 0, DateTime.Now));// not good , changes to task that not in true coloumn number
+            Console.WriteLine(gradingService.UpdateTaskDueDate(email, "one", 9, 2, DateTime.Now));// not good , changes to invalid coloumn number
+            Console.WriteLine(gradingService.RemoveBoard(email, "one"));
+            Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
+            
+            Console.WriteLine(gradingService.AddBoard(email, "two"));
+            Console.WriteLine(gradingService.AddTask(email, "two", "new", "HELLOW WORLD", DateTime.Now));
+            Console.WriteLine(gradingService.UpdateTaskDueDate(email, "two", 0, 0, DateTime.Now));//
+            Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 0, 0, "new title"));//
+            Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 0, 1, "new title"));//no such task
+            Console.WriteLine(gradingService.AdvanceTask(email, "two", 0, 0));
+            Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 1, 0, "new title"));//
+            Console.WriteLine(gradingService.UpdateTaskTitle(email, "two", 1, 0, invalid));//invalid title
+            Console.WriteLine(gradingService.UpdateTaskDescription(email, "two", 1, 0, "new descp"));
+            Console.WriteLine(gradingService.UpdateTaskDescription(email, "two", 1, 0, invalid));//
+            Console.WriteLine(gradingService.LimitColumn(email, "two", 1, 1));
+            Console.WriteLine(gradingService.AddTask(email, "two", "new task", "HELLOW WORLD", DateTime.Now));
+            Console.WriteLine(gradingService.AdvanceTask(email, "two", 0, 1)); // the column in full
             //boraTest.ValidCreateBoardTest();
             //boraTest.InvalidCreateBoardTest();
             //boraTest.InvalidCreateBoardTest2();

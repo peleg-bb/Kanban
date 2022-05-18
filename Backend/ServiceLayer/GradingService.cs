@@ -466,7 +466,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return ToJson.toJson(response); 
+                return ToJson.toJson(response);
             }
             
               
@@ -482,8 +482,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                return boardService.InProgress(email);
-                 
+                boardService.InProgress(email);
+                Response response = new Response(null, email);
+                return ToJson.toJson(response);
+
             }
             catch (Exception e)
             {

@@ -19,24 +19,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string ErrorMessage { get; }
         public object ReturnValue { get; }
 
-        
 
+        /// <summary>
+        /// A class to convert messages in a middle way between objects and JSONs.
+        /// Should be activated by methods in the service layer that instantiate the class
+        /// with either an error message or a return value.  
+        /// </summary>
         public Response(string errorMessage, object returnValue)
         {
             this.ErrorMessage = errorMessage;
             this.ReturnValue = returnValue;
         }
 
-        public string GradingMessage()
-        {
-            string json = "{" +
-                          $"Error message: {this.ErrorMessage}, ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}" +
-                          "}";
-            
-            return json;
-
-        }
-        
         public string OKJson()
         {
             string json = $"ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}"; 
