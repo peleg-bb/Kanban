@@ -50,14 +50,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class GradingService
     {
-        UserController userController;
+        private UserController userController;
         private BoardService boardService;
         public UserService userService;
+        private TaskService taskService;
         public GradingService()
         {
             this.userController = new UserController();
             this.boardService = new BoardService(this.userController);
             this.userService = new UserService(this.userController);
+            this.taskService = new TaskService(this.boardService.boardController);
 
         }
 
