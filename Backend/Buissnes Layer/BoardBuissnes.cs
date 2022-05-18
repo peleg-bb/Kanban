@@ -25,20 +25,30 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.name = name;
         }
-        public string GetName()   // property
+        public string GetName()   
         {
             return this.name;
         }
-        public void SetName(string newName)   // property
+        public void SetName(string newName)   
         {
             this.name = newName;
         }
-
-        public int GetMaxTask(int whichBoard)   // property
+        /// <summary>
+        /// This method gets the limit of a specific column.
+        /// </summary>
+        /// <param name="whichBoard">The name of the board</param>
+        /// <returns>Response with column limit value, unless an error occurs </returns>
+        public int GetMaxTask(int whichBoard)  
         {
             return this.maxTasks[whichBoard];
         }
-        public void SetMaxTask(int newMaxTask, int whichBoard)   // property
+        /// <summary>
+        /// This method limits the number of tasks in a specific column.
+        /// </summary>
+        /// <param name="whichBoard">The name of the board</param>
+        /// <param name="newMaxTask">The new limit value. A value of -1 indicates no limit.</param>
+        /// <returns> void, unless an error occurs </returns>
+        public void SetMaxTask(int newMaxTask, int whichBoard)  
         {
             if (this.maxTasks[whichBoard] != -1)
             {
@@ -50,7 +60,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
            
         }
-
+        /// <summary>
+        /// This method returns a column given it's name
+        /// </summary>
+        /// <param name="columnO">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with  a list of the column's tasks, unless an error occurs .</returns>
         public List<Task> GEtColList(int columnO)
         {
             List<Task> taskListO = new List<Task>();
@@ -73,14 +87,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 return taskListO;
             }
         }
-
-        public string GetNameOrdinal(int coulumnO)
+        /// <summary>
+        /// This method gets the name of a specific column
+        /// </summary>
+        /// <param name="columnO">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with column name value, unless an error occurs </returns>
+        public string GetNameOrdinal(int columnO)
         {
-            if (coulumnO == 0)
+            if (columnO == 0)
             {
                 return "backlog";
             }
-            else if (coulumnO == 1)
+            else if (columnO == 1)
             {
                 return "in progress";
             }
@@ -89,6 +107,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 return "Done";
             }
         }
+        /// <summary>
+        /// This method returns all the In progress tasks of the user.
+        /// </summary>
+        /// <returns>Response with a list of the in progress tasks, unless an error occurs .</returns>
         public List<Task> GetInProgress()   // property
         {
             return this.inProgress;
@@ -114,8 +136,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
            }
             
         }
-
-
+        /// <summary>
+        /// This method adds a new task.
+        /// </summary>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>void, unless an error occurs </returns>
         public void AddTask(string title, string description, DateTime dueDate)
         {
             Task newTask = new Task(title, dueDate, description);
@@ -132,9 +159,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// This method updates the state of the  task.
         /// </summary>
-        
         /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <returns>void, throws an </returns>>
+        /// <returns>void, throws an exception if error occurs </returns>>
         public void ChangeState(int taskId)
         {
             if (this.tasks.ContainsKey(taskId))

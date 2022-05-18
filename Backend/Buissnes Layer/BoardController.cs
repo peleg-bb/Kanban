@@ -17,7 +17,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.userController = UC;
         }
-
+        /// <summary>
+        /// This method checks if a user has any board.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <returns>bool </returns>
         public bool UserHasAnyBoard(string userEmail) //checks if user has any board
         {
             if (Boards.ContainsKey(userEmail))
@@ -32,7 +36,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
-
+        /// <summary>
+        /// This method checks if a user has a certain board already.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <returns>bool </returns>
         public bool UserHasThisBoard(string userEmail,string boardName) //checks if board exists
         {
             if (this.Boards[userEmail].ContainsKey(boardName))
@@ -46,7 +55,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             
         }
-
+        /// <summary>
+        /// This method adds a board to the specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <returns>void, unless an error occurs </returns>
         public void CreateBoard(string userEmail, string boardName)
         {
             try
@@ -86,7 +100,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
-
+        /// <summary>
+        /// This method returns all the In progress tasks of the user.
+        /// </summary>
+        /// <returns>Response with a list of the in progress tasks, unless an error occurs .</returns>
         public List<Task> GetAllInPrograss(string userEmail)
         {
             try
@@ -122,7 +139,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
-
+        /// <summary>
+        /// This method removes a board to the specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>void, unless an error occurs </returns>
         public void DeleteBoard(string userEmail, string boardName)
         {
             try
@@ -152,6 +174,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
 
         }
+        /// <summary>
+        /// This method get a specific board to the specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <returns>Board, unless an error occurs .</returns>
         public Board GetBoard(string userEmail, string boardName)
         {
             try
