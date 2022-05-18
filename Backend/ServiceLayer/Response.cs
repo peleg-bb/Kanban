@@ -37,14 +37,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string OKJson()
         {
-            string json = JsonConvert.SerializeObject(this.ReturnValue);
+            string json = $"ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}"; 
             return json;
         }
 
         public string BadJson()
         {
             string json = "{" +
-                          $"Error message: {this.ErrorMessage}, ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}" +
+                          $"Error message: {this.ErrorMessage}" +
                           "}";
             return json;
         }
