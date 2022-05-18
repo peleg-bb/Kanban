@@ -32,7 +32,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             string json = "{" +
                           $"Error message: {this.ErrorMessage}, ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}" +
                           "}";
-           
             
             return json;
 

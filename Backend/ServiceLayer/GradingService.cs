@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
         }
 
@@ -101,7 +101,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
         }
 
@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
         }
         
@@ -143,7 +143,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
         }
 
@@ -164,7 +164,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
 
         }
@@ -187,7 +187,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
             
         }
@@ -212,7 +212,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
 
             
@@ -246,27 +246,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                         catch (Exception e)
                         {
                             Response response = new Response(e.Message, null);
-                            return response.GradingMessage();
+                            return ToJson.toJson(response);
                         }
                     }
                     else
                     {
                         Response response = new Response("Not the right colomn number", null);
-                        return response.GradingMessage();
+                        return ToJson.toJson(response);
                     }
 
                 }
                 catch (Exception e)
                 {
                     Response response = new Response(e.Message, null);
-                    return response.GradingMessage();
+                    return ToJson.toJson(response);
                 }
 
             }
             else
             {
                 Response response = new Response("Not available colomn number", null);
-                return response.GradingMessage();
+                return ToJson.toJson(response);
             }
 
 
