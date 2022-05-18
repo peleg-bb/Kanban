@@ -72,7 +72,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            return userService.CreateUser(email, password);
+            try
+            {
+                userService.CreateUser(email, password);
+                return "{}";
+            }
+            catch
+            {
+                return userService.CreateUser(email, password);
+            }
         }
 
 
