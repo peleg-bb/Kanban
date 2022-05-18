@@ -40,6 +40,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             ID += 1;
 
         }
+
         /// <summary>
         /// This method edit the title of a task
         /// </summary>

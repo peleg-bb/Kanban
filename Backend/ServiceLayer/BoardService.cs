@@ -73,8 +73,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 catch (Exception e)
                 {
-                    Response r = new Response(e.Message, false);
-                    return r.BadJson(); //return exception when reached max task limit
+                    //Response r = new Response(e.Message, false);
+                    //return r.BadJson(); //return exception when reached max task limit
+                    throw new Exception(e.Message);
                 }
 
             }
@@ -131,7 +132,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// This method delete a board.
         /// </summary>
         /// <param name="name">The name of the board</param>
-        /// <param name="userEmail">Email of the user. To identify which board nees to be deleted from which user. </param>
+        /// <param name="userEmail">Email of the user. To identify which board needs to be deleted from which user. </param>
         /// <returns>Response with a command to delete board, unless doesn't exists a board with the same name.</returns>
         public string DeleteBoard(string name, string userEmail)
         {
@@ -164,8 +165,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
-                 List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
+                
+                List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
                 Response r = new Response(null, proCol);
                 return r.OKJson();
             }
@@ -241,9 +242,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                // Console.WriteLine(e);
                 Response r = new Response(e.Message, false);
-                // return JsonSerializer.Serialize(true);
                 return r.BadJson();
             }
         }
