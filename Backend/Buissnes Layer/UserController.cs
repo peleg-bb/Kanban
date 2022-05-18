@@ -20,6 +20,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.loggedIn = new List<string>();
         }
 
+        /// <summary>
+        /// Checks whether the an email address is valid using a regex.
+        /// </summary>
         public bool IsValidEmail(string email)
         {
             Regex regex = new Regex(
@@ -27,6 +30,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return regex.IsMatch(email);
         }
 
+        /// <summary>
+        /// Creates a user. A new user's email must not preexist in the system and must have a valid email and password.
+        /// </summary>
         public void CreateUser(string email, string password)
         {
             if (this.users != null)
@@ -72,24 +78,31 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-
+        /// <summary>
+        /// Deletes a user from the system.
+        /// </summary>
         public void DeleteUser(string email)
         {
-            if (users.ContainsKey(email))
+            try
             {
                 users.Remove(email);
             }
-            else
-            {
+            catch (Exception){
                 throw new ArgumentException("User does not exist");
             }
         }
 
+        /// <summary>
+        /// Checks whether a user exists in the system.
+        /// </summary>
         public bool UserExists(string email)
         {
             return users.ContainsKey(email);
         }
 
+        /// <summary>
+        /// Returns a user object. Used for internal purposes.
+        /// </summary>
         public User GetUser(string username)
         {
             if (users.ContainsKey(username))
@@ -103,6 +116,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
+        /// <summary>
+        /// Checks whether a password is legal according to the system requirements.
+        /// A legal password is 6-20 characters, contains at least 1 uppercase, 1 lower case and one number
+        /// </summary>
         public bool IsLegalPassword(string password)
         {
             if (password.Length < 6)
@@ -129,6 +146,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
         
+
         public bool ValidatePassword(string email, string password)
         {
             if (users.ContainsKey(email))
