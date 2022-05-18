@@ -174,6 +174,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
 
         }
+
         /// <summary>
         /// This method get a specific board to the specific user.
         /// </summary>

@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message, null);
                 return response.GradingMessage();
             }
         }
@@ -124,7 +124,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return response.GradingMessage();
             }
         }
-
+        
         /// <summary>
         /// This method limits the number of tasks in a specific column.
         /// </summary>
