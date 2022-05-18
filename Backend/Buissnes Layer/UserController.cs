@@ -118,6 +118,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return false;
             }
+
+            if (!password.Any(char.IsAscii))
+            {
+                return false;
+            }
             else
             {
                 return true;
