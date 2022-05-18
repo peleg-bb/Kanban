@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private string ErrorMessage;
         private object ReturnValue;
 
-        // Currently OK Json and BadJson are exactly the same.. Perhaps we should change to GetResponse()?
+        
 
         public Response(string errorMessage, object returnValue)
         {
