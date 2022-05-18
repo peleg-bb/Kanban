@@ -29,15 +29,21 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void CreateUser(string email, string password)
         {
-            if (!(this.users == null))
+            if (this.users != null)
             {
                 if (UserExists(email))
                 {
                     throw new ArgumentException("User already exists");
                 }
-                else if (!IsValidEmail(email))
+                if (!IsValidEmail(email))
                 {
                     throw new ArgumentException("Not a valid email address");
+                }
+
+                if (!IsLegalPassword(password))
+                {
+                    throw new ArgumentException("Illegal password. A legal password must be 6-20 characters" +
+                                                " and must contain an Upper case, a lower case and a number");
                 }
                 else
                 {
@@ -51,6 +57,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 if (!IsValidEmail(email))
                 {
                     throw new ArgumentException("Not a valid email address");
+                }
+                if (!IsLegalPassword(password))
+                {
+                    throw new ArgumentException("Illegal password. A legal password must be 6-20 characters" +
+                                                " and must contain an Upper case, a lower case and a number");
                 }
                 else
                 {
@@ -96,14 +107,21 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (password.Length < 6)
             {
-                throw new ArgumentException("Suggested password is too short!");
+                return false;
             }
-            else if (password.Length > 20 )
+            if (password.Length > 20 )
             {
-                throw new ArgumentException("Suggested password is too short!");
+                return false;
             }
 
-            return false;
+            if (!password.Any(char.IsUpper) || !password.Any(char.IsLower) || !password.Any(char.IsNumber))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         
         public bool ValidatePassword(string email, string password)

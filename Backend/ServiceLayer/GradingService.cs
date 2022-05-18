@@ -52,10 +52,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         UserController userController;
         private BoardService boardService;
+        public UserService userService;
         public GradingService()
         {
             this.userController = new UserController();
             this.boardService = new BoardService(this.userController);
+            this.userService = new UserService(this.userController);
 
         }
 
@@ -68,8 +70,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            
-            return "{}";
+            return userService.CreateUser(email, password);
         }
 
 
@@ -81,8 +82,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            //user1.Login("johndoe@gmail.com", "123456");
-            return "{}";
+            return userService.Login(email, password);
         }
 
 
@@ -93,8 +93,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            //user1.logout("johndoe@gmail.com");
-            return "{}";
+            return userService.logout(email);
         }
 
         /// <summary>

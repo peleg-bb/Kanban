@@ -25,9 +25,9 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void createUserTest()
         {
-            Response response = new Response(null, new User("johndoe@gmail.com", "123456"));
+            Response response = new Response(null, new User("johndoe@gmail.com", "Ai1234"));
             Console.WriteLine(response.OKJson());
-            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "123456"), response.OKJson());
+            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Ai1234"), response.OKJson());
             Console.WriteLine("User created successfully!");
         }
         
@@ -38,10 +38,10 @@ namespace BackendTests.ServiceLayer
     [TestMethod()]
     public void validUserLoginTest()
         {
-            Response response = new Response(null, new User("johndoe@gmail.com", "123456"));
+            Response response = new Response(null, new User("johndoe@gmail.com", "Ai1234"));
             Console.WriteLine(response.OKJson());
 
-            Assert.AreEqual(userService.Login("johndoe@gmail.com", "123456"), response.OKJson());
+            Assert.AreEqual(userService.Login("johndoe@gmail.com", "Ai1234"), response.OKJson());
             Console.WriteLine("Login successful!");
 
         }
@@ -53,7 +53,7 @@ namespace BackendTests.ServiceLayer
         {
             Response response = new Response("User does not exist", false);
             Console.WriteLine(response.BadJson());
-            Assert.AreEqual(userService.Login("null@gmail.com", "123456"), response.BadJson());
+            Assert.AreEqual(userService.Login("null@gmail.com", "Ai1234"), response.BadJson());
             Console.WriteLine("Login unsuccessful, user does not exist. Test passed!");
 
         }
