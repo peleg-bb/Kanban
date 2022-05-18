@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,8 +16,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
 
 
-        private string ErrorMessage;
-        private object ReturnValue;
+        public string ErrorMessage { get; }
+        public object ReturnValue { get; }
 
         
 
@@ -31,6 +32,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             string json = "{" +
                           $"Error message: {this.ErrorMessage}, ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}" +
                           "}";
+           
+            
             return json;
 
         }
