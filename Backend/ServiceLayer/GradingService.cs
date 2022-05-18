@@ -262,19 +262,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            try
-            {
+            
                 //return user1.getInProgress(email);
-                boardService.NextState(email, boardName, taskId);
-                Response r = new Response(null, true);
-                return r.OKJson();
-            }
-            catch (Exception e)
-            {
-
-                Response r = new Response(e.Message, false);
-                return r.BadJson();
-            }
+            return boardService.NextState(email, boardName, taskId);
+                
+        
 
         }
 

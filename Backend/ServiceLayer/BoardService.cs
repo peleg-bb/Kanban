@@ -103,7 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 try
                 {
                     b.ChangeState(taskId);
-                    Response r = new Response(null, b.GetTask(taskId).GetState());
+                    Response r = new Response(null, true);
                     String msg = String.Format("task changed state Successfully! to state :{0}", b.GetTask(taskId).GetState());
                     log.Info(msg);
 
@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 catch (Exception e)
                 {
                     //RETURN BAD JASON
-                    Response r = new Response(e.Message, b.GetTask(taskId).GetState());
+                    Response r = new Response(e.Message, false);
                     log.Warn(e.Message);
 
                     return r.BadJson();
