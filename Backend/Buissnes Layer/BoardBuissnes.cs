@@ -129,43 +129,56 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
-
+        /// <summary>
+        /// This method updates the state of the  task.
+        /// </summary>
+        
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <returns>void, throws an </returns>>
         public void ChangeState(int taskId)
         {
-            int state = this.tasks[taskId].GetState();
-            if (state == 0)
+            if (this.tasks.ContainsKey(taskId))
             {
-                if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
+                int state = this.tasks[taskId].GetState();
+                if (state == 0)
                 {
+                    if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
+                    {
 
-                    this.inProgress.Add(tasks[taskId]);
-                    this.tasks[taskId].SetState(1);
-                    this.numTasks[0]--;
-                    this.numTasks[1]++;
+                        this.inProgress.Add(tasks[taskId]);
+                        this.tasks[taskId].SetState(1);
+                        this.numTasks[0]--;
+                        this.numTasks[1]++;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
+                    }
+                }
+                else if (state == 1)
+                {
+                    if (numTasks[2] < maxTasks[2] || maxTasks[2] == -1)
+                    {
+                        this.tasks[taskId].SetState(2);
+                        this.inProgress.Remove(tasks[taskId]);
+                        this.numTasks[1]--;
+                        this.numTasks[2]++;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
-                }
-            }
-            else if (state == 1)
-            {
-                if (numTasks[2] < maxTasks[2] || maxTasks[2] == -1)
-                {
-                    this.tasks[taskId].SetState(2);
-                    this.inProgress.Remove(tasks[taskId]);
-                    this.numTasks[1]--;
-                    this.numTasks[2]++;
-                }
-                else
-                {
-                    throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
+                    throw new ArgumentException("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
                 }
             }
             else
             {
-                throw new ArgumentException("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
+                throw new ArgumentException("TASK Does not exist! ");
             }
+            
 
         }
 
