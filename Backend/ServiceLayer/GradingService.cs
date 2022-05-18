@@ -74,12 +74,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                userService.CreateUser(email, password);
+                userController.CreateUser(email, password);
+                Response response = new Response(null, true);
                 return "{}";
             }
-            catch
+            catch (Exception e)
             {
-                return userService.CreateUser(email, password);
+                return e.Message;
             }
         }
 
@@ -92,7 +93,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            return userService.Login(email, password);
+            try
+            {
+                userController.Login(email, password);
+                Response response = new Response(null, email);
+                return response.OKJson();
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+            }
         }
 
 
@@ -103,7 +114,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            return userService.logout(email);
+            try
+            {
+                userController.Logout(email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
 
         /// <summary>
