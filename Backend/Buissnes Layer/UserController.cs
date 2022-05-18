@@ -8,20 +8,30 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
+    /// <summary>
+    /// A class to instantiate users and control their logic. As of the end of milestone 2 -
+    /// BusinessLayer classes should call the IsLoggedIn method.
+    /// ServiceLayer classes should call the CreateUser, Login and Logout methods.
+    /// </summary>
     public class UserController
     {
 
         private Dictionary<string, User> users;
         private List<string> loggedIn;
-
+        /// <summary>
+        /// Constructor for the class. Instantiates its private fields.
+        /// The class must be instantiated in order to call its methods and functionality.
+        /// </summary>
         public UserController()
         {
             this.users = new Dictionary<string, User>();
             this.loggedIn = new List<string>();
         }
 
-
-        public bool IsHebrew(string str)
+        /// <summary>
+        /// Checks whether a string contains Hebrew characters. Should be used in conjunction with IsLegalEmail.
+        /// </summary>
+        private bool IsHebrew(string str)
         {
             string[] heb =
             {
@@ -45,7 +55,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Checks whether the an email address is valid using a regex.
         /// </summary>
-        public bool IsValidEmail(string email)
+        private bool IsValidEmail(string email)
         {
             Regex regex = new Regex(
                 @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
@@ -137,7 +147,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Checks whether a user exists in the system.
         /// </summary>
-        public bool UserExists(string email)
+        private bool UserExists(string email)
         {
             return users.ContainsKey(email);
         }
@@ -162,7 +172,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// Checks whether a password is legal according to the system requirements.
         /// A legal password is 6-20 characters, contains at least 1 uppercase, 1 lower case and one number
         /// </summary>
-        public bool IsLegalPassword(string password)
+        private bool IsLegalPassword(string password)
         {
             if (password.Length < 6)
             {
@@ -187,8 +197,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
         
-
-        public bool ValidatePassword(string email, string password)
+        private bool ValidatePassword(string email, string password)
         {
             if (users.ContainsKey(email))
             {
