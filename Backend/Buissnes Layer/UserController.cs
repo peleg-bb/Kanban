@@ -51,6 +51,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
             return regex.IsMatch(email);
         }
+        /// <summary>
+        /// Checks whether the an email address is valid using a regex.
+        /// </summary>
         bool IsValidEmail2(string email)
         {
             var trimmedEmail = email.Trim();
@@ -99,7 +102,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             else
             {
                
-                if (!IsValidEmail(email) || IsHebrew(email))
+                if (!IsValidEmail(email) || IsHebrew(email)||!IsValidEmail2(email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
