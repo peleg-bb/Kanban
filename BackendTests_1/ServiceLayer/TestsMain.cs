@@ -62,17 +62,27 @@ namespace BackendTests.ServiceLayer
             TaskTests tests = new TaskTests(taskService, userService, boardService);
 
             BoardTest boraTest = new BoardTest(boardService);
-            boraTest.ValidCreateBoardTest();
-            boraTest.InvalidCreateBoardTest();
-            boraTest.InvalidCreateBoardTest2();
-            boraTest.AddValidTaskTest();
-            boraTest.AddInvalidTaskTest2();
-            boraTest.ValidNextStateTest();
-            boraTest.InvalidNextStateTest();
-            boraTest.InvalidNextStateTest2();
-            boraTest.InvalidNextStateTest3();
-            boraTest.ValidDeleteBoardTest();
-            boraTest.InvalidDeleteBoardTest();
+            //boraTest.ValidCreateBoardTest();
+            //boraTest.InvalidCreateBoardTest();
+            //boraTest.InvalidCreateBoardTest2();
+            //boraTest.AddValidTaskTest();
+            //boraTest.AddInvalidTaskTest2();
+            //boraTest.ValidNextStateTest();
+            //boraTest.InvalidNextStateTest();
+            //boraTest.InvalidNextStateTest2();
+            //boraTest.InvalidNextStateTest3();
+            //boraTest.ValidDeleteBoardTest();
+            //boraTest.InvalidDeleteBoardTest();
+            //boraTest.ValidGetColum();
+            //boraTest.InvalidGetColum();
+            //boraTest.ValidGetColumnLimit();
+            //boraTest.InvalidGetColumnLimit();
+            //boraTest.ValidGetColumnName();
+            //boraTest.InvalidGetColumnName();
+            //boraTest.ValidInProgress();
+            //boraTest.InvalidInProgress();
+            //boraTest.ValidLimitColumn();
+            //boraTest.InvalidLimitColumn();
             Console.WriteLine("bye");
 
             //BoardTest boraTest = new BoardTest(boardService);

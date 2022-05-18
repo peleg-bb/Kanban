@@ -20,14 +20,48 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.loggedIn = new List<string>();
         }
 
+
+        public bool IsHebrew(string str)
+        {
+            string[] heb =
+            {
+                "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש",
+                "ת", "ף", "ץ", "ך", "ן"
+            };
+            List<string> hebrew = new List<string>(heb);
+            for (int i = 0; i < heb.Length; i++)
+            {
+                if (str.Contains(heb[i]))
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+
+        }
+
         /// <summary>
         /// Checks whether the an email address is valid using a regex.
         /// </summary>
         public bool IsValidEmail(string email)
         {
-            Regex regex = new Regex(
-                @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
-            return regex.IsMatch(email);
+            var trimmedEmail = email.Trim();
+
+                if (trimmedEmail.EndsWith("."))
+                {
+                    return false; // suggested by @TK-421
+                }
+                try
+                {
+                    var addr = new System.Net.Mail.MailAddress(email);
+                    return addr.Address == trimmedEmail;
+                }
+                catch
+                {
+                    return false;
+                }
         }
 
         /// <summary>
@@ -41,7 +75,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     throw new ArgumentException("User already exists");
                 }
-                if (!IsValidEmail(email))
+                if (!IsValidEmail(email) || IsHebrew(email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -60,7 +94,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             else
             {
                
-                if (!IsValidEmail(email))
+                if (!IsValidEmail(email) || IsHebrew(email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -130,8 +164,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return false;
             }
-
-            if (!password.Any(char.IsUpper) || !password.Any(char.IsLower) || !password.Any(char.IsNumber))
+            if (!password.Any(char.IsUpper) || !password.Any(char.IsLower) || !password.Any(char.IsNumber)||IsHebrew(password))
             {
                 return false;
             }

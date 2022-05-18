@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="name">The name of the board</param>
         /// <param name="userEmail">Email of the user. To connect between the new board to the user who made it.</param>
-        /// <returns>Response with a command to create board, unless a board exists with the same name.</returns>
+        /// <returns>Response with a command to create board, unless  an error occurs.</returns>
         public string CreateBoard(string name, string userEmail)
         {
             try
@@ -155,5 +155,123 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             }
         }
+        /// <summary>
+        /// This method returns all the In progress tasks of the user.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <returns>Response with  a list of the in progress tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
+        public string InProgress(string email)
+        {
+            try
+            {
+                List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
+                Response r = new Response(null, proCol);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
+            }
+
+        }
+        /// <summary>
+        /// This method returns a column given it's name
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with  a list of the column's tasks, unless an error occurs </returns>
+        public string GetColum(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                List<Buissnes_Layer.Task> allCol = boardController.GetBoard(email, boardName).GEtColList(columnOrdinal);
+                Response r = new Response(null, allCol);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+
+                Response r = new Response(e.Message, false);
+                return r.BadJson();
+            }
+
+        }
+        /// <summary>
+        /// This method limits the number of tasks in a specific column.
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
+        /// <returns>The string "{}", unless an error occurs </returns>
+        public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
+        {
+            try
+            {
+                boardController.GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
+                Response r = new Response(null, true);
+                // return JsonSerializer.Serialize(true);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+                Response r = new Response(e.Message, false);
+                // return JsonSerializer.Serialize(true);
+                return r.BadJson();
+            }
+        }
+        /// <summary>
+        /// This method gets the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with column name value, unless an error occurs </returns>
+        public string GetColumnName(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                string colVal = boardController.GetBoard(email, boardName).GetNameOrdinal(columnOrdinal);
+                Response r = new Response(null, colVal);
+                // return JsonSerializer.Serialize(true);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e);
+                Response r = new Response(e.Message, false);
+                // return JsonSerializer.Serialize(true);
+                return r.BadJson();
+            }
+        }
+        /// <summary>
+        /// This method gets the limit of a specific column.
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with column limit value, unless an error occurs </returns>
+        public string GetColumnLimit(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                int colVal = boardController.GetBoard(email, boardName).GetMaxTask(columnOrdinal);
+                Response r = new Response(null, colVal);
+                // return JsonSerializer.Serialize(true);
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e);
+                Response r = new Response(e.Message, false);
+                // return JsonSerializer.Serialize(true);
+                return r.BadJson();
+            }
+
+        }
     }
+  
 }

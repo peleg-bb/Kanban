@@ -40,6 +40,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             ID += 1;
 
         }
+        /// <summary>
+        /// This method edit the title of a task
+        /// </summary>
+        ///  <param name="newTitle">The new Title of the task</param>
+        /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
+
         public void EditTitle(string newTitle)
         {
 
@@ -63,6 +69,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
              this.State=state;
         }
+        /// <summary>
+        /// This method edit the description of a task
+        /// </summary>
+        ///  <param name="newDescription">The description of the task</param>
+        /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
         public void EditDescription(string newDescription)
         {
@@ -76,6 +87,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 this.Description = newDescription;
             }
         }
+        /// <summary>
+        /// This method edit the due date of a task
+        /// </summary>
+        ///  <param name="newDueDate">The new due date of the task</param>
+        /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
         public void EditDueDate(DateTime newDueDate)
         {
