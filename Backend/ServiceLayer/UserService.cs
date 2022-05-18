@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 String msg = String.Format("UserService created! email = {0}", email);
                 log.Info(msg);
                 
-                Response response = new Response(null, userController.GetUser(email));
+                Response response = new Response(null, true);
                 // If successful returns user object in JSON
                 return response.OKJson();
             }
@@ -147,7 +147,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Login(username, password);
                 String msg = String.Format("Login successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response(null, userController.GetUser(username));
+                Response response = new Response(null, true);
 
                 return response.OKJson();
             }
@@ -162,28 +162,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
 
             ;
-        }
-
-
-        /// <summary>
-        /// This method creates a new board for the user it is called from.
-        /// </summary>
-        /// <param name="boardName">Name of the board. Must be unique (ie. a user cannot have 2 boards with the same name).</param>
-        /// <returns>Response with a command to create board, unless a board exists with the same name.</returns>
-        public string newBoard(string boardName)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// This method returns all the In progress tasks of the user.
-        /// </summary>
-        /// <param name="username">Email of the user. Must be logged in</param>
-        /// <returns>Response with  a list of the in progress tasks, unless an error occurs</returns>
-        public string getInProgress(string username)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

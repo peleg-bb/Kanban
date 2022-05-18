@@ -23,7 +23,7 @@ namespace BackendTests.ServiceLayer
             this.boardService = new BoardService(this.userController);
             this.taskService = new TaskService(boardService.boardController);
             string email = "test@gmail.com";
-            string password = "1234";
+            string password = "Ai123456";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
@@ -126,6 +126,7 @@ namespace BackendTests.ServiceLayer
             //boraTest.InvalidInProgress();
             //boraTest.ValidLimitColumn();
             //boraTest.InvalidLimitColumn();
+
             Console.WriteLine("bye");
 
             //BoardTest boraTest = new BoardTest(boardService);

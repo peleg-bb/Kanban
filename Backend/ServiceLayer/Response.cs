@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private string ErrorMessage;
         private object ReturnValue;
 
-        // Currently OK Json and BadJson are exactly the same.. Perhaps we should change to GetResponse()?
+        
 
         public Response(string errorMessage, object returnValue)
         {
@@ -34,17 +34,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return json;
 
         }
-
+        
         public string OKJson()
         {
-            string json = JsonConvert.SerializeObject(this.ReturnValue);
+            string json = $"ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}"; 
             return json;
         }
 
         public string BadJson()
         {
             string json = "{" +
-                          $"Error message: {this.ErrorMessage}, ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}" +
+                          $"Error message: {this.ErrorMessage}" +
                           "}";
             return json;
         }

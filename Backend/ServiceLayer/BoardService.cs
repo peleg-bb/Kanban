@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 catch (Exception e)
                 {
-                    Response r = new Response(e.Message, b);
+                    Response r = new Response(e.Message, false);
                     return r.BadJson(); //return exception when reached max task limit
                 }
 
@@ -164,7 +164,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
+                //List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
+                 List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
                 Response r = new Response(null, proCol);
                 return r.OKJson();
             }
@@ -213,13 +214,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 boardController.GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
                 Response r = new Response(null, true);
-                // return JsonSerializer.Serialize(true);
                 return r.OKJson();
             }
             catch (Exception e)
             {
                 Response r = new Response(e.Message, false);
-                // return JsonSerializer.Serialize(true);
                 return r.BadJson();
             }
         }
@@ -237,7 +236,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string colVal = boardController.GetBoard(email, boardName).GetNameOrdinal(columnOrdinal);
                 Response r = new Response(null, colVal);
                 // return JsonSerializer.Serialize(true);
-                return r.OKJson();
+               // return r.OKJson();
+               return colVal;
             }
             catch (Exception e)
             {
@@ -261,7 +261,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 int colVal = boardController.GetBoard(email, boardName).GetMaxTask(columnOrdinal);
                 Response r = new Response(null, colVal);
                 // return JsonSerializer.Serialize(true);
-                return r.OKJson();
+               // return r.OKJson();
+               return colVal.ToString();
             }
             catch (Exception e)
             {
