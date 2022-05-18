@@ -80,7 +80,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                return e.Message;
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
             }
         }
 
@@ -121,7 +122,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                return e.Message;
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
             }
         }
 
