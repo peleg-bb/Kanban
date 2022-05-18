@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message, null);
                 return response.GradingMessage();
             }
         }
@@ -142,8 +142,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
         }
 
@@ -163,8 +163,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
 
         }
@@ -186,8 +186,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
             
         }
@@ -211,8 +211,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
 
             
@@ -286,8 +286,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
 
 
@@ -309,8 +309,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
 
         }
@@ -326,13 +326,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardService.CreateBoard(name, email);
+                boardService.boardController.CreateBoard(email, name);
                 return "{}";
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
             
            
@@ -355,8 +355,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
             
               
@@ -373,11 +373,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 return boardService.InProgress(email);
+                 
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message, null);
+                return response.GradingMessage();
             }
             
         }

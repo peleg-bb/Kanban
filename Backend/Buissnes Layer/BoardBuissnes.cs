@@ -9,17 +9,12 @@ using System.Threading.Tasks;
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class Board
-    {/*
-        private Dictionary<int,TaskService> backlog;
-        private Dictionary<int, TaskService> inProgress;
-        private Dictionary<int, TaskService> done;*/
-        //private int indexNewTask = 0; 
+    {
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
-        //private Dictionary<int, TaskService> inProgress = new Dictionary<int, TaskService>();
         private List<Task> inProgress = new List<Task>();
         public string name;
         private int[] maxTasks = new int[] {-1,-1,-1};
-        private int[] numTasks =new int[3];
+        private int[] numTasks =new int[] {0,0,0};
 
         public Board(string name)
         {
@@ -155,8 +150,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
            if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
            {
-                this.tasks[newTask.Id] = newTask;
+               this.tasks[newTask.Id] = newTask;
+                Console.WriteLine("taskId"+newTask.Id);
                 this.numTasks[0]++;
+                Console.WriteLine(numTasks.Length);
            }
            else
            {
@@ -223,7 +220,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
                     }
                 }
-                else
+                else if(state == 2)
                 {
                     throw new ArgumentException("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
                 }
