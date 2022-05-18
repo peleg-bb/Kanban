@@ -97,12 +97,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.Login(email, password);
-                Response response = new Response(null, email);
-                return response.OKJson();
+                return email;
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message, null);
                 return response.BadJson();
             }
         }
@@ -122,7 +121,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message, null);
                 return response.BadJson();
             }
         }
