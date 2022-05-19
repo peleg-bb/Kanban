@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private int State;
         [JsonIgnore]
-        private int ID = 0;
+        private static int ID = 0;
 
         public Task (string title, DateTime dueDate, string description="")
         {

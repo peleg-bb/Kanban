@@ -48,7 +48,7 @@ namespace BackendTests.ServiceLayer
 
 
             string email = "tamar@gmail.com";
-            string password = "123456";
+            string password = "Aa123456";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
@@ -58,10 +58,11 @@ namespace BackendTests.ServiceLayer
             userService.Login(email, password);
             boardService.CreateBoard(boardName, email);
             boardService.AddTask(email, boardName, title, description, dueDate);
+            boardService.AddTask(email, boardName, title, description, dueDate);
+            TaskTests tests = new TaskTests(taskService, userService, boardService);
+            //tests.ValidEditTitleTest();
 
-            //TaskTests tests = new TaskTests(taskService, userService, boardService);
-
-            BoardTest boraTest = new BoardTest(boardService);
+            //BoardTest boraTest = new BoardTest(boardService);
             //boraTest.ValidCreateBoardTest();
             //boraTest.InvalidCreateBoardTest();
             //boraTest.InvalidCreateBoardTest2();

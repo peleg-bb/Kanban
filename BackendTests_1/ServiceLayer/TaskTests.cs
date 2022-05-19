@@ -91,7 +91,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ValidEditTitleTest()
         {
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
             string newTitle = "new title";

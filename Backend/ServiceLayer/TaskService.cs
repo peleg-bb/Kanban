@@ -61,6 +61,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Task task = boardController.GetBoard(email, boardName).GetTask(taskId);
+                
                 try
                 {
                     task.EditTitle(newTitle);
