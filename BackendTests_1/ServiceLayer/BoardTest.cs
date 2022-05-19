@@ -28,7 +28,7 @@ namespace BackendTests.ServiceLayer
             Response r = new Response(null, true);
             string email = "tamar@gmail.com";
             string boardName = "test2";
-            Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.OKJson());
+            Assert.AreEqual(_boardService.CreateBoard(boardName, email), "{}");
 
         }
 
@@ -42,6 +42,7 @@ namespace BackendTests.ServiceLayer
             string email = "test@gmail.com";
             string boardName = "testName";
             Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.BadJson());
+
 
         }
         /// <summary>
@@ -82,16 +83,24 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void AddInvalidTaskTest2()
         {
-            
             string email = "wrong@gmail.com";
             string password = "1234";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(14 / 07 / 2025);
-            Response r = new Response("User does not exist", false);
+            try
+            {
+                _boardService.AddTask(email, boardName, title, description, dueDate);
 
-            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), r.BadJson());
+            }
+            catch (Exception e)
+            {
+               
+                Assert.AreEqual(e.Message, "User does not exist");
+            }
+
+           
         }
         /// <summary>
         /// This method tests a valid change  state of a TaskService from one state to the next in the system according to requirement  13.
@@ -115,8 +124,15 @@ namespace BackendTests.ServiceLayer
         {
             string email = "wrong@gmail.com";
             string boardName = "testName";
-            Response r = new Response("User does not exist", false);
-            Assert.AreEqual(_boardService.NextState(email, boardName, 0), r.BadJson());
+            try
+            {
+                _boardService.NextState(email, boardName, 0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "User does not exist");
+            }
+            
 
         }
         /// <summary>
@@ -128,8 +144,14 @@ namespace BackendTests.ServiceLayer
         {
             string email = "tamar@gmail.com";
             string boardName = "testName";
-            Response r = new Response("TASK Does not exist! ", false);
-            Assert.AreEqual(_boardService.NextState(email, boardName, 55), r.BadJson());
+            try
+            {
+                _boardService.NextState(email, boardName, 55);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "TASK Does not exist! ");
+            }
         }
         /// <summary>
         /// This method tests a invalid change  state of a TaskService from one state to the next in the system according to requirement  13.
@@ -140,10 +162,18 @@ namespace BackendTests.ServiceLayer
         {
             string email = "tamar@gmail.com";
             string boardName = "testName";
-            Response r = new Response("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ", false);
+            int taskId = 0;
             _boardService.NextState(email, boardName, 0);
-            _boardService.NextState(email, boardName, 0);
-            Assert.AreEqual(_boardService.NextState(email, boardName, 0), r.BadJson());
+            try
+            {
+                _boardService.NextState(email, boardName, 0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
+            }
+
+
         }
         // <summary>
         // This method tests a valid deletion of a  boardService in the system according to requirement 9.
@@ -166,7 +196,15 @@ namespace BackendTests.ServiceLayer
             Response r = new Response("BOARD IS NOT EXIST AT THIS USER ! ", false);
             string email = "tamar@gmail.com";
             string boardName = "NotExist";
-            Assert.AreEqual(_boardService.DeleteBoard(boardName, email), r.BadJson());
+            try
+            {
+                _boardService.DeleteBoard(boardName, email);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "BOARD IS NOT EXIST AT THIS USER ! ");
+            }
+           
         }
         /// <summary>
         /// This method tests a valid get of InProgress tasks of a user in the system according to requirement 16.
@@ -175,8 +213,7 @@ namespace BackendTests.ServiceLayer
         public void ValidInProgress()
         {
             string email = "tamar@gmail.com";
-            Response r = new Response(null, _boardService.boardController.GetAllInPrograss(email));
-            Assert.AreEqual(_boardService.InProgress(email), r.OKJson());
+            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(_boardService.boardController.GetAllInPrograss(email)));
 
         }
 
@@ -188,7 +225,15 @@ namespace BackendTests.ServiceLayer
         {
             Response r = new Response("User does not exist", false);
             string email = "test@gmail.com";
-            Assert.AreEqual(_boardService.InProgress(email), r.BadJson());
+            try
+            {
+                _boardService.InProgress(email);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "User does not exist");
+
+            }
 
         }
     
@@ -201,8 +246,7 @@ namespace BackendTests.ServiceLayer
             string email = "tamar@gmail.com";
             string boardName = "testName";
             int columnOrdinal = 0;
-            Response r = new Response(null, _boardService.boardController.GetBoard(email, boardName).GEtColList(columnOrdinal));
-            Assert.AreEqual(_boardService.GetColum(email, boardName, columnOrdinal), r.OKJson());
+            Assert.AreEqual(_boardService.GetColum(email, boardName, columnOrdinal), _boardService.GetColum(email, boardName, columnOrdinal));
         }
 
         /// <summary>
@@ -216,8 +260,16 @@ namespace BackendTests.ServiceLayer
             string email = "tamar@gmail.com";
             string boardName = "testName";
             int columnOrdinal = 3;
-            Response r = new Response("this column state does not exist!", false);
-            Assert.AreEqual(_boardService.GetColum(email, boardName, columnOrdinal), r.BadJson());
+            try
+            {
+                _boardService.GetColum(email, boardName, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "this column state does not exist!");
+
+            }
+
         }
         /// <summary>
         /// This method tests a valid set of a column limit of certain board user in the system according to requirement  10.
@@ -244,8 +296,14 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             int limit = 10;
             int columnOrdinal = 4;
-            Response r = new Response("this column state does not exist!", false);
-            Assert.AreEqual(_boardService.LimitColumn(email, boardName, columnOrdinal, limit), r.BadJson());
+            try
+            {
+                _boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "this column state does not exist!");
+            }
 
         }
         /// <summary>
@@ -273,8 +331,15 @@ namespace BackendTests.ServiceLayer
             string email = "tamar@gmail.com";
             string boardName = "testName";
             int columnOrdinal = 3;
-            Response r = new Response("this column state does not exist!", false);
-            Assert.AreEqual(_boardService.GetColumnName(email, boardName, columnOrdinal), r.BadJson());
+            try
+            {
+                _boardService.GetColumnName(email, boardName, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "this column state does not exist!");
+
+            }
         }
         // <summary>
         // This method tests a valid deletion of a  boardService in the system according to requirement 9.
@@ -300,7 +365,15 @@ namespace BackendTests.ServiceLayer
             string email = "tamar@gmail.com";
             string boardName = "testName";
             int columnOrdinal = 4;
-            Assert.AreEqual(_boardService.GetColumnLimit(email, boardName,columnOrdinal), r.BadJson());
+            try
+            {
+                _boardService.GetColumnLimit(email, boardName, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "this column state does not exist!");
+            }
+            
         }
     }
 }
