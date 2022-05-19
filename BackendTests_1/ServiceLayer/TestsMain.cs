@@ -47,24 +47,24 @@ namespace BackendTests.ServiceLayer
             UserTests userTests = new UserTests(userController, userService);
 
 
-            //string email1 = "tamar@gmail.com";
-            //string password = "Ai123456";
-            //string boardName = "testName";
-            //string title = "HW";
-            //string description = "EX3";
-            //DateTime dueDate = new DateTime(2025,6,15);
-            //Console.WriteLine("Hello");
-            //userService.CreateUser(email1, password);
-            //userService.Login(email1, password);
-            //boardService.CreateBoard(boardName, email1);
-            //boardService.AddTask(email1, boardName, title, description, dueDate);
+            string email1 = "tamar@gmail.com";
+            string password = "Ai123456";
+            string boardName = "testName";
+            string title = "HW";
+            string description = "EX3";
+            DateTime dueDate = new DateTime(2025, 6, 15);
+            Console.WriteLine("Hello");
+            userService.CreateUser(email1, password);
+            userService.Login(email1, password);
+            boardService.CreateBoard(boardName, email1);
+            boardService.AddTask(email1, boardName, title, description, dueDate);
 
             TaskTests tests = new TaskTests(taskService, userService, boardService);
             //tests.ValidEditTitleTest();
 
 
 
-            BoardTest boraTest = new BoardTest(boardService);
+            
 
 
 
@@ -136,7 +136,7 @@ namespace BackendTests.ServiceLayer
             //Console.WriteLine(gradingService.UpdateTaskDueDate(email, "one", 9, 2, DateTime.Now));// not good , changes to invalid coloumn number
             //Console.WriteLine(gradingService.RemoveBoard(email, "one"));
             //Console.WriteLine(gradingService.AddTask(email, "one", "new", "HELLOW WORLD", DateTime.Now));
-            
+
             //Console.WriteLine(gradingService.AddBoard(email, "two"));
             //Console.WriteLine(gradingService.AddTask(email, "two", "new", "HELLOW WORLD", DateTime.Now));
             //Console.WriteLine(gradingService.UpdateTaskDueDate(email, "two", 0, 0, DateTime.Now));//
@@ -150,51 +150,31 @@ namespace BackendTests.ServiceLayer
             //Console.WriteLine(gradingService.LimitColumn(email, "two", 1, 1));
             //Console.WriteLine(gradingService.AddTask(email, "two", "new task", "HELLOW WORLD", DateTime.Now));
             //Console.WriteLine(gradingService.AdvanceTask(email, "two", 0, 1)); // the column in full
-            //boraTest.ValidCreateBoardTest();
-            //boraTest.InvalidCreateBoardTest();
-            //boraTest.InvalidCreateBoardTest2();
-            //boraTest.AddValidTaskTest();
-            //boraTest.AddInvalidTaskTest2();
-            //boraTest.ValidNextStateTest();
-            //boraTest.InvalidNextStateTest();
-            //boraTest.InvalidNextStateTest2();
-            //boraTest.InvalidNextStateTest3();
-            //boraTest.ValidDeleteBoardTest();
-            //boraTest.InvalidDeleteBoardTest();
-            //boraTest.ValidGetColum();
-            //boraTest.InvalidGetColum();
-            //boraTest.ValidGetColumnLimit();
-            //boraTest.InvalidGetColumnLimit();
-            //boraTest.ValidGetColumnName();
-            //boraTest.InvalidGetColumnName();
-            //boraTest.ValidInProgress();
-            //boraTest.InvalidInProgress();
-            //boraTest.ValidLimitColumn();
-            //boraTest.InvalidLimitColumn();
 
 
-//             BoardTest boraTest = new BoardTest(boardService);
-//             boraTest.ValidCreateBoardTest();
-//             boraTest.InvalidCreateBoardTest();
-//             boraTest.InvalidCreateBoardTest2();
-//             boraTest.AddValidTaskTest();
-//             boraTest.AddInvalidTaskTest2();
-//             boraTest.ValidNextStateTest();
-//             boraTest.InvalidNextStateTest();
-//             boraTest.InvalidNextStateTest2();
-//             boraTest.InvalidNextStateTest3();
-//             boraTest.InvalidDeleteBoardTest();
-//             boraTest.ValidGetColum();
-//             boraTest.InvalidGetColum();
-//             boraTest.ValidGetColumnLimit();
-//             boraTest.InvalidGetColumnLimit();
-//             boraTest.ValidGetColumnName();
-//             boraTest.InvalidGetColumnName();
-//             boraTest.ValidInProgress();
-//             boraTest.InvalidInProgress();
-//             boraTest.ValidLimitColumn();
-//             boraTest.InvalidLimitColumn();
-//             boraTest.ValidDeleteBoardTest();
+
+            BoardTest boraTest = new BoardTest(boardService);
+            boraTest.ValidCreateBoardTest();
+            boraTest.InvalidCreateBoardTest();
+            boraTest.InvalidCreateBoardTest2();
+            boraTest.AddValidTaskTest();
+            boraTest.AddInvalidTaskTest2();
+            boraTest.ValidNextStateTest();
+            boraTest.InvalidNextStateTest();
+            boraTest.InvalidNextStateTest2();
+            boraTest.InvalidNextStateTest3();
+            boraTest.ValidDeleteBoardTest();
+            boraTest.InvalidDeleteBoardTest();
+            boraTest.ValidGetColum();
+            boraTest.InvalidGetColum();
+            boraTest.ValidGetColumnLimit();
+            boraTest.InvalidGetColumnLimit();
+            boraTest.ValidGetColumnName();
+            boraTest.InvalidGetColumnName();
+            boraTest.ValidInProgress();
+            boraTest.InvalidInProgress();
+            boraTest.ValidLimitColumn();
+            boraTest.InvalidLimitColumn();
 
             Console.WriteLine("bye");
 
