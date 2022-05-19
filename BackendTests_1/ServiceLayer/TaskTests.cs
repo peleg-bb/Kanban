@@ -91,7 +91,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ValidEditTitleTest()
         {
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
             string newTitle = "new title";
@@ -139,7 +139,6 @@ namespace BackendTests.ServiceLayer
             string title = "HW";
             Response response = new Response(null,new Task(title,new DateTime(2025, 6, 15), newDescription));
             //act
-            Console.WriteLine(response.OKJson());
             string jsonup = this.taskService.EditDescription(email, boardName, taskId, newDescription);
             Assert.AreEqual(jsonup,
                 response.OKJson()

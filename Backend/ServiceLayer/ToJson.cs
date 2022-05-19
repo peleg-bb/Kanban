@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -14,7 +15,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public static string toJson(object i)
         {
-            return JsonSerializer.Serialize(i);
+            return JsonConvert.SerializeObject(i);
         }
         
     }

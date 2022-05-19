@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string OKJson()
         {
-            string json = $"ReturnValue: {JsonSerializer.Serialize(this.ReturnValue)}"; 
+            string json = $"ReturnValue: {JsonConvert.SerializeObject(this.ReturnValue)}"; 
             return json;
         }
 
