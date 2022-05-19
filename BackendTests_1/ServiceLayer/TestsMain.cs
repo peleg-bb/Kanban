@@ -46,14 +46,12 @@ namespace BackendTests.ServiceLayer
             TaskService taskService = new TaskService(boardService.boardController);
             UserTests userTests = new UserTests(userController, userService);
             GradingService grading = new GradingService();
-
             string email1 = "tamar@gmail.com";
             string password = "Ai123456";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
-            Console.WriteLine("Hello");
             userService.CreateUser(email1, password);
             grading.Register(email1, password);
             userService.Login(email1, password);
@@ -62,15 +60,13 @@ namespace BackendTests.ServiceLayer
             grading.AddBoard(email1, boardName);
             boardService.AddTask(email1, boardName, title, description, dueDate);
             grading.AddTask(email1, boardName, title, description, dueDate);
-
             TaskTests tests = new TaskTests(taskService, userService, boardService,grading);
             tests.InvalidEditTitleTest();
-
-
-
-
-
-
+            tests.InvalidEditDescriptionTest();
+            tests.ValidEditDescriptionTest();
+            tests.ValidEditTitleTest();
+            tests.ValidEditDueDateTest();
+            tests.InValidEditDueDateTest();
             //BoardTest boraTest = new BoardTest(boardService);
             //GradingService gradingService = new GradingService();
             //string email = "rrr@gmial.com";
@@ -178,13 +174,9 @@ namespace BackendTests.ServiceLayer
             //boraTest.InvalidInProgress();
             //boraTest.ValidLimitColumn();
             //boraTest.InvalidLimitColumn();
-
-            Console.WriteLine("bye");
-
             //BoardTest boraTest = new BoardTest(boardService);
             //boraTest.AddInvalidTaskTest();
             //UserTests userTests = new UserTests(userController, userService);
-
             //userTests.createUserTest();
             //userTests.validUserLoginTest();
             //userTests.invalidUserLoginTest();
@@ -242,11 +234,7 @@ namespace BackendTests.ServiceLayer
            // Console.WriteLine(gradingService.RemoveBoard(emailll, "fff"));// INVALID board
            // Console.WriteLine(gradingService.RemoveBoard(emailll, board1));// VALID 
            // Console.WriteLine("that it for now !!!!");
-
-
-
-
-            // userTests.createUserTest();
+           // userTests.createUserTest();
             // userTests.validUserLoginTest();
             // userTests.invalidUserLoginTest();
             // userTests.invalidUserCreation();
@@ -254,8 +242,6 @@ namespace BackendTests.ServiceLayer
             // userTests.invalidUserCreation_2();
             // userTests.logoutTest();
             // userTests.invalidLogoutTest();
-            Console.WriteLine(" ");
-            Console.WriteLine("bye bye!");
 
 
 

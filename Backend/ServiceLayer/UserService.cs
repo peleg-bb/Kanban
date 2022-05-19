@@ -154,7 +154,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                Console.WriteLine(e);
                 log.Error(e.Message);
                 Response response = new Response(e.Message, false);
 
