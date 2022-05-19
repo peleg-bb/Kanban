@@ -284,7 +284,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            if ((columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2) && !(title is null))
             {
                 try
                 {
@@ -318,8 +318,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             else
             {
-                Response response = new Response("Not available colomn number", null);
-                return ToJson.toJson(response);
+                if (title is null)
+                {
+                    Response response = new Response("null is not title option", null);
+                    return ToJson.toJson(response);
+                }
+                else
+                {
+                    Response response = new Response("Not available colomn number", null);
+                    return ToJson.toJson(response);
+                }
             }
 
 
@@ -337,7 +345,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            if ((columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2) && !(description is null))
             {
                 try
                 {
@@ -371,8 +379,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             else
             {
-                Response response = new Response("Not available colomn number", null);
-                return ToJson.toJson(response);
+                if (description is null)
+                {
+                    Response response = new Response("null is not description option", null);
+                    return ToJson.toJson(response);
+                }
+                else
+                {
+                    Response response = new Response("Not available colomn number", null);
+                    return ToJson.toJson(response);
+                }
             }
 
 

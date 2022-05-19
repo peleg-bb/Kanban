@@ -13,12 +13,14 @@ namespace BackendTests.ServiceLayer
         private readonly TaskService taskService;
         private readonly BoardService boardService;
         private UserService user;
+        private GradingService grading;
 
-        public TaskTests(TaskService TS, UserService us, BoardService bs)
+        public TaskTests(TaskService TS, UserService us, BoardService bs, GradingService gs)
         {
             this.taskService = TS;
             this.user = us;
             this.boardService = bs;
+            this.grading = gs;
         }
 
         /// <summary>
@@ -111,15 +113,15 @@ namespace BackendTests.ServiceLayer
 
         public void InvalidEditTitleTest()
         {
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
-            int taskId = 0;
-            string newTitle = "";
+            int taskId = 1;
+            string newTitle = null;
             string description = "Does it change?";
             //act
             Response response = new Response("Value cannot be null.", new Task(newTitle, new DateTime(2025, 8, 14), description));
 
-            string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
+            string jsonup = this.grading.UpdateTaskTitle(email, boardName,0, taskId, newTitle);
             Assert.AreEqual(jsonup,
                 response.BadJson()
             );

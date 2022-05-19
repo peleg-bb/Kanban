@@ -89,6 +89,18 @@ namespace BackendTests.ServiceLayer
         }
 
         /// <summary>
+        /// This method tests an invalid user creation - due to an email which already exists - according to requirement 3.
+        /// </summary>
+        public void invalidUserCreation_3()
+        {
+            Response response = new Response("Not a valid email address", false);
+            Console.WriteLine(response.BadJson());
+            Assert.AreEqual(userService.CreateUser("_@gmailcom", "Ai9898"), response.BadJson());
+            Console.WriteLine("User not created, email already exists");
+        }
+
+
+        /// <summary>
         /// This method tests the logout of a user- according to requirement 8.
         /// </summary>
         public void logoutTest()
