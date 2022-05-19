@@ -13,9 +13,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     public class Task
     {
         [DataMember]
-        public int TaskId { get; }
+        public int Id { get; }
         [DataMember(Order = 1 )]
-        public readonly DateTime CreationDate;
+        public readonly DateTime CreationTime;
         [DataMember(Order = 1)]
         private string Title { set; get; }
         [DataMember(Order = 1)]
@@ -29,8 +29,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public Task (string title, DateTime dueDate, string description="")
         {
-            this.TaskId = ID;
-            this.CreationDate = DateTime.Today;
+            this.Id = ID;
+            this.CreationTime = DateTime.Today;
             this.Title = title;
             this.Description = description;
             this.DueDate = dueDate;
@@ -95,7 +95,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void EditDueDate(DateTime newDueDate)
         {
-            if (newDueDate<=this.CreationDate)
+            if (newDueDate<=this.CreationTime)
             {
                 throw new ArgumentException();
             }

@@ -9,17 +9,12 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class Board
-    {/*
-        private Dictionary<int,TaskService> backlog;
-        private Dictionary<int, TaskService> inProgress;
-        private Dictionary<int, TaskService> done;*/
-        //private int indexNewTask = 0; 
+    {
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
-        //private Dictionary<int, TaskService> inProgress = new Dictionary<int, TaskService>();
         private List<Task> inProgress = new List<Task>();
         public string name;
         private int[] maxTasks = new int[] {-1,-1,-1};
-        private int[] numTasks =new int[3];
+        private int[] numTasks =new int[] {0,0,0};
 
         public Board(string name)
         {
@@ -40,7 +35,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Response with column limit value, unless an error occurs </returns>
         public int GetMaxTask(int whichBoard)  
         {
-            return this.maxTasks[whichBoard];
+            if (whichBoard == 0 || whichBoard == 1 || whichBoard == 2)
+            {
+                return this.maxTasks[whichBoard];
+            }
+            else
+            {
+                throw new ArgumentException("this column state does not exist!");
+            }
+           
         }
         /// <summary>
         /// This method limits the number of tasks in a specific column.
@@ -50,14 +53,22 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns> void, unless an error occurs </returns>
         public void SetMaxTask(int newMaxTask, int whichBoard)  
         {
-            if (this.maxTasks[whichBoard] != -1)
+            if (whichBoard == 0 || whichBoard == 1 || whichBoard == 2)
             {
-                this.maxTasks[whichBoard] = newMaxTask;
+                if (this.maxTasks[whichBoard] == -1)
+                {
+                    this.maxTasks[whichBoard] = newMaxTask;
+                }
+                else
+                {
+                    throw new ArgumentException("CAN'T CHANGE MAX, MAX ALREADY BEEN CHANGED");
+                }
             }
             else
             {
-                throw new ArgumentException("CAN'T CHANGE MAX, MAX ALREADY BEEN CHANGED");
+                throw new ArgumentException("this column state does not exist!");
             }
+          
            
         }
         /// <summary>
@@ -67,25 +78,33 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Response with  a list of the column's tasks, unless an error occurs .</returns>
         public List<Task> GEtColList(int columnO)
         {
-            List<Task> taskListO = new List<Task>();
-            if (columnO == 1)
+            if (columnO == 0 || columnO == 1 || columnO == 2)
             {
-                return GetInProgress();
+                List<Task> taskListO = new List<Task>();
+                if (columnO == 1)
+                {
+                    return GetInProgress();
+                }
+                else
+                {
+
+
+                    for (int i = 0; i < this.tasks.Count; i++)
+                    {
+                        if (this.tasks[i].GetState() == columnO)
+                        {
+                            taskListO.Add(this.tasks[i]);
+                        }
+                    }
+
+                    return taskListO;
+                }
             }
             else
-            {
-
-
-                for (int i = 0; i < this.tasks.Count; i++)
-                {
-                    if (this.tasks[i].GetState() == columnO)
-                    {
-                        taskListO.Add(this.tasks[i]);
-                    }
-                }
-
-                return taskListO;
+            { 
+                throw new ArgumentException("this column state does not exist!");
             }
+            
         }
         /// <summary>
         /// This method gets the name of a specific column
@@ -102,9 +121,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return "in progress";
             }
-            else
+            else if(columnO == 2)
             {
                 return "Done";
+            }
+            else
+            {
+                throw new ArgumentException("this column state does not exist!");
             }
         }
         /// <summary>
@@ -127,8 +150,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
            if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
            {
-                this.tasks[newTask.TaskId] = newTask;
+               this.tasks[newTask.Id] = newTask;
+                Console.WriteLine("taskId"+newTask.Id);
                 this.numTasks[0]++;
+                Console.WriteLine(numTasks.Length);
            }
            else
            {
@@ -195,7 +220,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
                     }
                 }
-                else
+                else if(state == 2)
                 {
                     throw new ArgumentException("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
                 }

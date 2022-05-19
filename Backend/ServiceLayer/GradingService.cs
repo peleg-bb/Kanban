@@ -60,7 +60,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardService = new BoardService(this.userController);
             this.userService = new UserService(this.userController);
             this.taskService = new TaskService(this.boardService.boardController);
-
         }
 
 
@@ -72,7 +71,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            return userService.CreateUser(email, password);
+            try
+            {
+                userController.CreateUser(email, password);
+                Response response = new Response(null, true);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
 
 
@@ -84,7 +93,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            return userService.Login(email, password);
+            try
+            {
+                userController.Login(email, password);
+                return email;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
 
 
@@ -95,9 +113,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            return userService.logout(email);
+            try
+            {
+                userController.Logout(email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
-
+        
         /// <summary>
         /// This method limits the number of tasks in a specific column.
         /// </summary>
@@ -108,7 +135,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            return boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+            try
+            {
+                boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
 
         /// <summary>
@@ -120,7 +156,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column limit value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            return boardService.GetColumnLimit(email, boardName, columnOrdinal);
+            try
+            {
+                string limVal= boardService.GetColumnLimit(email, boardName, columnOrdinal);
+                return limVal;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
 
         }
 
@@ -134,7 +179,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with column name value, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            return boardService.GetColumnName(email, boardName, columnOrdinal);
+            try
+            {
+                string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
+                return colName;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+            
         }
 
 
@@ -149,8 +204,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
+            try
+            {
+                boardService.AddTask(email, boardName, title, description, dueDate);
+                return email;
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+
             
-                return boardService.AddTask(email, boardName, title, description, dueDate);
                 
         }
 
@@ -166,9 +231,45 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
+            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            {
+                try
+                {
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                        columnOrdinal)
+                    {
+                        try
+                        {
+                            taskService.EditDueDate(email, boardName, taskId, dueDate);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            Response response = new Response(e.Message, null);
+                            return ToJson.toJson(response);
+                        }
+                    }
+                    else
+                    {
+                        Response response = new Response("Not the right colomn number", null);
+                        return ToJson.toJson(response);
+                    }
 
-            return taskService.EditDueDate(email, boardName, taskId, dueDate);
-            
+                }
+                catch (Exception e)
+                {
+                    Response response = new Response(e.Message, null);
+                    return ToJson.toJson(response);
+                }
+
+            }
+            else
+            {
+                Response response = new Response("Not available colomn number", null);
+                return ToJson.toJson(response);
+            }
+
+
         }
 
 
@@ -183,8 +284,45 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            return taskService.EditTitle(email, boardName, taskId, title);
-            
+            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            {
+                try
+                {
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                        columnOrdinal)
+                    {
+                        try
+                        {
+                            taskService.EditTitle(email, boardName, taskId, title);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            Response response = new Response(e.Message, null);
+                            return ToJson.toJson(response);
+                        }
+                    }
+                    else
+                    {
+                        Response response = new Response("Not the right colomn number", null);
+                        return ToJson.toJson(response);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Response response = new Response(e.Message, null);
+                    return ToJson.toJson(response);
+                }
+
+            }
+            else
+            {
+                Response response = new Response("Not available colomn number", null);
+                return ToJson.toJson(response);
+            }
+
+
         }
 
 
@@ -199,8 +337,45 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            
-            return taskService.EditDescription(email, boardName, taskId, description); 
+            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            {
+                try
+                {
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                        columnOrdinal)
+                    {
+                        try
+                        {
+                            taskService.EditDescription(email, boardName, taskId, description);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            Response response = new Response(e.Message, null);
+                            return ToJson.toJson(response);
+                        }
+                    }
+                    else
+                    {
+                        Response response = new Response("Not the right colomn number", null);
+                        return ToJson.toJson(response);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Response response = new Response(e.Message, null);
+                    return ToJson.toJson(response);
+                }
+
+            }
+            else
+            {
+                Response response = new Response("Not available colomn number", null);
+                return ToJson.toJson(response);
+            }
+
+
         }
 
 
@@ -214,8 +389,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            
-            return boardService.NextState(email, boardName, taskId);
+            try
+            {
+                boardService.NextState(email, boardName, taskId);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+
 
         }
 
@@ -229,8 +413,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the column's tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumn(string email, string boardName, int columnOrdinal)
         {
-
-            return boardService.GetColum(email, boardName, columnOrdinal);
+            try
+            {
+                return boardService.GetColum(email, boardName, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
 
         }
 
@@ -243,8 +434,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddBoard(string email, string name)
         {
-           
-            return boardService.CreateBoard(name, email);
+            try
+            {
+                boardService.boardController.CreateBoard(email, name);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+            
            
             
         }
@@ -258,7 +458,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The string "{}", unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string RemoveBoard(string email, string name)
         {
-            return boardService.DeleteBoard(name, email);
+            try
+            {
+                boardService.DeleteBoard(name, email);
+                return "{}";
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+            
               
         }
 
@@ -270,8 +480,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with  a list of the in progress tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string InProgressTasks(string email)
         {
-            return boardService.InProgress(email);
+            try
+            {
+                boardService.InProgress(email);
+                Response response = new Response(null, email);
+                return ToJson.toJson(response);
 
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+            
         }
     }
 }

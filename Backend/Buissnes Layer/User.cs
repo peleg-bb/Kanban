@@ -9,19 +9,25 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
+    /// <summary>
+    /// A class for representing a User. Should only be instantiated by the UserController
+    /// </summary>
     public class User
     {
         public string username { get; }
         private string password;
 
 
-        public User(string username, string password)
+        internal User(string username, string password)
         {
             this.username = username;
             this.password = password;
         }
 
-        public void ChangePassword(string oldP, string newP)
+        /// <summary>
+        /// Allows the UserController to change a user's password.
+        /// </summary>
+        internal void ChangePassword(string oldP, string newP)
         {
             if (oldP == this.password)
             {
@@ -34,8 +40,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-
-        public bool ValidatePassword(string password)
+        /// <summary>
+        /// Returns whether the user's password is correct.
+        /// </summary>
+        internal bool ValidatePassword(string password)
         {
             return this.password == password;
         }

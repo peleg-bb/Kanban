@@ -44,8 +44,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>bool </returns>
         public bool UserHasThisBoard(string userEmail,string boardName) //checks if board exists
         {
+            
             if (this.Boards[userEmail].ContainsKey(boardName))
             { 
+                
                 return true;
             }
             else 
@@ -174,6 +176,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
 
         }
+
         /// <summary>
         /// This method get a specific board to the specific user.
         /// </summary>

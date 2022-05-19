@@ -132,7 +132,7 @@ namespace BackendTests.ServiceLayer
         public void ValidEditDescriptionTest()
         {
             
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
             string newDescription = "Does it change?";
