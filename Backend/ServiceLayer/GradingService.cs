@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Configuration;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 
@@ -137,8 +138,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardService.LimitColumn(email, boardName, columnOrdinal, limit);
-                return "{}";
+                if (columnOrdinal != null && limit != null)
+                {
+
+                    boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+                    return "{}";
+                }
+                else
+                {
+                    throw new ArgumentException("value can not be null!!");
+                }
+                
             }
             catch (Exception e)
             {
@@ -158,8 +168,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                string limVal= boardService.GetColumnLimit(email, boardName, columnOrdinal);
-                return limVal;
+                if (columnOrdinal != null)
+                {
+
+                    string limVal = boardService.GetColumnLimit(email, boardName, columnOrdinal);
+                    return limVal;
+                }
+                else
+                {
+                    throw new ArgumentException("value can not be null!!");
+                }
+                
             }
             catch (Exception e)
             {
@@ -181,8 +200,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
-                return colName;
+                if (columnOrdinal != null)
+                {
+
+                    string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
+                    return colName;
+                }
+                else
+                {
+                    throw new ArgumentException("value can not be null!!");
+                }
+               
             }
             catch (Exception e)
             {
@@ -204,8 +232,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
+            
             try
             {
+
                 boardService.AddTask(email, boardName, title, description, dueDate);
                 return email;
             }
@@ -265,7 +295,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             else
             {
-                Response response = new Response("Not available colomn number", null);
+                Response response = new Response("Not available column number", null);
                 return ToJson.toJson(response);
             }
 
@@ -391,14 +421,41 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardService.NextState(email, boardName, taskId);
-                return "{}";
+                if (columnOrdinal != null && taskId!= null)
+                {
+
+                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
+                    {
+                        try
+                        {
+                            boardService.NextState(email, boardName, taskId);
+                            return "{}";
+                        }
+                        catch (Exception e)
+                        {
+                            throw new ArgumentException(e.Message);
+                            //Response response = new Response(e.Message, null);
+                            //return ToJson.toJson(response);
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("task does not at columnOrdinal given");
+
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("value can not be null!!");
+                }
+               
             }
             catch (Exception e)
             {
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
+            
 
 
         }
@@ -415,7 +472,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                return boardService.GetColum(email, boardName, columnOrdinal);
+                if (columnOrdinal != null)
+                {
+                    return boardService.GetColum(email, boardName, columnOrdinal);
+                }
+                else
+                {
+                    throw new ArgumentException("value can not be null!!");
+                }
+                
             }
             catch (Exception e)
             {
@@ -482,9 +547,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardService.InProgress(email);
-                Response response = new Response(null, email);
-                return ToJson.toJson(response);
+                //List<Task> t = boardService.InProgress(email);
+                //Response response = new Response(null, email);
+                //return ToJson.toJson(response);
+                return boardService.InProgress(email);
 
             }
             catch (Exception e)

@@ -37,12 +37,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.CreateBoard(userEmail, name);
-                Response r = new Response(null, true);
+                String msg = String.Format("Board Added Successfully! to email :{0}", userEmail);
+                log.Info(msg);
+                // Response r = new Response(null, true);
                 // return JsonSerializer.Serialize(true);
-                return r.OKJson();
+                //return r.OKJson();
+                return "{}";
             }
             catch (Exception e)
             {
+                log.Warn(e.Message);
                 //RETURN BAD JASON
                 Response r = new Response(e.Message, false);
                 return r.BadJson();
@@ -61,31 +65,43 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>Response with user-email, unless an error occurs .</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            try
+            if (boardController.userController.IsLoggedIn(email))
             {
-                Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
                 try
                 {
-                    b.AddTask(title, description, dueDate);
 
-                    Response r = new Response(null, email);
-                    return r.OKJson();
+                    Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
+                    try
+                    {
+                        b.AddTask(title, description, dueDate);
+                        String msg = String.Format("task added Successfully! to email :{0}", email);
+                        log.Info(msg);
+                        Response r = new Response(null, email);
+                        return r.OKJson();
+                    }
+                    catch (Exception e)
+                    {
+                        log.Warn(e.Message);
+                        //Response r = new Response(e.Message, false);
+                        //return r.BadJson(); //return exception when reached max task limit
+                        throw new Exception(e.Message);
+                    }
+
                 }
                 catch (Exception e)
                 {
                     //Response r = new Response(e.Message, false);
-                    //return r.BadJson(); //return exception when reached max task limit
+                    log.Warn(e.Message);
+                    //return r.BadJson();
                     throw new Exception(e.Message);
                 }
 
             }
-            catch (Exception e)
+            else
             {
-                Response r = new Response(e.Message, false);
-                log.Warn(e.Message);
-
-                return r.BadJson();
+                throw new ArgumentException("user not logged in");
             }
+           
            
         }
 
@@ -113,17 +129,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 catch (Exception e)
                 {
                     //RETURN BAD JASON
-                    Response r = new Response(e.Message, false);
+                    //Response r = new Response(e.Message, false);
                     log.Warn(e.Message);
+                    throw new Exception(e.Message);
 
-                    return r.BadJson();
+                    //return r.BadJson();
 
                 }
             }
             catch (Exception e)
             {
-                Response r = new Response(e.Message, false);
-                return r.BadJson();
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+                //Response r = new Response(e.Message, false);
+                //return r.BadJson();
             }
            
 
@@ -150,10 +169,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
 
                 //RETURN BAD JASON
-                Response r = new Response(e.Message, false);
+                //Response r = new Response(e.Message, false);
                 log.Warn(e.Message);
-                return r.BadJson();
-
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
         }
         /// <summary>
@@ -168,13 +187,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 
                 List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
                 Response r = new Response(null, proCol);
-                return r.OKJson();
+                String msg = String.Format("got InProgress list! userEmail = {0} ", email);
+                log.Info(msg);
+                return ToJson.toJson(proCol);
             }
             catch (Exception e)
             {
-
-                Response r = new Response(e.Message, false);
-                return r.BadJson();
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+                //Response r = new Response(e.Message, false);
+                //return r.BadJson();
             }
 
         }
@@ -190,14 +212,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 List<Buissnes_Layer.Task> allCol = boardController.GetBoard(email, boardName).GEtColList(columnOrdinal);
-                Response r = new Response(null, allCol);
-                return r.OKJson();
+                //Response r = new Response(null, allCol);
+                String msg = String.Format("Got the Column! columnOrdinal = {0} ", columnOrdinal);
+                log.Info(msg);
+                //return r.OKJson();
+                return ToJson.toJson(allCol);
             }
             catch (Exception e)
             {
-
-                Response r = new Response(e.Message, false);
-                return r.BadJson();
+                log.Warn(e.Message);
+                //Response r = new Response(e.Message, false);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
 
         }
@@ -214,13 +240,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
-                Response r = new Response(null, true);
+                Response r = new Response(null, true); 
+                String msg = String.Format("Limit Column has been set! limit = {0}  at columnOrdinal :{1}", limit, columnOrdinal);
+                log.Info(msg);
                 return r.OKJson();
+                
             }
             catch (Exception e)
             {
-                Response r = new Response(e.Message, false);
-                return r.BadJson();
+                log.Warn(e.Message);
+                //Response r = new Response(e.Message, false);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
         }
         /// <summary>
@@ -236,14 +267,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 string colVal = boardController.GetBoard(email, boardName).GetNameOrdinal(columnOrdinal);
                 Response r = new Response(null, colVal);
+                String msg = String.Format("Got the Column Name! columnOrdinal{0}", columnOrdinal);
+                log.Info(msg);
                 // return JsonSerializer.Serialize(true);
-               // return r.OKJson();
-               return colVal;
+                // return r.OKJson();
+                return colVal;
             }
             catch (Exception e)
             {
-                Response r = new Response(e.Message, false);
-                return r.BadJson();
+                log.Warn(e.Message);
+                //Response r = new Response(e.Message, false);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
         }
         /// <summary>
@@ -259,16 +294,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 int colVal = boardController.GetBoard(email, boardName).GetMaxTask(columnOrdinal);
                 Response r = new Response(null, colVal);
+                String msg = String.Format("Got  the Column Limit! columnOrdinal = {0} ", columnOrdinal);
+                log.Info(msg);
                 // return JsonSerializer.Serialize(true);
-               // return r.OKJson();
-               return colVal.ToString();
+                // return r.OKJson();
+                return colVal.ToString();
             }
             catch (Exception e)
             {
-                // Console.WriteLine(e);
-                Response r = new Response(e.Message, false);
-                // return JsonSerializer.Serialize(true);
-                return r.BadJson();
+                log.Warn(e.Message);
+                //// Console.WriteLine(e);
+                //Response r = new Response(e.Message, false);
+                //// return JsonSerializer.Serialize(true);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
 
         }
