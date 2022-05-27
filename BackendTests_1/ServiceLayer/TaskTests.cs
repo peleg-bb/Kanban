@@ -207,6 +207,74 @@ namespace BackendTests.ServiceLayer
                 response.BadJson()
             );
         }
+
+        /// <summary>
+        /// This methods checks that a task indeed has a user assigned to it.
+        /// </summary>
+        public void GetAssignee()
+        {
+
+        }
+
+        /// <summary>
+        /// This methods checks that a task indeed has a user assigned to it.
+        /// </summary>
+        public void GetAssignee_2()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests a successful assignment of a user to a task - by the user himself
+        /// </summary>
+        public void ValidAssignUser()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests a successful assignment of a user to a task - by another user
+        /// </summary>
+        public void ValidAssignUser_2()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests an attempt to assign a user who is not a board member - resulting in an illegal assignment
+        /// </summary>
+        public void InvalidAssignUser()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests a legal change of assignee.
+        /// </summary>
+        public void ValidChangeAssignee()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests the changing the assigned person of a task,
+        /// to a person who is not a board member - resulting in an invalid reassignment
+        /// </summary>
+        public void InvalidChangeAssignee()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests the changing the assigned person of a task,
+        /// by a person who was not the assigned person - resulting in an invalid reassignment.
+        /// </summary>
+        public void InvalidChangeAssignee_2()
+        {
+
+        }
+
+
     }
 }
 

@@ -218,6 +218,18 @@ namespace BackendTests.ServiceLayer
         }
 
         /// <summary>
+        /// This method tests a valid get of InProgress tasks of a user in the system according to requirement 16.
+        /// A successful test returns all InProgress tasks that the user in assigned to.
+        /// </summary>
+        [TestMethod()]
+        public void ValidInProgress_2()
+        {
+            string email = "tamar@gmail.com";
+            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(_boardService.boardController.GetAllInPrograss(email)));
+
+        }
+
+        /// <summary>
         /// This method tests a invalid get of InProgress tasks of a user in the system according to requirement 16.
         /// </summary>
         [TestMethod()]
@@ -375,6 +387,138 @@ namespace BackendTests.ServiceLayer
             }
             
         }
+
+        /// <summary>
+        /// Tests if a board has an ID
+        /// </summary>
+        public void GetBoardID()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests if a board has an owner
+        /// </summary>
+        public void GetOwner()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests the successful deletion of a board
+        /// </summary>
+        public void ValidDeleteBoard()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests the deletion of a board which doesn't exist
+        /// </summary>
+        public void InvalidDeleteBoard()
+        {
+
+        }
+
+
+        /// <summary>
+        /// Tests a deletion attempt of a board by a user who is not the owner
+        /// </summary>
+        public void InvalidDeleteBoard_2()
+        {
+
+        }
+
+
+        /// <summary>
+        /// Tests the successful enrollment of a user to a board
+        /// </summary>
+        public void JoinBoardSuccessfully()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests an invalid enrollment to a board which doesn't exist.
+        /// </summary>
+        public void JoinBoardUnsuccessfully()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests an invalid enrollment to a board which was deleted.
+        /// </summary>
+        public void JoinBoardUnsuccessfully_2()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests a valid quitting of a board
+        /// </summary>
+        public void LeaveBoardSuccessfully()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests an attempt to leave a board by a user who was not a member
+        /// </summary>
+        public void LeaveBoardUnsuccessfully()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests an attempt to leave the board by the board owner - which is defined to be illegal
+        /// </summary>
+        public void LeaveBoardUnsuccessfully_2()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests the valid exchange of ownership
+        /// </summary>
+        public void ChangeOwnerSuccessfully()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests an attempt to assign an owner who is not currently a board member
+        /// </summary>
+        public void ChangeOwnerUnsuccessfully()
+        {
+
+        }
+
+        /// <summary>
+        /// Tests an attempt to "steal" a board ownership - ie. a user who is not the owner tries to assign themselves as the owner.
+        /// </summary>
+        public void ChangeOwnerUnsuccessfully_2()
+        {
+
+        }
+
+        /// <summary>
+        /// This methods checks that a task indeed has a user assigned to it.
+        /// </summary>
+        public void AddTask_2()
+        {
+
+        }
+
+        /// <summary>
+        /// This methods checks that a task indeed has a user assigned to it.
+        /// </summary>
+        public void GetAssignee()
+        {
+
+        }
+
+
     }
 }
 

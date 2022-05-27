@@ -504,11 +504,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             }
             catch (Exception e)
+
             {
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
             
         }
+
+
     }
 }
