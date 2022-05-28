@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public void ChangePassword(string NewPassword)
         {
-
+            
+            
+            
         }
     }
 }
