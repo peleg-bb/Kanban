@@ -15,11 +15,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public string name;
         private int[] maxTasks = new int[] {-1,-1,-1};
         private int[] numTasks =new int[] {0,0,0};
-
-        public Board(string name)
+        private int BoardId;
+        private string Owner;
+        private List<string> listOfJoiners = new List<string>();
+        public Board(string name , int BID , string owner)
         {
             this.name = name;
+            this.Owner = owner;
+            this.BoardId = BID;
+
         }
+
         public string GetName()   
         {
             return this.name;
@@ -28,6 +34,27 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.name = newName;
         }
+        public string GetOwner()
+        {
+            return this.Owner;
+        }
+        public void AddToJoinList(string newMember)
+        {
+            this.listOfJoiners.Add(newMember); 
+        }
+        public List<string> GetListOfJoiners()
+        {
+            return this.listOfJoiners;
+        }
+        public bool IsInListOfJoiners(string userEmail)
+        {
+            return this.listOfJoiners.Contains(userEmail);
+        }
+        public void SetOwner(string newOwner)
+        {
+            this.Owner = newOwner;
+        }
+
         /// <summary>
         /// This method gets the limit of a specific column.
         /// </summary>
@@ -55,13 +82,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (whichBoard == 0 || whichBoard == 1 || whichBoard == 2)
             {
-                if (this.maxTasks[whichBoard] == -1)
+                if ( newMaxTask == -1)
+                {
+                    this.maxTasks[whichBoard] = newMaxTask;
+                }
+                else if(this.numTasks[whichBoard]<newMaxTask)
                 {
                     this.maxTasks[whichBoard] = newMaxTask;
                 }
                 else
                 {
-                    throw new ArgumentException("CAN'T CHANGE MAX, MAX ALREADY BEEN CHANGED");
+                    throw new ArgumentException("CAN'T CHANGE MAX, NUMBER OF TASK AT THIS BOARD IS HIGHER!");
                 }
             }
             else
@@ -151,9 +182,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
            if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
            {
                this.tasks[newTask.Id] = newTask;
-                Console.WriteLine("taskId"+newTask.Id);
-                this.numTasks[0]++;
-                Console.WriteLine(numTasks.Length);
+               this.numTasks[0]++;
            }
            else
            {
@@ -170,6 +199,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>void, unless an error occurs </returns>
         public void AddTask(string title, string description, DateTime dueDate)
         {
+
             Task newTask = new Task(title, dueDate, description);
             try
             {
