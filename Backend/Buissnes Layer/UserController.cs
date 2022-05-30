@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -18,6 +19,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         private Dictionary<string, User> users;
         private List<string> loggedIn;
+        private UserDTOMapper userDtoMapper;
         /// <summary>
         /// Constructor for the class. Instantiates its private fields.
         /// The class must be instantiated in order to call its methods and functionality.
@@ -26,6 +28,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.users = new Dictionary<string, User>();
             this.loggedIn = new List<string>();
+            this.userDtoMapper = new UserDTOMapper();
         }
 
         /// <summary>
@@ -107,6 +110,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     User u = new User(email, password);
                     users.Add(email, u);
+                    userDtoMapper.CreateUser(email, password);
                 }
             }
             else
@@ -125,6 +129,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     User u = new User(email, password);
                     users.Add(email, u);
+                    userDtoMapper.CreateUser(email, password);
                 }
                 
             }
