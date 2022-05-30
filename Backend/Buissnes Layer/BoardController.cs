@@ -15,13 +15,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string,Board> ownerBoards = new Dictionary<string,Board>();
         public UserController userController;
         public int bId { get; }
-        private static int BID = 0;
+        private int BID = 0;
 
         public BoardController(UserController UC)
         {
             this.bId = BID;
             this.userController = UC;
-            //BID += 1;
+            //this.BID=BoardDTOMapper.getCount();
         }
         /// <summary>
         /// This method checks if a user has any board.
@@ -85,6 +85,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             this.ownerBoards.Add(userEmail,newBoard);
                             BID++;
                             this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
+                            //this.BoardDTOMapper.createBoard();
                         }
                         else
                         {
@@ -102,6 +103,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         Dictionary<string, Board> board = new Dictionary<string, Board>();
                         board.Add(boardName, newBoard);
                         BoardsOfUsers.Add(userEmail, board);
+                        //this.BoardDTOMapper.createBoard();
                     }
 
                 }
