@@ -10,12 +10,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class BoardController
     {
-        private Dictionary<string, Dictionary<string,Board>> Boards = new Dictionary<string, Dictionary<string, Board>>();
+
+        private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
+        private Dictionary<string,Board> ownerBoards = new Dictionary<string,Board>();
         public UserController userController;
+        public int bId { get; }
+        private static int BID = 0;
 
         public BoardController(UserController UC)
         {
+            this.bId = BID;
             this.userController = UC;
+            //BID += 1;
         }
         /// <summary>
         /// This method checks if a user has any board.
@@ -24,7 +30,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>bool </returns>
         public bool UserHasAnyBoard(string userEmail) //checks if user has any board
         {
-            if (Boards.ContainsKey(userEmail))
+            if (BoardsOfUsers.ContainsKey(userEmail))
             {
                 return true;
 
@@ -45,7 +51,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public bool UserHasThisBoard(string userEmail,string boardName) //checks if board exists
         {
             
-            if (this.Boards[userEmail].ContainsKey(boardName))
+            if (this.BoardsOfUsers[userEmail].ContainsKey(boardName))
             { 
                 
                 return true;
@@ -73,8 +79,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         if (!UserHasThisBoard(userEmail, boardName))
                         {
-                            Board newBoard = new Board(boardName);
-                            this.Boards[userEmail].Add(boardName, newBoard);
+                            Board newBoard = new Board(boardName , this.bId , userEmail);
+                            newBoard.SetOwner(userEmail); // set who the owner of the new board
+                            newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                            this.ownerBoards.Add(userEmail,newBoard);
+                            BID++;
+                            this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
                         }
                         else
                         {
@@ -84,10 +94,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     }
                     else
                     {
-                        Board newBoard = new Board(boardName);
+                        Board newBoard = new Board(boardName , this.bId, userEmail);
+                        newBoard.SetOwner(userEmail);// set who the owner of the new board
+                        newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                        this.ownerBoards.Add(userEmail, newBoard);
+                        BID++;
                         Dictionary<string, Board> board = new Dictionary<string, Board>();
                         board.Add(boardName, newBoard);
-                        Boards.Add(userEmail, board);
+                        BoardsOfUsers.Add(userEmail, board);
                     }
 
                 }
@@ -103,6 +117,33 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             
         }
         /// <summary>
+        /// This method changes board owner.
+        /// </summary>
+        /// <returns>void.</returns>
+        public void changeOwner(string currntUserEmail,string nextUserEmail , string boardName)
+        {
+            try
+            {
+                if((userController.IsLoggedIn(currntUserEmail)))
+                {
+                    if (ownerBoards[currntUserEmail].IsInListOfJoiners(nextUserEmail))
+                    {
+                        ownerBoards[currntUserEmail].SetOwner(nextUserEmail);
+                        Board value = ownerBoards[currntUserEmail];
+                        ownerBoards.Remove(currntUserEmail);
+                        ownerBoards.Add(nextUserEmail,value);
+                    }
+                }
+                {
+                    throw new ArgumentException("user not logged in");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+        }
+        /// <summary>
         /// This method returns all the In progress tasks of the user.
         /// </summary>
         /// <returns>Response with a list of the in progress tasks, unless an error occurs .</returns>
@@ -112,9 +153,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (userController.IsLoggedIn(userEmail))
                 {
-                    if (Boards.ContainsKey(userEmail))
+                    if (BoardsOfUsers.ContainsKey(userEmail))
                     {
-                        Dictionary<string, Board> boards = Boards[userEmail];
+                        Dictionary<string, Board> boards = BoardsOfUsers[userEmail];
                         List<Task> taskInProgList = new List<Task>();
                         foreach (var item in boards.Keys)
                         {
@@ -153,9 +194,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (userController.IsLoggedIn(userEmail))
                 {
+                    if (ownerBoards[userEmail].name == boardName)
                     if (UserHasThisBoard(userEmail, boardName))
                     {
-                        this.Boards[userEmail].Remove(boardName);
+                        this.BoardsOfUsers[userEmail].Remove(boardName);
 
                     }
                     else
@@ -191,7 +233,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     if (UserHasThisBoard(userEmail, boardName))
                     {
-                        return this.Boards[userEmail][boardName];
+                        return this.BoardsOfUsers[userEmail][boardName];
                     }
                     else
                     {
