@@ -53,9 +53,7 @@ namespace BackendTests.ServiceLayer
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
 
-            string path = Path.GetFullPath(Path.Combine(
-                Directory.GetCurrentDirectory(), "kanban.db"));
-            Console.WriteLine(path);
+            userTests.createUserTest();
 
             userService.CreateUser(email1, password);
             grading.Register(email1, password);
