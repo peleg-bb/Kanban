@@ -99,7 +99,7 @@ namespace BackendTests.ServiceLayer
             string newTitle = "new title";
             string description = "Does it change?";
             //act
-            Response response = new Response(null, new Task(newTitle, new DateTime(2025, 8, 14), description));
+            Response response = new Response(null, this.boardService.boardController.GetBoard(email, boardName).GetTask(taskId)); ;
             string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
             Assert.AreEqual(jsonup,
                 response.OKJson()
@@ -115,13 +115,13 @@ namespace BackendTests.ServiceLayer
         {
             string email = "tamar@gmail.com";
             string boardName = "testName";
-            int taskId = 1;
+            int taskId = 0;
             string newTitle = null;
             string description = "Does it change?";
             //act
             Response response = new Response("Value cannot be null.", new Task(newTitle, new DateTime(2025, 8, 14), description));
 
-            string jsonup = this.grading.UpdateTaskTitle(email, boardName,0, taskId, newTitle);
+            string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
             Assert.AreEqual(jsonup,
                 response.BadJson()
             );
@@ -139,7 +139,7 @@ namespace BackendTests.ServiceLayer
             int taskId = 0;
             string newDescription = "Does it change?";
             string title = "HW";
-            Response response = new Response(null,new Task(title,new DateTime(2025, 6, 15), newDescription));
+            Response response = new Response(null,this.boardService.boardController.GetBoard(email,boardName).GetTask(taskId));
             //act
             string jsonup = this.taskService.EditDescription(email, boardName, taskId, newDescription);
             Assert.AreEqual(jsonup,
@@ -153,7 +153,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void InvalidEditDescriptionTest()
         {
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
             string newDescription = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids.";
@@ -173,14 +173,14 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ValidEditDueDateTest()
         {
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
             string title = "HW";
             string description = "Does it change?";
             DateTime newDueDate = new DateTime(2025,8,14);
             //act
-            Response response = new Response(null, new Task(title, newDueDate, description));
+            Response response = new Response(null, this.boardService.boardController.GetBoard(email, boardName).GetTask(taskId));
 
             string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
             Assert.AreEqual(jsonup,
@@ -194,7 +194,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void InValidEditDueDateTest()
         {
-            string email = "test@gmail.com";
+            string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
             string title = "HW";
@@ -207,6 +207,74 @@ namespace BackendTests.ServiceLayer
                 response.BadJson()
             );
         }
+
+        /// <summary>
+        /// This methods checks that a task indeed has a user assigned to it.
+        /// </summary>
+        public void GetAssignee()
+        {
+
+        }
+
+        /// <summary>
+        /// This methods checks that a task indeed has a user assigned to it.
+        /// </summary>
+        public void GetAssignee_2()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests a successful assignment of a user to a task - by the user himself
+        /// </summary>
+        public void ValidAssignUser()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests a successful assignment of a user to a task - by another user
+        /// </summary>
+        public void ValidAssignUser_2()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests an attempt to assign a user who is not a board member - resulting in an illegal assignment
+        /// </summary>
+        public void InvalidAssignUser()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests a legal change of assignee.
+        /// </summary>
+        public void ValidChangeAssignee()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests the changing the assigned person of a task,
+        /// to a person who is not a board member - resulting in an invalid reassignment
+        /// </summary>
+        public void InvalidChangeAssignee()
+        {
+
+        }
+
+        /// <summary>
+        /// This method tests the changing the assigned person of a task,
+        /// by a person who was not the assigned person - resulting in an invalid reassignment.
+        /// </summary>
+        public void InvalidChangeAssignee_2()
+        {
+
+        }
+
+
     }
 }
 

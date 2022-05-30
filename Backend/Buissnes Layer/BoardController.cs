@@ -10,6 +10,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
     public class BoardController
     {
+
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,Board> ownerBoards = new Dictionary<string,Board>();
         public UserController userController;

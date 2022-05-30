@@ -46,14 +46,17 @@ namespace BackendTests.ServiceLayer
             TaskService taskService = new TaskService(boardService.boardController);
             UserTests userTests = new UserTests(userController, userService);
             GradingService grading = new GradingService();
-
             string email1 = "tamar@gmail.com";
             string password = "Ai123456";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
-            Console.WriteLine("Hello");
+
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            Console.WriteLine(path);
+
             userService.CreateUser(email1, password);
             grading.Register(email1, password);
             userService.Login(email1, password);
@@ -62,8 +65,6 @@ namespace BackendTests.ServiceLayer
             grading.AddBoard(email1, boardName);
             boardService.AddTask(email1, boardName, title, description, dueDate);
 
-           
-            TaskTests tests = new TaskTests(taskService, userService, boardService);
 
             BoardTest boraTest = new BoardTest(boardService);
             boraTest.ValidCreateBoardTest();
@@ -81,7 +82,6 @@ namespace BackendTests.ServiceLayer
             boraTest.InvalidGetColumnLimit();
             boraTest.ValidGetColumnName();
             boraTest.InvalidGetColumnName();
-            boraTest.ValidInProgress();
             boraTest.InvalidInProgress();
             boraTest.ValidLimitColumn();
             boraTest.InvalidLimitColumn();
@@ -89,8 +89,9 @@ namespace BackendTests.ServiceLayer
             boraTest.InvalidDeleteBoardTest();
 
             grading.AddTask(email1, boardName, title, description, dueDate);
+            TaskTests tests = new TaskTests(taskService, userService, boardService, grading);
 
-            TaskTests tests = new TaskTests(taskService, userService, boardService,grading);
+
             userTests.createUserTest();
             userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
@@ -100,6 +101,8 @@ namespace BackendTests.ServiceLayer
             userTests.logoutTest();
             userTests.invalidLogoutTest();
             userTests.invalidUserCreation_3();
+
+            
 
 
 
@@ -193,13 +196,105 @@ namespace BackendTests.ServiceLayer
 
 
 
+            //BoardTest boraTest = new BoardTest(boardService);
+            //boraTest.ValidCreateBoardTest();
+            //boraTest.InvalidCreateBoardTest();
+            //boraTest.InvalidCreateBoardTest2();
+            //boraTest.AddValidTaskTest();
+            //boraTest.AddInvalidTaskTest2();
+            //boraTest.ValidNextStateTest();
+            //boraTest.InvalidNextStateTest();
+            //boraTest.InvalidNextStateTest2();
+            //boraTest.InvalidNextStateTest3();
+            //boraTest.ValidDeleteBoardTest();
+            //boraTest.InvalidDeleteBoardTest();
+            //boraTest.ValidGetColum();
+            //boraTest.InvalidGetColum();
+            //boraTest.ValidGetColumnLimit();
+            //boraTest.InvalidGetColumnLimit();
+            //boraTest.ValidGetColumnName();
+            //boraTest.InvalidGetColumnName();
+            //boraTest.ValidInProgress();
+            //boraTest.InvalidInProgress();
+            //boraTest.ValidLimitColumn();
+            //boraTest.InvalidLimitColumn();
+            //BoardTest boraTest = new BoardTest(boardService);
+            //boraTest.AddInvalidTaskTest();
+            //UserTests userTests = new UserTests(userController, userService);
+            //userTests.createUserTest();
+            //userTests.validUserLoginTest();
+            //userTests.invalidUserLoginTest();
+            //userTests.invalidUserCreation();
+            //userTests.invalidLoginTest_2();
+            //userTests.invalidUserCreation_2();
+            //userTests.logoutTest();
+            //userTests.invalidLogoutTest();
+            // Console.WriteLine("hey again");
+            // GradingService gradingService = new GradingService();
+            // string emailll = "whyy@gmail.com";
+            // string board1 = "first";
+            // gradingService.Register(emailll, "Aka123k123");
+            // gradingService.Login(emailll, "Aka123k123");
+            // string invalid1 = "jgiosejiooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooojjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
+            // Console.WriteLine(gradingService.AddBoard(emailll, board1));
+            // Console.WriteLine(gradingService.AddBoard("sds", "ads"));//suppose throw user error
+            // Console.WriteLine(gradingService.AddTask(emailll, board1, "bRAND", "HELLOW WORLD", DateTime.Now));
+            // Console.WriteLine(gradingService.AddTask(emailll, board1, "new", "HELLOW WORLD", DateTime.Now));
+            // Console.WriteLine(gradingService.AddTask("ddd", board1, "new", "HELLOW WORLD", DateTime.Now));//suppose throw user error
+            // Console.WriteLine(gradingService.AddBoard(emailll, board1)); //supose to throw board exception
+            // Console.WriteLine("NOW I AM CHECKING ADVANCE TASK!!");
+            // Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 0, 0));
+            // Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 1, 0));
+            // Console.WriteLine(gradingService.AdvanceTask("fff", board1, 0, 0));//suppose throw user error
+            // Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 2, 0));// at Done
+            // Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 0, 1));
+            // Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 0, 1));//dose not exist
+            //// Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 1, 1));
+            // Console.WriteLine(gradingService.AddTask(emailll, board1, "new", "HELLOW WORLD", DateTime.Now)); // no such task in column 0
+            // Console.WriteLine(gradingService.AdvanceTask(emailll, board1, 0, 2));
+            // Console.WriteLine("NOW I AM InProgress TASK!!");
+            // Console.WriteLine(gradingService.InProgressTasks(emailll));
+            // Console.WriteLine(gradingService.InProgressTasks("sss"));
+            // Console.WriteLine("NOW I AM LimitColumn TASK!!");
+            // Console.WriteLine(gradingService.LimitColumn(emailll, board1, 1, 5));//valid
+            // Console.WriteLine(gradingService.LimitColumn(emailll, board1, 1, 4));//Valid
+            // Console.WriteLine(gradingService.LimitColumn(emailll, board1, 1, -1));//Valid
+            // Console.WriteLine(gradingService.LimitColumn(emailll, board1, 2, 0));//InValid amount
+            // Console.WriteLine(gradingService.LimitColumn(emailll, board1, 4, 10));// invalid column
+            // Console.WriteLine(gradingService.LimitColumn(emailll, "ddd", 2, 10));// invalid board
+            // Console.WriteLine(gradingService.LimitColumn("ssds", board1, 1, 10));//user does not exist
+            // Console.WriteLine("NOW I AM GetColumnLimit TASK!!");
+            // Console.WriteLine(gradingService.GetColumnLimit("emailll", board1, 1));
+            // Console.WriteLine(gradingService.GetColumnLimit(emailll, board1, 4));
+            // Console.WriteLine(gradingService.GetColumnLimit(emailll, "fff", 1));
+            // Console.WriteLine(gradingService.GetColumnLimit(emailll, board1, 1));
+            // Console.WriteLine("NOW I AM GetColumnName TASK!!");
+            // Console.WriteLine(gradingService.GetColumnName(emailll, board1, 5)); // INVALID NUMBER
+            // Console.WriteLine(gradingService.GetColumnName("ds", board1, 2)); // INVALID mail
+            // Console.WriteLine(gradingService.GetColumnName(emailll, "njjj", 2)); // INVALID board
+            // Console.WriteLine(gradingService.GetColumnName(emailll, board1, 2)); // VALID
+            // Console.WriteLine("NOW I AM RemoveBoard TASK!!");
+            // Console.WriteLine(gradingService.RemoveBoard("ff", board1));// INVALID mail
+            // Console.WriteLine(gradingService.RemoveBoard(emailll, "fff"));// INVALID board
+            // Console.WriteLine(gradingService.RemoveBoard(emailll, board1));// VALID 
+            // Console.WriteLine("that it for now !!!!");
+            // userTests.createUserTest();
+
+            // userTests.validUserLoginTest();
+            // userTests.invalidUserLoginTest();
+            // userTests.invalidUserCreation();
+            // userTests.invalidLoginTest_2();
+            // userTests.invalidUserCreation_2();
+            // userTests.logoutTest();
+            // userTests.invalidLogoutTest();
+
             Console.WriteLine("bye");
 
             //BoardTest boraTest = new BoardTest(boardService);
             //boraTest.AddInvalidTaskTest();
             //UserTests userTests = new UserTests(userController, userService);
 
-            
+
             // Console.WriteLine("hey again");
 
             //GradingService gradingService = new GradingService();
@@ -259,7 +354,7 @@ namespace BackendTests.ServiceLayer
             //Console.WriteLine(gradingService.LimitColumn(emailll, null, 2, 10));// invalid board
             //Console.WriteLine(gradingService.LimitColumn("ssds", board1, 1, 10));//user does not exist
             ////Nullable<int> i = null;
-         
+
             //Console.WriteLine(gradingService.LimitColumn(emailll, board1, 1, 4));//Valid
 
             //Console.WriteLine("NOW I AM GetColumnLimit TASK!!");
@@ -278,7 +373,7 @@ namespace BackendTests.ServiceLayer
             //Console.WriteLine(gradingService.RemoveBoard(emailll, board1));// VALID 
             //Console.WriteLine("that it for now !!!!");
 
-=======
+
             // GradingService gradingService = new GradingService();
             // string emailll = "whyy@gmail.com";
             // string board1 = "first";
@@ -360,8 +455,9 @@ namespace BackendTests.ServiceLayer
 
 
 
-
         }
 
     }
+
 }
+

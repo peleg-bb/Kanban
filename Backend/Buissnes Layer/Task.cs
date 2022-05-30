@@ -27,6 +27,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private static int ID = 0;
 
+        private string assignee { set; get; }
+
         public Task (string title, DateTime dueDate, string description="")
         {
             this.Id = ID;
@@ -46,7 +48,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newTitle">The new Title of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        public void EditTitle(string newTitle)
+        internal void EditTitle(string newTitle)
         {
 
             if (newTitle.Length==0 || newTitle.Length>50)
@@ -61,11 +63,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
-        public int GetState()
+        internal int GetState()
         {
             return this.State;
         }
-        public void SetState(int state)
+        internal void SetState(int state)
         {
              this.State=state;
         }
@@ -75,7 +77,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newDescription">The description of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        public void EditDescription(string newDescription)
+        internal void EditDescription(string newDescription)
         {
             if (newDescription.Length>300)
             {
@@ -93,7 +95,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newDueDate">The new due date of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        public void EditDueDate(DateTime newDueDate)
+        internal void EditDueDate(DateTime newDueDate)
         {
             if (newDueDate<=this.CreationTime)
             {
@@ -103,6 +105,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 this.DueDate = newDueDate;
             }
+        }
+
+        internal void EditAssignee(string userEmail)
+        {
+            this.assignee = userEmail;
         }
         
     }
