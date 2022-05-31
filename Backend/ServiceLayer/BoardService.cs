@@ -117,26 +117,33 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
-               // if(b.GetTask(taskId).Assignee == email)
-                try
+                if (b.GetTask(taskId).Assignee == email)
                 {
-                    b.ChangeState(taskId);
-                    Response r = new Response(null, true);
-                    String msg = String.Format("task changed state Successfully! to state :{0}", b.GetTask(taskId).GetState());
-                    log.Info(msg);
+                    try
+                    {
+                        b.ChangeState(taskId);
+                        Response r = new Response(null, true);
+                        String msg = String.Format("task changed state Successfully! to state :{0}", b.GetTask(taskId).GetState());
+                        log.Info(msg);
 
-                    return r.OKJson();
+                        return r.OKJson();
+                    }
+                    catch (Exception e)
+                    {
+                        //RETURN BAD JASON
+                        //Response r = new Response(e.Message, false);
+                        log.Warn(e.Message);
+                        throw new Exception(e.Message);
+
+                        //return r.BadJson();
+
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    //RETURN BAD JASON
-                    //Response r = new Response(e.Message, false);
-                    log.Warn(e.Message);
-                    throw new Exception(e.Message);
-
-                    //return r.BadJson();
-
+                    throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
                 }
+               
             }
             catch (Exception e)
             {
@@ -229,7 +236,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                
                 List<Buissnes_Layer.Task> proCol = boardController.GetAllInPrograss(email);
                 Response r = new Response(null, proCol);
                 String msg = String.Format("got InProgress list! userEmail = {0} ", email);
