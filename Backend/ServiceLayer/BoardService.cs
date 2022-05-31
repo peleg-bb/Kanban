@@ -117,6 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
+               // if(b.GetTask(taskId).Assignee == email)
                 try
                 {
                     b.ChangeState(taskId);
@@ -146,6 +147,50 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
            
 
+        }
+
+        public string JoinBoard(string userEmailOwner, string name, string userEmail)
+        {
+            try
+            {
+                boardController.joinBoard(userEmailOwner, name,userEmail);
+                Response r = new Response(null, true);
+                String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
+                log.Info(msg);
+
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+
+                //RETURN BAD JASON
+                //Response r = new Response(e.Message, false);
+                log.Warn(e.Message);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
+            }
+        }
+
+        public string LeaveBoard(string userEmailOwner, string name, string userEmail)
+        {
+            try
+            {
+                boardController.leaveBoard(userEmailOwner, name, userEmail);
+                Response r = new Response(null, true);
+                String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
+                log.Info(msg);
+
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+
+                //RETURN BAD JASON
+                //Response r = new Response(e.Message, false);
+                log.Warn(e.Message);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
+            }
         }
         /// <summary>
         /// This method delete a board.
