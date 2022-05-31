@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private static int ID = 0;
 
-        private string assignee { set; get; }
+        private string Assignee { set; get; }
 
         public Task (string title, DateTime dueDate, string description="")
         {
@@ -109,7 +109,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditAssignee(string userEmail)
         {
-            this.assignee = userEmail;
+            this.Assignee = userEmail;
         }
         
     }
