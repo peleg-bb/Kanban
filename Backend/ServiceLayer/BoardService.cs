@@ -73,11 +73,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
                     try
                     {
-                        b.AddTask(title, description, dueDate);
-                        String msg = String.Format("task added Successfully! to email :{0}", email);
-                        log.Info(msg);
-                        Response r = new Response(null, email);
-                        return r.OKJson();
+                        if (b.IsInListOfJoiners(email))
+                        {
+                            b.AddTask(title, description, dueDate);
+                            String msg = String.Format("task added Successfully! to email :{0}", email);
+                            log.Info(msg);
+                            Response r = new Response(null, email);
+                            return r.OKJson();
+                        }
+                        else
+                        {
+                            throw new ArgumentException(
+                                "USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
+                        }
+
                     }
                     catch (Exception e)
                     {
@@ -185,6 +194,35 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.leaveBoard(userEmailOwner, name, userEmail);
                 Response r = new Response(null, true);
                 String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
+                log.Info(msg);
+
+                return r.OKJson();
+            }
+            catch (Exception e)
+            {
+
+                //RETURN BAD JASON
+                //Response r = new Response(e.Message, false);
+                log.Warn(e.Message);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
+            }
+        }
+        /// <summary>
+        /// This method transfers a board ownership.
+        /// </summary>
+        /// <param name="currentOwnerEmail">Email of the current owner. Must be logged in</param>
+        /// <param name="newOwnerEmail">Email of the new owner</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
+        public string TransferOwnership(string currentOwnerEmail, string newOwnerEmail, string boardName)
+        {
+            try
+            {
+                //NEED TO USE CHANGEsTATE
+                boardController.switchOwnership(currentOwnerEmail, boardName , newOwnerEmail);
+                Response r = new Response(null, true);
+                String msg = String.Format("Transfer the Ownership!  new Owner userEmail = {0} of board :{1}", newOwnerEmail, boardName);
                 log.Info(msg);
 
                 return r.OKJson();
