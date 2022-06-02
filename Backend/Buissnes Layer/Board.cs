@@ -42,6 +42,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.listOfJoiners.Add(newMember); 
         }
+        public void DeleteFromJoinList(string newMember)
+        {
+            this.listOfJoiners.Remove(newMember);
+        }
         public List<string> GetListOfJoiners()
         {
             return this.listOfJoiners;
@@ -169,6 +173,19 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             return this.inProgress;
         }
+        public List<Task> GetInProgressByAssignee(string assignee)   // property
+        {
+            List<Task> taskInProgList = new List<Task>();
+            foreach (var taski in this.inProgress)
+            {
+                if (taski.Assignee == assignee)
+                {
+                    taskInProgList.Add(taski);
+                }
+            }
+
+            return taskInProgList;
+        }
         public Dictionary<int, Task> GetTasks()   // property
         {
             return this.tasks;
@@ -189,6 +206,20 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException("REACHED MAX TASK LIMIT");
            }
             
+        }
+
+        public void leaveTasks(string userEmail)
+        {
+            List<Task> p= GetInProgress();
+            List<Task> e = this.GEtColList(0);
+            e.AddRange(p);
+            foreach (var taski in e)
+            {
+                if (taski.Assignee == userEmail)
+                {
+                    taski.EditAssignee(null);
+                }
+            }
         }
         /// <summary>
         /// This method adds a new task.

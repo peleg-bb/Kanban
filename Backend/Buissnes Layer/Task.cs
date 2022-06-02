@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private static int ID = 0;
 
-        private string Assignee { set; get; }
+        public string Assignee { private set; get; }
 
         public Task (string title, DateTime dueDate, string description="")
         {
