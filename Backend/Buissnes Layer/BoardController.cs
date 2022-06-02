@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
 
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
-        private Dictionary<string,Board> ownerBoards = new Dictionary<string,Board>();
+        private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
         public int bId { get; }
         private int BID = 0;
@@ -63,6 +63,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             
         }
+
+        public bool isOwnerOfAnyBoard(string userEmail)
+        {
+            if (ownerBoards.ContainsKey(userEmail))
+            {
+                return true;
+            }
+
+            return false;
+        }
         /// <summary>
         /// This method adds a board to the specific user.
         /// </summary>
@@ -79,13 +89,27 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         if (!UserHasThisBoard(userEmail, boardName))
                         {
-                            Board newBoard = new Board(boardName , this.bId , userEmail);
-                            newBoard.SetOwner(userEmail); // set who the owner of the new board
-                            newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
-                            this.ownerBoards.Add(userEmail,newBoard);
-                            BID++;
-                            this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
-                            //this.BoardDTOMapper.createBoard();
+                            if (isOwnerOfAnyBoard(userEmail))
+                            {
+                                Board newBoard = new Board(boardName, this.bId, userEmail);
+                                newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                                this.ownerBoards[userEmail].Add(newBoard.name);
+                                BID++;
+                                this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
+                                //this.BoardDTOMapper.createBoard();
+                            }
+                            else
+                            {
+                                Board newBoard = new Board(boardName, this.bId, userEmail);
+                                List<string> listBoard= new List<string>();
+                                listBoard.Add(newBoard.name);
+                                newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                                this.ownerBoards.Add(userEmail, listBoard);
+                                BID++;
+                                this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
+                                //this.BoardDTOMapper.createBoard();
+                            }
+
                         }
                         else
                         {
@@ -96,9 +120,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     else
                     {
                         Board newBoard = new Board(boardName , this.bId, userEmail);
-                        newBoard.SetOwner(userEmail);// set who the owner of the new board
+                        List<string> listBoard = new List<string>();
+                        listBoard.Add(newBoard.name);
                         newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
-                        this.ownerBoards.Add(userEmail, newBoard);
+                        this.ownerBoards.Add(userEmail, listBoard);
                         BID++;
                         Dictionary<string, Board> board = new Dictionary<string, Board>();
                         board.Add(boardName, newBoard);
@@ -118,6 +143,107 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
+
+        public void joinBoard(string userEmailOwner, string boardName, string userEmailJoiner)
+        {
+            try
+            {
+                if ((userController.IsLoggedIn(userEmailOwner)))
+                {
+                    if (!UserHasThisBoard(userEmailJoiner, boardName))
+                    {
+                        BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
+                        BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("user already joined that board");
+                    }
+                }
+                {
+                    throw new ArgumentException("user not logged in");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+            
+        }
+        public void leaveBoard(string userEmailOwner, string boardName, string userEmailJoiner)
+        {
+            try
+            {
+                if ((userController.IsLoggedIn(userEmailOwner)))
+                {
+                    if (UserHasThisBoard(userEmailJoiner, boardName))
+                    {
+                        if (!ownerBoards[userEmailJoiner].Contains(boardName))
+                        {
+                            BoardsOfUsers[userEmailOwner][boardName].leaveTasks(userEmailJoiner); // all joiner taka become unAssigned
+                            BoardsOfUsers[userEmailOwner][boardName].DeleteFromJoinList(userEmailJoiner);
+                            BoardsOfUsers[userEmailOwner].Remove(boardName);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("OWNER CAN'T LEAVE HIS OWN BOARD!");
+                        }
+
+                    }
+                    else
+                    {
+                        throw new ArgumentException("user doesn't have that board");
+                    }
+                }
+                {
+                    throw new ArgumentException("user not logged in");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+          
+        }
+
+        public void  switchOwnership(string userEmailOwner, string boardName, string userEmailFutureOwner)
+        {
+            try
+            {
+                if ((userController.IsLoggedIn(userEmailOwner)))
+                {
+                    if (ownerBoards[userEmailOwner].Contains(boardName) && BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
+                    {
+                        BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
+                        if (isOwnerOfAnyBoard(userEmailFutureOwner))
+                        {
+                            ownerBoards[userEmailFutureOwner].Add(boardName);
+                            ownerBoards[userEmailOwner].Remove(boardName);
+                        }
+                        else
+                        {
+                            List<string> listBoard = new List<string>();
+                            listBoard.Add(boardName);
+                            ownerBoards.Add(userEmailFutureOwner, listBoard);
+                            ownerBoards[userEmailOwner].Remove(boardName);
+                        }
+
+                    }
+                    else
+                    {
+                        throw new ArgumentException("not the owner of this board!");
+                    }
+                }
+                {
+                    throw new ArgumentException("user not logged in");
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+        }
         /// <summary>
         /// This method changes board owner.
         /// </summary>
@@ -128,10 +254,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if((userController.IsLoggedIn(currntUserEmail)))
                 {
-                    if (ownerBoards[currntUserEmail].IsInListOfJoiners(nextUserEmail))
+                    if (BoardsOfUsers[currntUserEmail][boardName].IsInListOfJoiners(nextUserEmail))
                     {
-                        ownerBoards[currntUserEmail].SetOwner(nextUserEmail);
-                        Board value = ownerBoards[currntUserEmail];
+                        BoardsOfUsers[currntUserEmail][boardName].SetOwner(nextUserEmail);
+                        List<string> value = ownerBoards[currntUserEmail];
                         ownerBoards.Remove(currntUserEmail);
                         ownerBoards.Add(nextUserEmail,value);
                     }
@@ -196,10 +322,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (userController.IsLoggedIn(userEmail))
                 {
-                    if (ownerBoards[userEmail].name == boardName)
                     if (UserHasThisBoard(userEmail, boardName))
                     {
-                        this.BoardsOfUsers[userEmail].Remove(boardName);
+                        if (BoardsOfUsers[userEmail][boardName].GetOwner() == userEmail)
+                        {
+                            this.BoardsOfUsers[userEmail].Remove(boardName);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("THIS USER ISN'T THE OWNER OF THE BOARD ! ");
+                        }
 
                     }
                     else
@@ -241,7 +373,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
                     }
-
+                    
                 }
                 else
                 {
