@@ -29,6 +29,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.users = new Dictionary<string, User>();
             this.loggedIn = new List<string>();
             this.userDtoMapper = new UserDTOMapper();
+            LoadUsers();
         }
 
         /// <summary>
@@ -108,9 +109,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    User u = new User(email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(email, password);
+                    User u = new User(userDto);
                     users.Add(email, u);
-                    userDtoMapper.CreateUser(email, password);
                 }
             }
             else
@@ -127,9 +128,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    User u = new User(email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(email, password);
+                    User u = new User(userDto);
                     users.Add(email, u);
-                    userDtoMapper.CreateUser(email, password);
+                    
                 }
                 
             }
@@ -264,5 +266,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return loggedIn.Contains(email);
         }
 
+        public void LoadUsers()
+        {
+            List<UserDTO> userDtos = userDtoMapper.LoadUsers();
+            foreach (var u in userDtos)
+            {
+                User user = new User(u);
+                users[user.username] = user;
+                // Console.WriteLine($"User {user.username} loaded successfully!");
+            }
+            
+        }
     }
 }

@@ -160,7 +160,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         throw new ArgumentException("user already joined that board");
                     }
                 }
-                {
+                else {
                     throw new ArgumentException("user not logged in");
                 }
             }
@@ -262,7 +262,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         ownerBoards.Add(nextUserEmail,value);
                     }
                 }
-                {
+                else {
                     throw new ArgumentException("user not logged in");
                 }
             }

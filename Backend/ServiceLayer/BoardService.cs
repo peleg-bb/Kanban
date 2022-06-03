@@ -193,7 +193,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 boardController.leaveBoard(userEmailOwner, name, userEmail);
                 Response r = new Response(null, true);
-                String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
+                String msg = String.Format("Left Board! userEmailOwner = {0} the board :{1}", userEmail, name);
                 log.Info(msg);
 
                 return r.OKJson();

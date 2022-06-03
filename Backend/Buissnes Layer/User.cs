@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
@@ -16,12 +17,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         public string username { get; }
         private string password;
+        private UserDTO userDTO;
 
-
-        internal User(string username, string password)
+        /// <summary>
+        /// Constructor. Should only be instantiated by UserController
+        /// </summary>
+        /// <param name="user">A userDTO object, containing a username and a password</param>
+        internal User(UserDTO user)
         {
-            this.username = username;
-            this.password = password;
+            this.username = user.getUsername();
+            this.password = user.getPassword();
+            this.userDTO = user;
         }
 
         /// <summary>
@@ -32,6 +38,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             if (oldP == this.password)
             {
                 this.password = newP;
+                userDTO.ChangePassword(newP);
             }
 
             else
