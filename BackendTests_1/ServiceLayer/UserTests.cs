@@ -24,7 +24,7 @@ namespace BackendTests.ServiceLayer
         {
             Response response = new Response(null, true);
             Console.WriteLine(response.OKJson());
-            Assert.AreEqual(userService.CreateUser("johndoe_2@gmail.com", "Ai1234"), response.OKJson());
+            Assert.AreEqual(userService.CreateUser("johndoe_3@gmail.com", "Ai1234"), response.OKJson());
             
             Console.WriteLine("User created successfully!");
         }
@@ -36,7 +36,7 @@ namespace BackendTests.ServiceLayer
         public void validUserLoginTest()
         {
             Response response = new Response(null, true);
-            Console.WriteLine(response.OKJson());
+            Console.WriteLine(ToJson.toJson(response));
 
             Assert.AreEqual(userService.Login("johndoe@gmail.com", "Ai1234"), response.OKJson());
             Console.WriteLine("Login successful!");
@@ -121,6 +121,11 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(response.BadJson());
             Assert.AreEqual(userService.logout("johndoe@gmail.com"), response.BadJson());
             Console.WriteLine("User was already logged out.");
+        }
+
+        public void LoadUsersTest()
+        {
+            userController.LoadUsers();
         }
     }
 }

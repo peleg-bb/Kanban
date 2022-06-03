@@ -18,11 +18,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.password = password;
         }
 
+        internal string getUsername()
+        {
+            return this.username;
+        }
+
+        internal string getPassword()
+        {
+            return this.password;
+        }
+
         public void ChangePassword(string NewPassword)
         {
-            
-            
-            
+            this.password = NewPassword;
         }
     }
 }

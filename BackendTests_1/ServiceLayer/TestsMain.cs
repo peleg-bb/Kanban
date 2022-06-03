@@ -53,6 +53,12 @@ namespace BackendTests.ServiceLayer
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
 
+            
+            userTests.validUserLoginTest();
+
+            userTests.LoadUsersTest();
+
+
             userTests.createUserTest();
 
             userService.CreateUser(email1, password);
