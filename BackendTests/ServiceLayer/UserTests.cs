@@ -24,7 +24,7 @@ namespace BackendTests.ServiceLayer
         {
             Response response = new Response(null, true);
             Console.WriteLine(response.OKJson());
-            Assert.AreEqual(userService.CreateUser("johndoe_3@gmail.com", "Ai1234"), response.OKJson());
+            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Ai1234"), response.OKJson());
             
             Console.WriteLine("User created successfully!");
         }
