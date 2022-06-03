@@ -1,0 +1,6 @@
+Until we have a functional Kanban board to manage our Tasks, this can be the document where we manage our workload.
+
+Implement all DAL methods and test them
+Call all new features and consistency from Service layer
+Activate the new grading service
+Check compilation on Moodle
