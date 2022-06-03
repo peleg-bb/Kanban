@@ -13,10 +13,13 @@ using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
+    /// <summary>
+    /// boardController instance should be changed to private!!!
+    /// </summary>
     public class BoardService
     {
 
-        public BoardController boardController;
+        public BoardController boardController; // Should be Private!!!!!
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public BoardService(UserController UC)
@@ -243,14 +246,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="name">The name of the board</param>
         /// <param name="userEmail">Email of the user. To identify which board needs to be deleted from which user. </param>
         /// <returns>Response with a command to delete board, unless doesn't exists a board with the same name.</returns>
-        public string DeleteBoard(string name, string userEmail)
+        public string DeleteBoard(string boardName, string userEmail)
         {
             try
             {
                 //NEED TO USE CHANGEsTATE
-                boardController.DeleteBoard(userEmail, name);
+                boardController.DeleteBoard(userEmail, boardName);
                 Response r = new Response(null, true);
-                String msg = String.Format("BoardService deleted! userEmail = {0} deleted board :{1}", userEmail, name);
+                String msg = String.Format("BoardService deleted! userEmail = {0} deleted board :{1}", userEmail, boardName);
                 log.Info(msg);
 
                 return r.OKJson();
