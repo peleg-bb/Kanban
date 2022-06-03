@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
-
-namespace IntroSE.Kanban.Backend.DataAccessLayer
+namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
     internal class UserDTOMapper
     {
@@ -27,8 +27,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                
-                
+
+
 
                 int res = -1;
 
@@ -100,7 +100,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                         string username = reader["email"].ToString();
                         string password = reader["password"].ToString();
                         UserDTO user = new UserDTO(username, password);
-                        this.userDTOs.Add(user);
+                        userDTOs.Add(user);
                         // Console.WriteLine("User " + username + " loaded successfully");
                     }
                     return userDTOs;

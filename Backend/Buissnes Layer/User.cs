@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.DataAccessLayer;
-
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
