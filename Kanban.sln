@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.csproj", "{47FB76DC-5F2C-4928-9E6B-A6D7CE70D696}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTests", "BackendTests_1\BackendTests.csproj", "{DF63DA40-0D88-453E-A755-43D0139D8435}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTests", "BackendTests\BackendTests.csproj", "{DF63DA40-0D88-453E-A755-43D0139D8435}"
 	ProjectSection(ProjectDependencies) = postProject
 		{47FB76DC-5F2C-4928-9E6B-A6D7CE70D696} = {47FB76DC-5F2C-4928-9E6B-A6D7CE70D696}
 	EndProjectSection
