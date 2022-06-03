@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntroSE.Kanban.Backend.DataAccessLayer
+namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     internal class UserDTO
     {
@@ -20,17 +20,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         internal string getUsername()
         {
-            return this.username;
+            return username;
         }
 
         internal string getPassword()
         {
-            return this.password;
+            return password;
         }
 
         public void ChangePassword(string NewPassword)
         {
-            this.password = NewPassword;
+            password = NewPassword;
         }
     }
 }
