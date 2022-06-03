@@ -8,5 +8,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     internal class BoardDTO
     {
+        
     }
 }

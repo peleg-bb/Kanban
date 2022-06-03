@@ -54,9 +54,13 @@ namespace BackendTests.ServiceLayer
             DateTime dueDate = new DateTime(2025, 6, 15);
 
             //userTests.createUserTest();
-
+            
             userTests.validUserLoginTest();
+            userService.CreateUser(email1, "Hash123");
+            userService.Login(email1, "Hash123");
 
+            boardService.CreateBoard("To do list", email1);
+            boardService.DeleteBoard("To do list", email1);
             //userTests.LoadUsersTest();
             userService.CreateUser(email1, password);
             grading.Register(email1, password);

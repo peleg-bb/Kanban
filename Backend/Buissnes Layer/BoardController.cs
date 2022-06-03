@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
 
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
@@ -15,13 +16,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
         public int bId { get; }
-        private int BID = 0;
+        private int BID;
+        private BoardDTOMapper boardDTOMapper;
 
         public BoardController(UserController UC)
         {
             this.bId = BID;
             this.userController = UC;
-            //this.BID=BoardDTOMapper.getCount();
+            this.boardDTOMapper = new BoardDTOMapper();
+            // this.boardDTOMapper.LoadData();
+            this.BID = boardDTOMapper.getCount();
         }
         /// <summary>
         /// This method checks if a user has any board.
@@ -96,7 +100,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 this.ownerBoards[userEmail].Add(newBoard.name);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
-                                //this.BoardDTOMapper.createBoard();
+                                // New:
+                                this.boardDTOMapper.CreateBoard(userEmail, boardName);
                             }
                             else
                             {
@@ -107,7 +112,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 this.ownerBoards.Add(userEmail, listBoard);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
-                                //this.BoardDTOMapper.createBoard();
+                                // New
+                                this.boardDTOMapper.CreateBoard(userEmail, boardName);
                             }
 
                         }
@@ -128,7 +134,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         Dictionary<string, Board> board = new Dictionary<string, Board>();
                         board.Add(boardName, newBoard);
                         BoardsOfUsers.Add(userEmail, board);
-                        //this.BoardDTOMapper.createBoard();
+                        //New:
+                        this.boardDTOMapper.CreateBoard(userEmail, boardName);
                     }
 
                 }
@@ -327,6 +334,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         if (BoardsOfUsers[userEmail][boardName].GetOwner() == userEmail)
                         {
                             this.BoardsOfUsers[userEmail].Remove(boardName);
+                            // Logically speaking - boards are recognized by ID.
+                            // However, the GradingService recognizes them by
+                            // owner email and board name as a double key. 
+                            // I believe that ID's 
+                            this.boardDTOMapper.DeleteBoard(userEmail, boardName);
                         }
                         else
                         {
