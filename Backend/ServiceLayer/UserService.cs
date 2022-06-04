@@ -191,5 +191,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
+        public void DeleteAllData()
+        {
+            this.userController.DeleteAllData();
+        }
+
     }
 }

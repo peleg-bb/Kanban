@@ -53,9 +53,15 @@ namespace BackendTests.ServiceLayer
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
 
-            //userTests.createUserTest();
             
-            userTests.validUserLoginTest();
+
+            // To delete all existing data from the database -
+            // call userService.DeleteAllData() and boardService.DeleteAllData()
+            userService.DeleteAllData(); // Note that these calls take a lot of time
+            boardService.DeleteAllData();
+
+            // userTests.createUserTest();
+            // userTests.validUserLoginTest();
             userService.CreateUser(email1, "Hash123");
             userService.Login(email1, "Hash123");
 

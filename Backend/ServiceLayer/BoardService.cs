@@ -403,6 +403,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
 
         }
+
+        public void DeleteAllData()
+        {
+            this.boardController.DeleteAllData();
+        }
     }
   
 }
