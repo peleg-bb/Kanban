@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.userController = UC;
             this.boardDTOMapper = new BoardDTOMapper();
             // this.boardDTOMapper.LoadData();
-            this.BID = boardDTOMapper.getCount();
+            this.BID = boardDTOMapper.GetCount();
         }
         /// <summary>
         /// This method checks if a user has any board.
@@ -397,6 +397,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException(e.Message);
             }
           
+        }
+
+        public void DeleteAllData()
+        {
+            this.boardDTOMapper.DeleteAllData();
+            this.BoardsOfUsers.Clear();
+            this.ownerBoards.Clear();
         }
 
     }

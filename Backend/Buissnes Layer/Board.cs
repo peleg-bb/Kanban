@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
 
@@ -18,12 +19,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private int BoardId;
         private string Owner;
         private List<string> listOfJoiners = new List<string>();
+        private BoardDTO boardDTO;
+
         public Board(string name , int BID , string owner)
         {
             this.name = name;
             this.Owner = owner;
             this.BoardId = BID;
-
+            this.boardDTO = new BoardDTO();
         }
 
         public string GetName()   
@@ -293,7 +296,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             
 
         }
-
 
     }
 }

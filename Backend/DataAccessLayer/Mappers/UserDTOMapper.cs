@@ -88,8 +88,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                int res = -1;
-
                 try
                 {
                     connection.Open();
@@ -102,8 +100,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         string password = reader["password"].ToString();
                         UserDTO user = new UserDTO(username, password);
                         userDTOs.Add(user);
-                        // Console.WriteLine("User " + username + " loaded successfully");
+                        Console.WriteLine("User " + username + " loaded successfully");
+                        
                     }
+
+                    
                     return userDTOs;
 
                 }
@@ -124,5 +125,44 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             return ifFailed;
         }
 
+
+        public void DeleteAllData()
+        {
+
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+
+
+
+                int res = -1;
+
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"DELETE FROM {tableName}";
+                    command.Prepare();
+                    res = command.ExecuteNonQuery();
+                    Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
+                    userDTOs.Clear();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    // log error
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
     }
 }

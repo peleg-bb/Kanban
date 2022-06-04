@@ -278,5 +278,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
+
+        public void DeleteAllData()
+        {
+            this.userDtoMapper.DeleteAllData();
+            this.users.Clear();
+            this.loggedIn.Clear();
+        }
     }
 }
