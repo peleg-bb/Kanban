@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Configuration;
+using System.Text.Json;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
 
 
@@ -78,7 +79,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.CreateUser(email, password);
-                Response response = new Response(null, true);
+                Response response = new Response(null, null);
                 return "{}";
             }
             catch (Exception e)
@@ -100,7 +101,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.Login(email, password);
-                return email;
+                Response response = new Response(null, email);
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception e)
             {
