@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
 
 
@@ -18,6 +19,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public int bId { get; }
         private int BID;
         private BoardDTOMapper boardDTOMapper;
+        private List<Board> boards;
 
         public BoardController(UserController UC)
         {
@@ -402,8 +404,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public void LoadData()
         {
             // this.boardsList = 
-            this.boardDTOMapper.LoadData(); // Returns a list of board DTOs -
-                                            // needs to be translated to create boards
+            List<BoardDTO> boardDTOs = this.boardDTOMapper.LoadBoards();
+            foreach (var boardDTO in boardDTOs)
+            {
+                boardDTO.LoadBoard();
+                // Create Board object
+                // Load info based on boardDTOs (don't forget board_count)
+            }
         }
 
         public void DeleteAllData()

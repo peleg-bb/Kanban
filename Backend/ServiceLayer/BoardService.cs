@@ -404,6 +404,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
+        public void LoadData()
+        {
+            this.boardController.LoadData();
+        }
         public void DeleteAllData()
         {
             this.boardController.DeleteAllData();
