@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.bId = BID;
             this.userController = UC;
             this.boardDTOMapper = new BoardDTOMapper();
-            // this.boardDTOMapper.LoadData();
+            // this.boardDTOMapper.LoadData(); Do NOT activate! Ask Peleg why (constructors must not load data - if they throw an exception the entire program fails)
             this.BID = boardDTOMapper.GetCount();
         }
         /// <summary>
@@ -397,6 +397,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException(e.Message);
             }
           
+        }
+
+        public void LoadData()
+        {
+            // this.boardsList = 
+            this.boardDTOMapper.LoadData(); // Returns a list of board DTOs -
+                                            // needs to be translated to create boards
         }
 
         public void DeleteAllData()

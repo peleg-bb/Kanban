@@ -27,6 +27,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.Owner = owner;
             this.BoardId = BID;
             this.boardDTO = new BoardDTO();
+            // Do NOT Load Data!
         }
 
         public string GetName()   

@@ -12,11 +12,31 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
     {
         private List<TaskDTO> taskDTOs;
         private string TasksTableName;
+        private string owner;
+        private string name;
+        private int iD;
+        private int backlogMax;
+        private int inProgressMax;
+        private int doneMax;
+        private string BoardsTableName = "Boards";
+        private string BoardUsersTable = "Board_Users";
+        private List<string> BoardUsers;
 
         public BoardDTO()
         {
             this.taskDTOs = new List<TaskDTO>();
             this.TasksTableName = "Tasks";
+        }
+
+        public BoardDTO(string owner, string name, int iD, int backlogMax, int inProgressMax, int doneMax) //, List<string> boardUsers)
+        {
+            this.owner = owner;
+            this.name = name;
+            this.iD = iD;
+            this.backlogMax = backlogMax;
+            this.inProgressMax = inProgressMax;
+            this.doneMax = doneMax;
+            //BoardUsers = boardUsers;
         }
 
         public void DeleteAllData()
@@ -56,5 +76,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             }
 
         }
+
+        
     }
 }

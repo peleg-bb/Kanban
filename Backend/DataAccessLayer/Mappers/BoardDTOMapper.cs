@@ -66,6 +66,60 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             return this.boardCount;
         }
 
+        public List<BoardDTO> LoadData()
+        {
+
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            Console.WriteLine(path);
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = "Select * FROM Boards";
+                    command.Prepare();
+                    SQLiteDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int ID = (int)reader["ID"];
+                        string owner = reader["Owner_email"].ToString();
+                        string name = reader["Name"].ToString();
+                        int BacklogMax = (int)reader["Backlog_max"];
+                        int InProgressMax = (int)reader["In_Progress_max"];
+                        int DoneMax = (int)reader["Done_Max"];
+                        BoardDTO board = new BoardDTO(owner: owner,
+                            name: name, iD: ID, backlogMax: BacklogMax,
+                            inProgressMax: InProgressMax, doneMax: DoneMax);
+                        boardDTOs.Add(board);
+                        Console.WriteLine("Board " + ID + " loaded successfully");
+
+                    }
+
+
+                    return boardDTOs;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    // log error
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+
+            List<BoardDTO> ifFailed = new List<BoardDTO>();
+            return ifFailed;
+        }
+
         /// <summary>
         /// Deletes all database data from Boards, Board_Users and Tasks
         /// </summary>
