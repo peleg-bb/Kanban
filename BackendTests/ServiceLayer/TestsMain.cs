@@ -57,17 +57,20 @@ namespace BackendTests.ServiceLayer
 
             // To delete all existing data from the database -
             // call userService.DeleteAllData() and boardService.DeleteAllData()
-            userService.DeleteAllData(); // Note that these calls take a lot of time
-            boardService.DeleteAllData();
+
+            userService.DeleteAllData(); 
+            boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
             ConsoleColor c = ConsoleColor.Green;
             Console.BackgroundColor = c;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            // userTests.createUserTest();
-            // userTests.validUserLoginTest();
-            userService.CreateUser("johndoe@gmail.com", "Hash123");
+            userTests.createUserTest();
             userTests.validUserLoginTest();
+            // userService.CreateUser("johndoe@gmail.com", "Hash123");
+            // userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
-
+            boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            
 
             boardService.CreateBoard("To do list", email1);
             boardService.DeleteBoard("To do list", email1);

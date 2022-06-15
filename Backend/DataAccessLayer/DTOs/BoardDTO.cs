@@ -131,10 +131,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                     taskDTOs.Clear();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Delete tasks failed because " + ex.Message);
                     // log error
                 }
                 finally

@@ -134,7 +134,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     UserDTO userDto = userDtoMapper.CreateUser(email, password);
                     User u = new User(userDto);
                     users.Add(email, u);
-                    
                 }
                 
             }
