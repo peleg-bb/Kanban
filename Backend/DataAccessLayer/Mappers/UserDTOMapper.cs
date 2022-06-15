@@ -91,7 +91,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = "Select * FROM Users";
+                    command.CommandText = $"Select * FROM {tableName}";
                     command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())

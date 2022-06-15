@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
 
 
@@ -18,13 +19,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public int bId { get; }
         private int BID;
         private BoardDTOMapper boardDTOMapper;
+        private List<Board> boards;
 
         public BoardController(UserController UC)
         {
             this.bId = BID;
             this.userController = UC;
             this.boardDTOMapper = new BoardDTOMapper();
-            // this.boardDTOMapper.LoadData();
+            // this.boardDTOMapper.LoadData(); Do NOT activate! Ask Peleg why (constructors must not load data - if they throw an exception the entire program fails)
             this.BID = boardDTOMapper.GetCount();
         }
         /// <summary>
@@ -397,6 +399,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException(e.Message);
             }
           
+        }
+
+        public void LoadData()
+        {
+            // this.boardsList = 
+            List<BoardDTO> boardDTOs = this.boardDTOMapper.LoadBoards();
+            foreach (var boardDTO in boardDTOs)
+            {
+                boardDTO.LoadBoard();
+                // Create Board object
+                // Load info based on boardDTOs (don't forget board_count)
+            }
         }
 
         public void DeleteAllData()

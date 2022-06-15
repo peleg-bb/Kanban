@@ -40,6 +40,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.State = 0;
 
             ID += 1;
+            // Do NOT Load Data!
 
         }
         /// <summary>

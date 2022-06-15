@@ -8,24 +8,38 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     internal class TaskDTO
     {
-        private int Id;
-        private string Title;
-        private DateTime CreationTime;
-        private string Description;
-        private DateTime DueDate;
-        private int State;
-        private string Assignee;
+        int taskID;
+        int boardID;
+        string assignee;
+        string status;
+        string title;
+        string description;
+        string dueDate;
+        string creationTime;
 
-        public TaskDTO(string title, DateTime dueDate, string description, DateTime creationTime, int state, int id, string assignee)
+        public TaskDTO(int taskID, int boardID, string assignee, string status, string title, string description, string dueDate, string creationTime)
         {
-            Title = title;
-            DueDate = dueDate;
-            Description = description;
-            CreationTime = creationTime;
-            State = state;
-            Id = id;
-            Assignee = assignee;
+            this.taskID = taskID;
+            this.boardID = boardID;
+            this.assignee = assignee;
+            this.status = status;
+            this.title = title;
+            this.description = description;
+            this.dueDate = dueDate;
+            this.creationTime = creationTime;
         }
+
+
+        // public TaskDTO(string title, DateTime dueDate, string description, DateTime creationTime, int state, int id, string assignee)
+        // {
+        //     Title = title;
+        //     DueDate = dueDate;
+        //     Description = description;
+        //     CreationTime = creationTime;
+        //     State = state;
+        //     Id = id;
+        //     Assignee = assignee;
+        // }
 
         public void EditTitle(string newTitle)
         {

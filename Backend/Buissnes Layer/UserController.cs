@@ -30,7 +30,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.users = new Dictionary<string, User>();
             this.loggedIn = new List<string>();
             this.userDtoMapper = new UserDTOMapper();
-            LoadUsers();
+            // Do NOT Load Data!
+            // LoadUsers(); - This is extremely bad - constructors cannot throw exceptions
         }
 
         /// <summary>
