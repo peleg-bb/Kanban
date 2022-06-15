@@ -24,7 +24,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardUsersMapper = new BoardUsersMapper();
             this.boardCount = 0;// LoadData and update count
             this.boardDTOs = new List<BoardDTO>();
-            
         }
 
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
@@ -70,7 +69,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         public List<BoardDTO> LoadBoards()
         {
-
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             Console.WriteLine(path);

@@ -21,6 +21,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, User> users;
         private List<string> loggedIn;
         private UserDTOMapper userDtoMapper;
+        private const int MinPasswordLength = 6;
         /// <summary>
         /// Constructor for the class. Instantiates its private fields.
         /// The class must be instantiated in order to call its methods and functionality.
@@ -183,7 +184,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         private bool IsLegalPassword(string password)
         {
-            if (password.Length < 6)
+            if (password.Length < MinPasswordLength)
             {
                 return false;
             }

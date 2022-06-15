@@ -30,16 +30,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         }
 
 
-        // public TaskDTO(string title, DateTime dueDate, string description, DateTime creationTime, int state, int id, string assignee)
-        // {
-        //     Title = title;
-        //     DueDate = dueDate;
-        //     Description = description;
-        //     CreationTime = creationTime;
-        //     State = state;
-        //     Id = id;
-        //     Assignee = assignee;
-        // }
 
         public void EditTitle(string newTitle)
         {
