@@ -62,13 +62,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Task task = boardController.GetBoard(email, boardName).GetTask(taskId);
-                if (newTitle is null)
-                {
-                    //Exception ex = new ArgumentNullException();
-                    //Response response = new Response(ex.Message, task);
-                    //return response.BadJson();
-                    throw new ArgumentNullException();
-                }
                 try
                 {
                     task.EditTitle(newTitle);

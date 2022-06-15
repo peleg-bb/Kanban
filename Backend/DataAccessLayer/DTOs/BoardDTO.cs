@@ -125,7 +125,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"DELETE FROM {TasksTableName}";
+                    command.CommandText = $"DELETE FROM {TasksTable}";
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     taskDTOs.Clear();

@@ -31,28 +31,28 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
 
 
-        public void EditTitle(string newTitle)
-        {
-            Title = newTitle;
-        }
-        public void SetState(int state)
-        {
-            State = state;
-        }
-
-        public void EditDescription(string newDescription)
-        {
-            Description = newDescription;
-        }
-
-        public void EditDueDate(DateTime newDueDate)
-        {
-            DueDate = newDueDate;
-        }
-
-        public void EditAssignee(string userEmail)
-        {
-            Assignee = userEmail;
-        }
+        // public void EditTitle(string newTitle)
+        // {
+        //     Title = newTitle;
+        // }
+        // public void SetState(int state)
+        // {
+        //     State = state;
+        // }
+        //
+        // public void EditDescription(string newDescription)
+        // {
+        //     Description = newDescription;
+        // }
+        //
+        // public void EditDueDate(DateTime newDueDate)
+        // {
+        //     DueDate = newDueDate;
+        // }
+        //
+        // public void EditAssignee(string userEmail)
+        // {
+        //     Assignee = userEmail;
+        // }
     }
 }
