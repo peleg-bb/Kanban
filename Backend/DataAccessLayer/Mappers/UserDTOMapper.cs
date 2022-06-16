@@ -63,14 +63,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
                     // }
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
-                    Console.WriteLine(command.CommandText);
+                    //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Create user failed because " + ex.Message);
                     // log error
                 }
                 finally
                 {
+                    
                     command.Dispose();
                     connection.Close();
                 }
@@ -108,10 +110,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     return userDTOs;
 
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Create user failed because " + ex.Message);
                     // log error
                 }
                 finally
@@ -151,10 +154,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     userDTOs.Clear();
 
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Delete data failed because " + ex.Message);
                     // log error
                 }
                 finally

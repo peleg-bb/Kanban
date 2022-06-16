@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using log4net;
 using log4net.Config;
 
@@ -88,7 +89,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 // If successful returns user object in JSON
                 return response.OKJson();
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
                 log.Warn(e.Message);
@@ -98,10 +99,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return response.BadJson();
 
             }
-            
-            
-            
-            
+            catch (DALException e)
+            {
+                Console.WriteLine(e.Message);
+                log.Warn(e.Message);
+                Response response = new Response(e.Message, false);
+                return response.BadJson();
+
+            }
+
+
+
+
 
         }
 
@@ -147,17 +156,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Login(username, password);
                 String msg = String.Format("Login successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response(null, true);
-
-                return response.OKJson();
+                Response response = new Response((object)username);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 log.Error(e.Message);
-                Response response = new Response(e.Message, false);
-
-                return response.BadJson();
+                Response response = new Response(e.Message);
+                return ToJson.toJson(response);
             }
 
             ;
@@ -189,6 +196,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return response.BadJson();
             }
 
+        }
+
+        public void LoadData()
+        {
+            this.userController.LoadUsers();
         }
 
         public void DeleteAllData()

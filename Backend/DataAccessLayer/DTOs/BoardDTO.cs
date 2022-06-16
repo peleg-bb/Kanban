@@ -125,16 +125,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"DELETE FROM {TasksTableName}";
+                    command.CommandText = $"DELETE FROM {TasksTable}";
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     taskDTOs.Clear();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Delete tasks failed because " + ex.Message);
                     // log error
                 }
                 finally

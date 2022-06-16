@@ -35,6 +35,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.ErrorMessage = errorMessage;
         }
+
         public Response(object returnValue)
         {
             this.ReturnValue = returnValue;

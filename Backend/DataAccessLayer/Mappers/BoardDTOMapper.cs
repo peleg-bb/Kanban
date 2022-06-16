@@ -24,7 +24,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardUsersMapper = new BoardUsersMapper();
             this.boardCount = 0;// LoadData and update count
             this.boardDTOs = new List<BoardDTO>();
-            
         }
 
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
@@ -70,7 +69,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         public List<BoardDTO> LoadBoards()
         {
-
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             Console.WriteLine(path);
@@ -103,17 +101,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     return boardDTOs;
 
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    command.Dispose();
+                    connection.Close();
+                    throw new DALException($"Delete data failed because " + ex.Message);
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
                 }
                 finally
                 {
+                    // Console.WriteLine("Reached Finally");
                     command.Dispose();
                     connection.Close();
+
                 }
             }
 
@@ -150,10 +153,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     boardDTOs.Clear();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed(deleted)");
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Delete data failed because " + ex.Message);
                     // log error
                 }
                 finally

@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     /// </summary>
     public class User
     {
+
         public string username { get; }
         private string password;
         private UserDTO userDTO;
