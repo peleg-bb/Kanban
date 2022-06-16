@@ -18,6 +18,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         const string tableName = "Boards";
         const string BoardUsersTable = "Board_Users";
         private const string TasksTable = "Tasks";
+        private const string idColumn = "ID";
+        private const string nameColumn = "Name";
+        private const string ownerColumn = "Owner_email";
+        private const string backlogMaxColumn = "Backlog_max";
+        private const string inProgressMaxColumn = "In_Progress_Max";
+        private const string doneMaxColumn = "Done_Max";
+        private const int backlogMax = -1; //Default values
+        private const int inProgressMax = -1; //Default values
+        private const int doneMax = -1; //Default values
 
         internal BoardDTOMapper()
         {
@@ -28,14 +37,67 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
         {
-            // Add to DB
-            // Create boardDTO and insert to table
-            BoardDTO boardDTO = new BoardDTO();
-            this.boardDTOs.Add(boardDTO);
-            boardUsersMapper.CreateBoard(boardCount, ownerEmail);
-            boardCount++;
 
-            return new BoardDTO();
+
+
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"INSERT INTO {tableName} ({idColumn}, {nameColumn}, {ownerColumn}," +
+                                          $"{backlogMaxColumn}, {inProgressMaxColumn}, {doneMaxColumn}) " +
+                                          $"VALUES (@id_val, @name_val,@email_val," +
+                                          $" @backlog_val,@inProgress_val, @done_val);";
+
+                    SQLiteParameter ownerParam = new SQLiteParameter(@"email_val", ownerEmail);
+                    SQLiteParameter nameParam = new SQLiteParameter(@"name_val", boardName);
+                    SQLiteParameter idParam = new SQLiteParameter(@"id_val", boardCount + 1);
+                    SQLiteParameter backlogParam = new SQLiteParameter(@"backlog_val", backlogMax);
+                    SQLiteParameter inProgressParam = new SQLiteParameter(@"inProgress_val", inProgressMax);
+                    SQLiteParameter doneParam = new SQLiteParameter(@"done_val", doneMax);
+
+
+                    command.Parameters.Add(ownerParam);
+                    command.Parameters.Add(nameParam);
+                    command.Parameters.Add(idParam);
+                    command.Parameters.Add(backlogParam);
+                    command.Parameters.Add(inProgressParam);
+                    command.Parameters.Add(doneParam);
+
+                    command.Prepare();
+                    res = command.ExecuteNonQuery();
+
+
+                    BoardDTO board = new BoardDTO(owner: ownerEmail,
+                        name: boardName, iD: boardCount+1, backlogMax: backlogMax,
+                        inProgressMax: inProgressMax, doneMax: doneMax);
+                    boardDTOs.Add(board);
+                    boardUsersMapper.CreateBoard(boardCount, ownerEmail);
+                    boardCount++;
+                    return board;
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Create user failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+                return null; // If failed to create user
+            }
         }
 
         /// <summary>
