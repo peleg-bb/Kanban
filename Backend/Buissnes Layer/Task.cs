@@ -6,6 +6,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using log4net;
+using log4net.Config;
+using System.Reflection;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -28,6 +32,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private static int ID = 0;
 
         public string Assignee { private set; get; }
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public Task (string title, DateTime dueDate, string description="")
         {
@@ -40,6 +45,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.State = 0;
 
             ID += 1;
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
             // Do NOT Load Data!
 
         }
@@ -52,7 +60,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal void EditTitle(string newTitle)
         {
 
-            if (newTitle.Length==0 || newTitle.Length>50)
+            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null)
             {
                 throw new ArgumentNullException();
             }
@@ -80,7 +88,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription)
         {
-            if (newDescription.Length>300)
+            if (newDescription.Length>300 || newDescription==null)
             {
                 throw new ArgumentNullException();
             }
@@ -98,7 +106,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDueDate(DateTime newDueDate)
         {
-            if (newDueDate<=this.CreationTime)
+            if (newDueDate<=this.CreationTime || newDueDate == null)
             {
                 throw new ArgumentException();
             }

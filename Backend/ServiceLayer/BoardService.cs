@@ -72,7 +72,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 try
                 {
-
                     Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
                     try
                     {
@@ -81,8 +80,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                             b.AddTask(title, description, dueDate);
                             String msg = String.Format("task added Successfully! to email :{0}", email);
                             log.Info(msg);
-                            Response r = new Response(null, email);
-                            return r.OKJson();
+                            Response r = new Response((object)email);
+                            return ToJson.toJson(r);
                         }
                         else
                         {

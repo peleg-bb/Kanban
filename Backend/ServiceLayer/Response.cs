@@ -31,6 +31,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.ReturnValue = returnValue;
         }
 
+        public Response(string errorMessage)
+        {
+            this.ErrorMessage = errorMessage;
+        }
+        public Response(object returnValue)
+        {
+            this.ReturnValue = returnValue;
+        }
+
         public string OKJson()
         {
             string json = $"ReturnValue: {JsonConvert.SerializeObject(this.ReturnValue)}"; 
