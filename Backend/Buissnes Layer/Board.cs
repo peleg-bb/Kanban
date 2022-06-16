@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using log4net;
+using log4net.Config;
 
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
@@ -17,11 +21,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private const int InfinityTask = -1;
         private int[] maxTasks = new int[] {InfinityTask,InfinityTask,InfinityTask};
         private int[] numTasks =new int[] {0,0,0};
-        private int BoardId;
+        private int BoardId { get; }
         private string Owner;
         private List<string> listOfJoiners = new List<string>();
         private BoardDTO boardDTO;
         private const int BacklogState = 0;
+        private const int InProgressState = 1;
+        private const int Done = 2;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 
 
         public Board(string name , int BID , string owner)
@@ -31,6 +39,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.BoardId = BID;
             this.boardDTO = new BoardDTO();
             // Do NOT Load Data in constructor!
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
 
         public string GetName()   
@@ -73,12 +84,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Response with column limit value, unless an error occurs </returns>
         public int GetMaxTask(int whichBoard)  
         {
-            if (whichBoard == 0 || whichBoard == 1 || whichBoard == 2)
+            if (whichBoard == BacklogState || whichBoard == InProgressState || whichBoard == Done)
             {
+                String msg = String.Format("Got task max Successfully in BuissnesLayer! at column :{0}", GetNameOrdinal(whichBoard));
+                log.Info(msg);
                 return this.maxTasks[whichBoard];
             }
             else
             {
+                log.Warn("this column state does not exist!");
                 throw new ArgumentException("this column state does not exist!");
             }
            
@@ -91,7 +105,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns> void, unless an error occurs </returns>
         public void SetMaxTask(int newMaxTask, int whichBoard)  
         {
-            if (whichBoard == BacklogState || whichBoard == 1 || whichBoard == 2)
+            if (whichBoard == BacklogState || whichBoard == InProgressState || whichBoard == Done)
             {
                 if ( newMaxTask == InfinityTask)
                 {
@@ -103,11 +117,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
+                    log.Warn("CAN'T CHANGE MAX, NUMBER OF TASK AT THIS BOARD IS HIGHER!");
                     throw new ArgumentException("CAN'T CHANGE MAX, NUMBER OF TASK AT THIS BOARD IS HIGHER!");
                 }
+
+                String msg = String.Format("Set task max Successfully in BuissnesLayer! at column :{0} to new maxTask :{1}", GetNameOrdinal(whichBoard), newMaxTask);
+                log.Info(msg);
             }
             else
             {
+                log.Warn("this column state does not exist!");
                 throw new ArgumentException("this column state does not exist!");
             }
           
@@ -118,32 +137,34 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         /// <param name="columnO">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>Response with  a list of the column's tasks, unless an error occurs .</returns>
-        public List<Task> GEtColList(int columnO)
+        public List<Task> GEtColList(int columnO , string assignee="Unassigned")
         {
-            if (columnO == BacklogState || columnO == 1 || columnO == 2)
+            if (columnO == BacklogState || columnO == InProgressState || columnO == Done)
             {
                 List<Task> taskListO = new List<Task>();
-                if (columnO == 1)
+                if (columnO == InProgressState)
                 {
-                    return GetInProgress();
+                    return GetInProgressByAssignee(assignee); // get all the func that the user assiagned to that inProgress.
                 }
                 else
                 {
-
 
                     for (int i = 0; i < this.tasks.Count; i++)
                     {
                         if (this.tasks[i].GetState() == columnO)
                         {
-                            taskListO.Add(this.tasks[i]);
+                            taskListO.Add(this.tasks[i]);// get all the func that the user has at that column.
                         }
                     }
 
                     return taskListO;
                 }
+                String msg = String.Format("Got the column {0} Successfully in BuissnesLayer!", GetNameOrdinal(columnO));
+                log.Info(msg);
             }
             else
-            { 
+            {
+                log.Warn("this column state does not exist!");
                 throw new ArgumentException("this column state does not exist!");
             }
             
@@ -159,18 +180,21 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return "backlog";
             }
-            else if (columnO == 1)
+            else if (columnO == InProgressState)
             {
                 return "in progress";
             }
-            else if(columnO == 2)
+            else if(columnO == Done)
             {
                 return "Done";
             }
             else
             {
+                log.Warn("this column state does not exist!");
                 throw new ArgumentException("this column state does not exist!");
             }
+            String msg = String.Format("Got the column name Successfully in BuissnesLayer!");
+            log.Info(msg);
         }
         /// <summary>
         /// This method returns all the In progress tasks of the user.
@@ -203,13 +227,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         private void SetTasks(Task newTask)   // property
         {
-           if (numTasks[0] < maxTasks[0] || maxTasks[0]== -1) 
+           if (numTasks[BacklogState] < maxTasks[BacklogState] || maxTasks[BacklogState]== InfinityTask) 
            {
                this.tasks[newTask.Id] = newTask;
-               this.numTasks[0]++;
+               this.numTasks[BacklogState]++;
+               String msg = String.Format("set task max Successfully in BuissnesLayer! ");
+               log.Info(msg);
            }
            else
            {
+               log.Warn("REACHED MAX TASK LIMIT");
                 throw new ArgumentException("REACHED MAX TASK LIMIT");
            }
             
@@ -217,16 +244,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void leaveTasks(string userEmail)
         {
-            List<Task> p= GetInProgress();
+            List<Task> p= GetInProgressByAssignee(userEmail);
             List<Task> e = this.GEtColList(0);
             e.AddRange(p);
             foreach (var taski in e)
             {
                 if (taski.Assignee == userEmail)
                 {
-                    taski.EditAssignee(null);
+                    taski.EditAssignee("Unassigned");
                 }
             }
+            String msg = String.Format("leave tasks Successfully in BuissnesLayer! ");
+            log.Info(msg);
         }
         /// <summary>
         /// This method adds a new task.
@@ -235,19 +264,28 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>void, unless an error occurs </returns>
-        public void AddTask(string title, string description, DateTime dueDate)
+        public void AddTask(string title, string description, DateTime dueDate ,string userEmail)
         {
-
             Task newTask = new Task(title, dueDate,this.BoardId, description);
-            try
+            if (this.IsInListOfJoiners(userEmail))
             {
-                SetTasks(newTask);
+                try
+                {
+                    SetTasks(newTask);
+                    String msg = String.Format("set new task Successfully in BuissnesLayer! ");
+                    log.Info(msg);
+                }
+                catch (Exception e)
+                {
+                    log.Warn(e.Message);
+                    throw new ArgumentException(e.Message);
+                }
             }
-            catch (Exception e)
+            else
             {
-                throw new ArgumentException(e.Message);
+                log.Warn("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
+                throw new Exception("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
             }
-            
         }
         /// <summary>
         /// This method updates the state of the  task.
@@ -261,9 +299,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 int state = this.tasks[taskId].GetState();
                 if (state == BacklogState)
                 {
-                    if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
+                    if (numTasks[InProgressState] < maxTasks[InProgressState] || maxTasks[InProgressState] == InfinityTask)
                     {
-
                         this.inProgress.Add(tasks[taskId]);
                         this.tasks[taskId].SetState(1);
                         this.numTasks[0]--;
@@ -271,30 +308,36 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     }
                     else
                     {
+                        log.Warn("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
                         throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
                     }
                 }
-                else if (state == 1)
+                else if (state == InProgressState)
                 {
-                    if (numTasks[2] < maxTasks[2] || maxTasks[2] == -1)
+                    if (numTasks[Done] < maxTasks[Done] || maxTasks[Done] == InfinityTask)
                     {
-                        this.tasks[taskId].SetState(2);
+                        this.tasks[taskId].SetState(Done);
                         this.inProgress.Remove(tasks[taskId]);
-                        this.numTasks[1]--;
-                        this.numTasks[2]++;
+                        this.numTasks[InProgressState]--;
+                        this.numTasks[Done]++;
                     }
                     else
                     {
+                        log.Warn("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
                         throw new ArgumentException("TASK STATE CAN'T BE CHANGED! Reached max task limit at the next board! ");
                     }
                 }
-                else if(state == 2)
+                else if(state == Done)
                 {
+                    log.Warn("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
                     throw new ArgumentException("TASK STATE CAN'T BE CHANGED! ALREADY AT DONE ");
                 }
+                String msg = String.Format("Changed state of a task Successfully in BuissnesLayer! ");
+                log.Info(msg);
             }
             else
             {
+                log.Warn("TASK Does not exist! ");
                 throw new ArgumentException("TASK Does not exist! ");
             }
             

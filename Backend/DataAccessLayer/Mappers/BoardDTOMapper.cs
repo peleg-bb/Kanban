@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         /// <returns></returns>
         internal bool DeleteBoard(string ownerEmail, string boardName)
         {
-
+            //Delete all Tasks of this board
             boardUsersMapper.DeleteBoard(0);
             boardUsersMapper.DeleteBoard(1);
             return true;
