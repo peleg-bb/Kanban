@@ -111,21 +111,21 @@ namespace BackendTests.ServiceLayer
         /// for requirement 17 and requirement 14,15
         /// </summary>
 
-        public void InvalidEditTitleTest()
-        {
-            string email = "tamar@gmail.com";
-            string boardName = "testName";
-            int taskId = 0;
-            string newTitle = null;
-            string description = "Does it change?";
-            //act
-            Response response = new Response("Value cannot be null.", new Task(newTitle, new DateTime(2025, 8, 14), description));
+        //public void InvalidEditTitleTest()
+        //{
+        //    string email = "tamar@gmail.com";
+        //    string boardName = "testName";
+        //    int taskId = 0;
+        //    string newTitle = null;
+        //    string description = "Does it change?";
+        //    act
+        //    Response response = new Response("Value cannot be null.", new Task(newTitle, new DateTime(2025, 8, 14), description));
 
-            string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
-            Assert.AreEqual(jsonup,
-                response.BadJson()
-            );
-        }
+        //    string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
+        //    Assert.AreEqual(jsonup,
+        //        response.BadJson()
+        //    );
+        //}
 
         /// <summary>
         /// This method test if we can edit the description of task and we get it in the JSON format
@@ -151,21 +151,21 @@ namespace BackendTests.ServiceLayer
         /// This method test if we can edit the description of task and we get the exception that you cant't change description to nothing
         /// for requirement 17 and requirement 14,15
         /// </summary>
-        public void InvalidEditDescriptionTest()
-        {
-            string email = "tamar@gmail.com";
-            string boardName = "testName";
-            int taskId = 0;
-            string newDescription = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids.";
-            string title = "HW";
-            Response response = new Response("Value cannot be null.", new Task(title, new DateTime(2025, 6, 15), newDescription));
+        //public void InvalidEditDescriptionTest()
+        //{
+        //    string email = "tamar@gmail.com";
+        //    string boardName = "testName";
+        //    int taskId = 0;
+        //    string newDescription = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids.";
+        //    string title = "HW";
+        //    Response response = new Response("Value cannot be null.", new Task(title, new DateTime(2025, 6, 15), newDescription));
 
-            //act
-            string jsonup = this.taskService.EditDescription(email, boardName, taskId, newDescription);
-            Assert.AreEqual(jsonup,
-                response.BadJson()
-            );
-        }
+        //    //act
+        //    string jsonup = this.taskService.EditDescription(email, boardName, taskId, newDescription);
+        //    Assert.AreEqual(jsonup,
+        //        response.BadJson()
+        //    );
+        //}
 
         /// <summary>
         /// This method test if we can edit the due date of task and we get it in the JSON format
@@ -192,21 +192,21 @@ namespace BackendTests.ServiceLayer
         /// This method test if we can edit the due date of task we get the exception that you cant't change DueDate to invalid date
         /// for requirement 17 and requirement 14,15
         /// </summary>
-        public void InValidEditDueDateTest()
-        {
-            string email = "tamar@gmail.com";
-            string boardName = "testName";
-            int taskId = 0;
-            string title = "HW";
-            string description = "EX3";
-            DateTime newDueDate = new DateTime(2025 / 08 / 14);
-            //act
-            Response response = new Response("Value does not fall within the expected range.", new Task(title, newDueDate, description));
-            string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
-            Assert.AreEqual(jsonup,
-                response.BadJson()
-            );
-        }
+        //public void InValidEditDueDateTest()
+        //{
+        //    string email = "tamar@gmail.com";
+        //    string boardName = "testName";
+        //    int taskId = 0;
+        //    string title = "HW";
+        //    string description = "EX3";
+        //    DateTime newDueDate = new DateTime(2025 / 08 / 14);
+        //    //act
+        //    Response response = new Response("Value does not fall within the expected range.", new Task(title, newDueDate, description));
+        //    string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
+        //    Assert.AreEqual(jsonup,
+        //        response.BadJson()
+        //    );
+        //}
 
         /// <summary>
         /// This methods checks that a task indeed has a user assigned to it.
