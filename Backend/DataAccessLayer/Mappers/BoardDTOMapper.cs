@@ -72,13 +72,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     command.Prepare();
                     res = command.ExecuteNonQuery();
-                    
 
-                    BoardDTO boardDTO = new BoardDTO();
-                    boardDTOs.Add(boardDTO);
+
+                    BoardDTO board = new BoardDTO(owner: ownerEmail,
+                        name: boardName, iD: boardCount+1, backlogMax: backlogMax,
+                        inProgressMax: inProgressMax, doneMax: doneMax);
+                    boardDTOs.Add(board);
                     boardUsersMapper.CreateBoard(boardCount, ownerEmail);
                     boardCount++;
-                    return boardDTO;
+                    return board;
                 }
                 catch (SQLiteException ex)
                 {

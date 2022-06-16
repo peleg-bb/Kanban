@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
         private List<Task> inProgress = new List<Task>();
-        public string name;
+        public string name; // Change to conventional C# getters and setters
         private int[] maxTasks = new int[] {-1,-1,-1};
         private int[] numTasks =new int[] {0,0,0};
         private int BoardId;
@@ -21,13 +21,30 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private List<string> listOfJoiners = new List<string>();
         private BoardDTO boardDTO;
 
+        /// <summary>
+        /// Do Not Use!! This is an old constructor - consult Peleg before using
+        /// </summary>
         public Board(string name , int BID , string owner)
         {
             this.name = name;
             this.Owner = owner;
             this.BoardId = BID;
-            this.boardDTO = new BoardDTO();
+            //this.boardDTO = new BoardDTO(); // Load empty? Need to sort out in DAL
             // Do NOT Load Data in constructor!
+        }
+
+        /// <summary>
+        /// Constructor using a BoardDTO.
+        /// Assumes the creation of a board was successful in the Database. 
+        /// </summary>
+        /// <param name="boardDto">
+        /// BoardDTO object in DAL. 
+        /// </param>
+        internal Board(BoardDTO boardDto)
+        {
+            this.boardDTO = boardDto;
+            this.BoardId = boardDto.ID;
+            this.Owner = boardDto.Owner;
         }
 
         public string GetName()   
