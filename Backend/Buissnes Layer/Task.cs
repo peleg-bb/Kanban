@@ -6,6 +6,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using log4net;
+using log4net.Config;
+using System.Reflection;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -25,21 +29,26 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private int State;
         [JsonIgnore]
-        private static int ID = 0;
+        private static int ID = 1;
+        private int BoardId;
 
         public string Assignee { private set; get; }
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private Exception ex = new ArgumentException();
 
-        public Task (string title, DateTime dueDate, string description="")
+        public Task (string title, DateTime dueDate, int boardId, string description = "")
         {
             this.Id = ID;
             this.CreationTime = DateTime.Today;
             this.Title = title;
             this.Description = description;
             this.DueDate = dueDate;
-            
             this.State = 0;
-
             ID += 1;
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
+            BoardId = boardId;
             // Do NOT Load Data!
 
         }
@@ -52,12 +61,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal void EditTitle(string newTitle)
         {
 
-            if (newTitle.Length==0 || newTitle.Length>50)
+            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null)
             {
-                throw new ArgumentNullException();
+                log.Warn(ex.Message);
+                throw ex;
             }
             else
             {
+                String msg = String.Format("Task title edited! new title = {0}", newTitle);
+                log.Info(msg);
                 this.Title = newTitle;
             }
             
@@ -80,13 +92,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription)
         {
-            if (newDescription.Length>300)
+            if (newDescription.Length>300 || newDescription==null)
             {
-                throw new ArgumentNullException();
+                log.Warn(ex.Message);
+                throw ex;
             }
             else
             {
-
+                String msg = String.Format("Task description edited! new description = {0}", newDescription);
+                log.Info(msg);
                 this.Description = newDescription;
             }
         }
@@ -98,12 +112,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDueDate(DateTime newDueDate)
         {
-            if (newDueDate<=this.CreationTime)
+            if (newDueDate<=this.CreationTime || newDueDate == null)
             {
-                throw new ArgumentException();
+                log.Warn(ex.Message);
+                throw ex;
             }
             else
             {
+                String msg = String.Format("Task due date edited! new due date = {0}", newDueDate);
+                log.Info(msg);
                 this.DueDate = newDueDate;
             }
         }

@@ -39,6 +39,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
 
 
+
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";

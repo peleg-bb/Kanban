@@ -61,7 +61,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Task task = boardController.GetBoard(email, boardName).GetTask(taskId);
+                Task task = boardController.GetTask(email, boardName,taskId);
                 try
                 {
                     task.EditTitle(newTitle);
@@ -101,13 +101,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Task task = boardController.GetBoard(email, boardName).GetTask(taskId);
-                if (newDescription is null)
-                {
-                    Exception ex = new ArgumentNullException();
-                    Response response = new Response(ex.Message, task);
-                    return response.BadJson();
-                }
+                Task task = boardController.GetTask(email, boardName,taskId);
                 try
                 {
                     task.EditDescription(newDescription);
@@ -146,7 +140,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Task task = boardController.GetBoard(email, boardName).GetTask(taskId);
+                Task task = boardController.GetTask(email, boardName,taskId);
                 try
                 {
                     task.EditDueDate(newDueDate);

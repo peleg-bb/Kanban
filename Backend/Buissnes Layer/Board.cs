@@ -14,12 +14,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
         private List<Task> inProgress = new List<Task>();
         public string name; // Change to conventional C# getters and setters
-        private int[] maxTasks = new int[] {-1,-1,-1};
+        private const int InfinityTask = -1;
+        private int[] maxTasks = new int[] {InfinityTask,InfinityTask,InfinityTask};
         private int[] numTasks =new int[] {0,0,0};
         private int BoardId;
         private string Owner;
         private List<string> listOfJoiners = new List<string>();
         private BoardDTO boardDTO;
+        private const int BacklogState = 0;
+
 
         /// <summary>
         /// Do Not Use!! This is an old constructor - consult Peleg before using
@@ -105,9 +108,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns> void, unless an error occurs </returns>
         public void SetMaxTask(int newMaxTask, int whichBoard)  
         {
-            if (whichBoard == 0 || whichBoard == 1 || whichBoard == 2)
+            if (whichBoard == BacklogState || whichBoard == 1 || whichBoard == 2)
             {
-                if ( newMaxTask == -1)
+                if ( newMaxTask == InfinityTask)
                 {
                     this.maxTasks[whichBoard] = newMaxTask;
                 }
@@ -134,7 +137,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Response with  a list of the column's tasks, unless an error occurs .</returns>
         public List<Task> GEtColList(int columnO)
         {
-            if (columnO == 0 || columnO == 1 || columnO == 2)
+            if (columnO == BacklogState || columnO == 1 || columnO == 2)
             {
                 List<Task> taskListO = new List<Task>();
                 if (columnO == 1)
@@ -169,7 +172,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Response with column name value, unless an error occurs </returns>
         public string GetNameOrdinal(int columnO)
         {
-            if (columnO == 0)
+            if (columnO == BacklogState)
             {
                 return "backlog";
             }
@@ -252,7 +255,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public void AddTask(string title, string description, DateTime dueDate)
         {
 
-            Task newTask = new Task(title, dueDate, description);
+            Task newTask = new Task(title, dueDate,this.BoardId, description);
             try
             {
                 SetTasks(newTask);
@@ -273,7 +276,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             if (this.tasks.ContainsKey(taskId))
             {
                 int state = this.tasks[taskId].GetState();
-                if (state == 0)
+                if (state == BacklogState)
                 {
                     if (numTasks[1] < maxTasks[1] || maxTasks[1] == -1)
                     {

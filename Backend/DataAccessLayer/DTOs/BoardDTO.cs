@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using
+using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
@@ -28,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         private string BoardUsersTable = "Board_Users";
         private List<TaskDTO> taskDTOs;
         private List<string> BoardUsers;
+        private TaskDTOMapper taskDTOMapper;
 
         /// <summary>
         /// Do Not Use!! This is an old constructor - consult Peleg before using
@@ -161,6 +164,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                 }
             }
 
+        }
+        
+        public TaskDTO AddTask()
+        {
+            taskDTOMapper
         }
 
         
