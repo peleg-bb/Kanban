@@ -12,25 +12,41 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
     internal class BoardDTO
     {
         private string owner;
+        public string Owner => owner;
         private string name;
+
+        public string Name => name;
         private readonly int iD;
         public int ID => iD;
         private int backlogMax;
+
+        public int BacklogMax => backlogMax;
         private int inProgressMax;
+        public int InProgressMax => inProgressMax;
         private int doneMax;
+        public int DoneMax => doneMax;
         private string TasksTable = "Tasks";
         private string BoardUsersTable = "Board_Users";
         private List<TaskDTO> taskDTOs;
         private List<string> BoardUsers;
         private TaskDTOMapper taskDTOMapper;
 
-        public BoardDTO()
+        /// <summary>
+        /// Do Not Use!! This is an old constructor - consult Peleg before using
+        /// </summary>
+        public BoardDTO() 
         {
             this.taskDTOs = new List<TaskDTO>();
+            this.backlogMax = -1;
+            this.inProgressMax = -1;
+            this.doneMax = -1;
         }
 
-        public BoardDTO(string owner, string name, int iD, int backlogMax, int inProgressMax, int doneMax) //, List<string> boardUsers)
+
+
+        public BoardDTO(string owner, string name, int iD, int backlogMax, int inProgressMax, int doneMax)
         {
+            //, List<string> boardUsers)
             this.owner = owner;
             this.name = name;
             this.iD = iD;
