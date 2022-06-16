@@ -164,21 +164,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     connection.Open();
                     command.CommandText = $"DELETE FROM {tableName}";
-
-                    
-                    
-                    
-
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     _boardUsersDTOs.Clear();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
 
                 }
-                catch (Exception ex)
+                catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    throw new DALException($"Delete data failed because " + ex.Message);
                     // log error
                 }
                 finally

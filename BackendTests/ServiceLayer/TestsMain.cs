@@ -29,11 +29,11 @@ namespace BackendTests.ServiceLayer
             string description = "EX3";
             DateTime dueDate = new DateTime(14 / 07 / 2025);
             Console.WriteLine("yayy");
-            userService.CreateUser(email, password);
-            userService.Login(email, password);
-
-            boardService.CreateBoard(boardName, email);
-            boardService.AddTask(email, boardName, title, description, dueDate);
+            // userService.CreateUser(email, password);
+            // userService.Login(email, password);
+            //
+            // boardService.CreateBoard(boardName, email);
+            // boardService.AddTask(email, boardName, title, description, dueDate);
             //TaskTests tests = new TaskTests(taskService, userService, boardService);
         }
         // [TestMethod()]
@@ -52,18 +52,25 @@ namespace BackendTests.ServiceLayer
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
-
+            
             
 
             // To delete all existing data from the database -
             // call userService.DeleteAllData() and boardService.DeleteAllData()
-            userService.DeleteAllData(); // Note that these calls take a lot of time
-            boardService.DeleteAllData();
 
-            // userTests.createUserTest();
+            userService.DeleteAllData(); 
+            boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
+            ConsoleColor c = ConsoleColor.Green;
+            Console.BackgroundColor = c;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            userTests.createUserTest();
+            userTests.validUserLoginTest();
+            // userService.CreateUser("johndoe@gmail.com", "Hash123");
             // userTests.validUserLoginTest();
-            userService.CreateUser(email1, "Hash123");
-            userService.Login(email1, "Hash123");
+            userTests.invalidUserLoginTest();
+            boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            
 
             boardService.CreateBoard("To do list", email1);
             boardService.DeleteBoard("To do list", email1);
