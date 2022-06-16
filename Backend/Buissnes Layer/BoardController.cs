@@ -420,5 +420,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.ownerBoards.Clear();
         }
 
+        public Task GetTask(string email, string boardName, int taskId)
+        {
+           return GetBoard(email, boardName).GetTask(taskId);
+        }
+
     }
 }
