@@ -34,6 +34,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardDTOs.Add(boardDTO);
             boardUsersMapper.CreateBoard(boardCount, ownerEmail);
             boardCount++;
+
             return new BoardDTO();
         }
 
