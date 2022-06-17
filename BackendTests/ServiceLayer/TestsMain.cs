@@ -64,13 +64,15 @@ namespace BackendTests.ServiceLayer
             boardService.DeleteAllData();
             userTests.createUserTest();
             userTests.validUserLoginTest();
-            // userService.CreateUser("johndoe@gmail.com", "Hash123");
-            // userTests.validUserLoginTest();
+            userService.CreateUser("johndoe@gmail.com", "Hash123");
+            //userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
+
 
             boardService.CreateBoard(boardName, email1);
             boardService.AddTask(email1, boardName, title, description, dueDate);
             
+
 
             //boardService.CreateBoard("To do list", "johndoe@gmail.com");
             //boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
@@ -87,7 +89,7 @@ namespace BackendTests.ServiceLayer
             boardService.CreateBoard(boardName, email1);
             grading.AddBoard(email1, boardName);
             boardService.AddTask(email1, boardName, title, description, dueDate);
-
+            grading.UpdateTaskTitle(email1, boardName, 0, 1, "Hello");
 
 
             BoardTest boraTest = new BoardTest(boardService);

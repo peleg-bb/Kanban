@@ -112,6 +112,8 @@ namespace BackendTests.ServiceLayer
             string email = "tamar@gmail.com";
             string boardName = "testName";
             Response r = new Response(null, true);
+
+
             Assert.AreEqual(_boardService.NextState(email, boardName, 0, 0), r.OKJson());
 
         }
@@ -126,7 +128,9 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             try
             {
+
                 _boardService.NextState(email, boardName, 0, 0);
+
             }
             catch (Exception e)
             {
@@ -166,7 +170,10 @@ namespace BackendTests.ServiceLayer
             _boardService.NextState(email, boardName, 0, 0);
             try
             {
+
+
                 _boardService.NextState(email, boardName, 0, 0);
+
             }
             catch (Exception e)
             {
