@@ -62,6 +62,8 @@ namespace BackendTests.ServiceLayer
             ConsoleColor c = ConsoleColor.Green;
             Console.BackgroundColor = c;
             Console.ForegroundColor = ConsoleColor.Yellow;
+            userService.DeleteAllData();
+            boardService.DeleteAllData();
             userTests.createUserTest();
             userTests.validUserLoginTest();
             // userService.CreateUser("johndoe@gmail.com", "Hash123");

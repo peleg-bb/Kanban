@@ -427,14 +427,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         if (BoardsOfUsers[userEmail][boardName].GetOwner() == userEmail)
                         {
-                            this.BoardsOfUsers[userEmail].Remove(boardName);
-                            this.ownerBoards[userEmail].Remove(boardName);
+                            
                             //this.boardById - remove from list.!!!!!!!!!!!!!!!!!!!!!
                             // Logically speaking - boards are recognized by ID.
                             // However, the GradingService recognizes them by
                             // owner email and board name as a double key. 
                             // I believe that ID's 
-                            this.boardDTOMapper.DeleteBoard(userEmail, boardName);
+
+                            this.boardDTOMapper.DeleteBoard(userEmail, boardName, this.BoardsOfUsers[userEmail][boardName].BoardID);
+                            this.BoardsOfUsers[userEmail].Remove(boardName);
+                            this.ownerBoards[userEmail].Remove(boardName);
                             String msg = String.Format("Deleted Successfully in BuissnesLayer! userEmail = {0} deleted board :{1}", userEmail, boardName);
                             log.Info(msg);
                         }

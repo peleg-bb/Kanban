@@ -138,9 +138,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
 
         /// <summary>
-        /// Test passed - successfully deletes board by ID
+        /// Deletes all instances of the boardID from the database.
         /// </summary>
-        /// <param name="boardID"></param>
+        /// <param name="boardID">ID of the board to delete</param>
         public void DeleteBoard(int boardID)
         {
             string path = Path.GetFullPath(Path.Combine(
