@@ -75,19 +75,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Buissnes_Layer.Board b = boardController.GetBoard(email, boardName);
                     try
                     {
-                        if (b.IsInListOfJoiners(email))
-                        {
-                            b.AddTask(title, description, dueDate);
-                            String msg = String.Format("task added Successfully! to email :{0}", email);
-                            log.Info(msg);
-                            Response r = new Response((object)email);
-                            return ToJson.toJson(r);
-                        }
-                        else
-                        {
-                            throw new ArgumentException(
-                                "USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
-                        }
+                        
+                        b.AddTask(title, description, dueDate , email);
+                        String msg = String.Format("task added Successfully! to board :{0}", boardName);
+                        log.Info(msg); 
+                        Response r = new Response((object)email);
+                        return ToJson.toJson(r);
 
                     }
                     catch (Exception e)
@@ -110,6 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             else
             {
+                log.Warn("user not logged in");
                 throw new ArgumentException("user not logged in");
             }
            
@@ -152,6 +146,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 else
                 {
+                    log.Warn("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
                     throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
                 }
                
@@ -166,49 +161,114 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
            
 
         }
-
+        /// <summary>
+        /// This method add a new member to a board.
+        /// </summary>
+        /// <param name="userEmailOwner">Email of the user owner.</param>
+        /// <param name="name">The name of the board</param>
+        /// <param name="userEmail">Email of the user added.</param>
+        /// <returns>An empty response, unless an error occurs.</returns>
         public string JoinBoard(string userEmailOwner, string name, string userEmail)
         {
-            try
+            if (boardController.userController.IsLoggedIn(userEmail))
             {
-                boardController.joinBoard(userEmailOwner, name,userEmail);
-                Response r = new Response(null, true);
-                String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
-                log.Info(msg);
+                try
+                {
+                    boardController.joinBoard(userEmailOwner, name, userEmail);
+                    Response r = new Response(null, true);
+                    String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
+                    log.Info(msg);
 
-                return r.OKJson();
+                    return ToJson.toJson(r);
+                }
+                catch (Exception e)
+                {
+
+                    //RETURN BAD JASON
+                    //Response r = new Response(e.Message, false);
+                    log.Warn(e.Message);
+                    //return r.BadJson();
+                    throw new ArgumentException(e.Message);
+                }
             }
-            catch (Exception e)
+            else
             {
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
+            }
+            
+        }
+        /// <summary>
+        /// This method remove a member from a board.
+        /// </summary>
+        /// <param name="userEmailOwner">Email of the user owner.</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="userEmailLeaving">Email of the user removed.</param>
+        /// <returns>An empty response, unless an error occurs.</returns>
+        public string LeaveBoard(string userEmailOwner, string boardName, string userEmailLeaving)
+        {
+            if (boardController.userController.IsLoggedIn(userEmailLeaving))
+            {
+                try
+                {
+                    boardController.leaveBoard(userEmailOwner, boardName, userEmailLeaving);
+                    String msg = String.Format("Left Board! userEmailOwner = {0} the board :{1}", userEmailLeaving, boardName);
+                    log.Info(msg);
+                    Response r = new Response((object)userEmailLeaving);
+                    return ToJson.toJson(r);
+                }
+                catch (Exception e)
+                {
 
-                //RETURN BAD JASON
-                //Response r = new Response(e.Message, false);
-                log.Warn(e.Message);
-                //return r.BadJson();
-                throw new ArgumentException(e.Message);
+                    //RETURN BAD JASON
+                    //Response r = new Response(e.Message, false);
+                    log.Warn(e.Message);
+                    //return r.BadJson();
+                    throw new ArgumentException(e.Message);
+                }
+
+            }
+            else
+            {
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
         }
 
-        public string LeaveBoard(string userEmailOwner, string name, string userEmail)
+        /// <summary>
+        /// This method assign a user from the board to a task.
+        /// </summary>
+        /// <param name="userEmailToAssign">Email of the user need to be assign to a task.</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <param name="columnOrdinal">The column number.????</param>
+        /// <param name="userEmailAssigning">Email of the user assigning other user assign to a task.Must be logged in.</param> 
+        /// <param name="taskId">The taskId of the task the userEmailAssigning will assigne </param>
+        /// <returns>jason, unless an error occurs .</returns>
+        public string AssignTask(string userEmailToAssign, string boardName,int columnOrdinal, string userEmailAssigning, int taskId)
         {
-            try
+            if (boardController.userController.IsLoggedIn(userEmailAssigning))
             {
-                boardController.leaveBoard(userEmailOwner, name, userEmail);
-                Response r = new Response(null, true);
-                String msg = String.Format("Left Board! userEmailOwner = {0} the board :{1}", userEmail, name);
-                log.Info(msg);
-
-                return r.OKJson();
+                try
+                {
+                    boardController.assignAssignee(userEmailToAssign, boardName, columnOrdinal, userEmailAssigning, taskId);
+                    String msg = String.Format("task assignee assigned Successfully ! The assignee :{0}", userEmailToAssign);
+                    log.Info(msg);
+                    Response r = new Response((object)userEmailToAssign);
+                    return ToJson.toJson(r);
+                }
+                catch (Exception e)
+                {
+                    log.Warn(e.Message);
+                    throw new ArgumentException(e.Message);
+                }
             }
-            catch (Exception e)
+            else
             {
-
-                //RETURN BAD JASON
-                //Response r = new Response(e.Message, false);
-                log.Warn(e.Message);
-                //return r.BadJson();
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
+
+
         }
         /// <summary>
         /// This method transfers a board ownership.
@@ -216,7 +276,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="currentOwnerEmail">Email of the current owner. Must be logged in</param>
         /// <param name="newOwnerEmail">Email of the new owner</param>
         /// <param name="boardName">The name of the board</param>
-        /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
+        /// <returns>An empty response, unless an error occurs </returns>
         public string TransferOwnership(string currentOwnerEmail, string newOwnerEmail, string boardName)
         {
             try
@@ -291,6 +351,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
 
         }
+
         /// <summary>
         /// This method returns a column given it's name
         /// </summary>

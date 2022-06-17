@@ -625,7 +625,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AssignTask(string email, string boardName, int columnOrdinal, int taskID, string emailAssignee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //List<Task> t = boardService.InProgress(email);
+                //Response response = new Response(null, email);
+                //return ToJson.toJson(response);
+                return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,taskID,emailAssignee);
+
+            }
+            catch (Exception e)
+
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
 
         ///<summary>This method loads all persisted data.
