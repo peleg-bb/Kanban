@@ -36,10 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         /// </summary>
         public BoardDTO() 
         {
-            this.taskDTOs = new List<TaskDTO>();
-            this.backlogMax = -1;
-            this.inProgressMax = -1;
-            this.doneMax = -1;
+            throw new NotImplementedException("Do not USE!");
         }
 
 
@@ -47,6 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public BoardDTO(string owner, string name, int iD, int backlogMax, int inProgressMax, int doneMax)
         {
             //, List<string> boardUsers)
+            this.taskDTOMapper = new TaskDTOMapper();
             this.owner = owner;
             this.name = name;
             this.iD = iD;
@@ -165,10 +163,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         }
         
-        public TaskDTO AddTask()
+        public TaskDTO AddTask(int taskID, int boardID, string assignee, string status, string title, string description, string dueDate, string creationTime)
         {
-            //taskDTOMapper;
-            return null;
+            TaskDTO newTask = taskDTOMapper.CreateTask(taskID, boardID, assignee, status, title, description, dueDate, creationTime);
+            return newTask;
         }
 
 
