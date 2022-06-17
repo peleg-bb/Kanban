@@ -593,6 +593,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         if (BoardsOfUsers[userEmail][boardName].GetOwner() == userEmail)
                         {
+                            int IDtoRemove = GetBoard(userEmail, boardName).BoardID;
                             this.boardById.Remove(GetBoard(userEmail, boardName).BoardID);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
@@ -601,7 +602,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             // owner email and board name as a double key. 
                             // I believe that ID's 
 
-                            this.boardDTOMapper.DeleteBoard(userEmail, boardName, this.BoardsOfUsers[userEmail][boardName].BoardID);
+                            this.boardDTOMapper.DeleteBoard(userEmail, boardName, IDtoRemove);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
                             String msg = String.Format("Deleted Successfully in BuissnesLayer! userEmail = {0} deleted board :{1}", userEmail, boardName);
