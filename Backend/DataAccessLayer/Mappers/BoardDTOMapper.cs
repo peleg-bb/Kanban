@@ -142,7 +142,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     {
                         connection.Open();
                         command.CommandText = $"DELETE FROM {tableName} " +
-                                              $"WHERE {nameColumn} = @board_name AND" +
+                                              $"WHERE {nameColumn} = @board_name AND " +
                                               $"{ownerColumn} = @username";
 
                         SQLiteParameter boardParam = new SQLiteParameter(@"board_name", boardName);

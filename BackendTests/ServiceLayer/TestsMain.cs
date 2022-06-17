@@ -54,10 +54,6 @@ namespace BackendTests.ServiceLayer
             DateTime dueDate = new DateTime(2025, 6, 15);
 
 
-// <<<<<<< Peleg_DAL
-//             // If these calls take a lot of time - the DB might be locked
-// =======
-
             userService.DeleteAllData();
             boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
 
@@ -71,17 +67,20 @@ namespace BackendTests.ServiceLayer
             userService.CreateUser("johndoe@gmail.com", "Hash123");
             //userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
-// <<<<<<< Peleg_DAL
-            //boardService.CreateBoard("To do list", "johndoe@gmail.com");
-            //boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
-// =======
+
+
+            boardService.CreateBoard(boardName, email1);
+            boardService.AddTask(email1, boardName, title, description, dueDate);
+            
+
+
             //boardService.CreateBoard("To do list", "johndoe@gmail.com");
             //boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             
-// >>>>>>> main
 
-            boardService.CreateBoard("To do list", email1);
-            boardService.DeleteBoard("To do list", email1);
+
+            boardService.CreateBoard(boardName, email1);
+            boardService.DeleteBoard(boardName, email1);
             //userTests.LoadUsersTest();
             userService.CreateUser(email1, password);
             grading.Register(email1, password);
