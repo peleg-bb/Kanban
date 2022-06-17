@@ -62,6 +62,7 @@ namespace BackendTests.ServiceLayer
             Console.ForegroundColor = ConsoleColor.Yellow;
             userService.DeleteAllData();
             boardService.DeleteAllData();
+
             userTests.createUserTest();
             userTests.validUserLoginTest();
             userService.CreateUser("johndoe@gmail.com", "Hash123");
@@ -71,7 +72,12 @@ namespace BackendTests.ServiceLayer
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             BoardTest boraTest = new BoardTest(boardService);
-            boraTest.GetBoardID();
+            boraTest.ValidGetBoardById();
+            boraTest.GetOwner();
+            boraTest.ValidDeleteBoard();
+            userService.CreateUser("tamar@gmail.com", "Hash123");
+            userController.Login("tamar@gmail.com", "Hash123");
+            boraTest.InvalidDeleteBoard();
             userService.DeleteAllData();
             boardService.DeleteAllData();
 
@@ -79,17 +85,17 @@ namespace BackendTests.ServiceLayer
 
 
 
-            boardService.CreateBoard(boardName, email1);
-            boardService.DeleteBoard(boardName, email1);
-            //userTests.LoadUsersTest();
-            userService.CreateUser(email1, password);
-            grading.Register(email1, password);
-            userService.Login(email1, password);
-            grading.Login(email1, password);
-            boardService.CreateBoard(boardName, email1);
-            grading.AddBoard(email1, boardName);
-            boardService.AddTask(email1, boardName, title, description, dueDate);
-            grading.UpdateTaskTitle(email1, boardName, 0, 1, "Hello");
+            // boardService.CreateBoard(boardName, email1);
+            // boardService.DeleteBoard(boardName, email1);
+            // //userTests.LoadUsersTest();
+            // userService.CreateUser(email1, password);
+            // grading.Register(email1, password);
+            // userService.Login(email1, password);
+            // grading.Login(email1, password);
+            // boardService.CreateBoard(boardName, email1);
+            // grading.AddBoard(email1, boardName);
+            // boardService.AddTask(email1, boardName, title, description, dueDate);
+            // grading.UpdateTaskTitle(email1, boardName, 0, 1, "Hello");
 
 
             // BoardTest boraTest = new BoardTest(boardService);

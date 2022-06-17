@@ -392,42 +392,41 @@ namespace BackendTests.ServiceLayer
             }
             
         }
-
         /// <summary>
         /// Tests if a board has an ID
         /// </summary>
-        public void GetBoardID()
+        public void ValidGetBoardById()
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
             Assert.AreEqual(_boardService.boardController.GetBoardById(1), _boardService.boardController.GetBoard(email,boardName));
         }
-
         /// <summary>
         /// Tests if a board has an owner
         /// </summary>
         public void GetOwner()
         {
-
+            string email = "johndoe@gmail.com";
+            string boardName = "To do list";
+            Assert.AreEqual(_boardService.boardController.GetBoard(email,boardName).GetOwner(), "johndoe@gmail.com");
         }
-
         /// <summary>
         /// Tests the successful deletion of a board
         /// </summary>
         public void ValidDeleteBoard()
         {
-
+            string email = "johndoe@gmail.com";
+            string boardName = "To do list";
+            Assert.AreEqual(_boardService.DeleteBoard(boardName,email), "{}");
         }
-
         /// <summary>
         /// Tests the deletion of a board which doesn't exist
         /// </summary>
         public void InvalidDeleteBoard()
         {
-
+            string boardName = "To do list";
+            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"), "THIS USER ISN'T THE OWNER OF THE BOARD ! ");
         }
-
-
         /// <summary>
         /// Tests a deletion attempt of a board by a user who is not the owner
         /// </summary>

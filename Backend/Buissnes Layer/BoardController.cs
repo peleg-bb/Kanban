@@ -20,6 +20,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
+        private const int Done = 2;
         public int BID
         {
             get
@@ -155,6 +156,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 List<string> listBoard= new List<string>();
                                 listBoard.Add(newBoard.name);
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                                this.boardById.Add(newBoard.BoardID, newBoard);
                                 this.ownerBoards.Add(userEmail, listBoard);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
@@ -173,6 +175,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         List<string> listBoard = new List<string>();
                         listBoard.Add(newBoard.name);
                         newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                        this.boardById.Add(newBoard.BoardID, newBoard);
                         this.ownerBoards.Add(userEmail, listBoard);
                         BID++;
                         Dictionary<string, Board> board = new Dictionary<string, Board>();
@@ -333,7 +336,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 if ((userController.IsLoggedIn(userEmailAssigning)))
                 {
                     Board b = GetBoard(userEmailAssigning, boardName);
-                    if (columnOrdinal != 2 && columnOrdinal != null)
+                    if (columnOrdinal != Done && columnOrdinal != null)
                     {
                         if (b.IsInListOfJoiners(userEmailAssigning))
                         {
