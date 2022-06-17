@@ -596,7 +596,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //List<Task> t = boardService.InProgress(email);
                 //Response response = new Response(null, email);
                 //return ToJson.toJson(response);
-//                 return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,emailAssignee, taskID);
                  boardService.AssignTask(emailAssignee,boardName,columnOrdinal,email,taskID);
                  return "{}";
             }

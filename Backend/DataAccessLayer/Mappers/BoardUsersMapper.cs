@@ -22,8 +22,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this._boardUsersDTOs = new List<BoardUsersDTO>();
         }
 
+        /// <summary>
+        /// Creates a board and adds the owner as a board user
+        /// </summary>
+        /// <param name="boardID"></param>
+        /// <param name="userEmail"></param>
         public void CreateBoard(int boardID, string userEmail)
-        {// Currently passes tests
+        {
+            // Currently passes tests
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
@@ -40,7 +46,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {tableName} ({boardColumnName}, {userColumnName}) " +
-                                        $"VALUES (@board_id, @username)";
+                                          $"VALUES (@board_id, @username)";
 
                     SQLiteParameter boardParam = new SQLiteParameter(@"board_id", boardID);
                     SQLiteParameter userParam = new SQLiteParameter(@"username", userEmail);
@@ -50,7 +56,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     command.Prepare();
                     res = command.ExecuteNonQuery();
-                    
+
 
                     BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
                     _boardUsersDTOs.Add(boardUser);
@@ -75,12 +81,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
         }
 
-        /// <summary>
-        /// Test passed - successfully deletes board by ID
-        /// </summary>
-        /// <param name="boardID"></param>
-        public void DeleteBoard(int boardID) 
+
+        public void AddUserToBoard(int boardID, string userEmail)
         {
+            // Currently passes tests
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
@@ -96,15 +100,65 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"DELETE FROM {tableName} " +
-                                          $"WHERE Board_ID = @board_id";
+                    command.CommandText = $"INSERT INTO {tableName} ({boardColumnName}, {userColumnName}) " +
+                                          $"VALUES (@board_id, @username)";
 
                     SQLiteParameter boardParam = new SQLiteParameter(@"board_id", boardID);
-                    //SQLiteParameter userParam = new SQLiteParameter(@"username", userEmail);
+                    SQLiteParameter userParam = new SQLiteParameter(@"username", userEmail);
 
                     command.Parameters.Add(boardParam);
-                    //command.Parameters.Add(userParam);
+                    command.Parameters.Add(userParam);
 
+                    command.Prepare();
+                    res = command.ExecuteNonQuery();
+
+
+                    BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
+                    _boardUsersDTOs.Add(boardUser);
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    //return boardUser; // In case we want to return to return a boardUser object.
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    // log error
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Deletes all instances of the boardID from the database.
+        /// </summary>
+        /// <param name="boardID">ID of the board to delete</param>
+        public void DeleteBoard(int boardID)
+        {
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"DELETE FROM {tableName} " +
+                                          $"WHERE {boardColumnName} = @board_id";
+
+                    SQLiteParameter boardParam = new SQLiteParameter(@"board_id", boardID);
+                    command.Parameters.Add(boardParam);
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     _boardUsersDTOs.RemoveAll(x => x.BoardID == boardID);
@@ -131,58 +185,97 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     connection.Close();
                 }
             }
-            //_boards.RemoveAll(itemCollection => boardID == itemCollection.BoardID);
-            // Note that this syntax represents a predicate lambda function as studied in the Principles of OOP course.
+            
         }
 
-        public void AddUser(int boardID, string userEmail)
-        {
-            //_boards.Add(new BoardUsersDTO(boardID, userEmail));
-        }
 
         public void RemoveUser(int boardID, string userEmail)
         {
-            //_boards.RemoveAll(item => item.BoardID == boardID && item.userName == userEmail);
+            {
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
+                string connectionString = $"Data Source={path}; Version=3;";
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    SQLiteCommand command = new SQLiteCommand(null, connection);
+                    int res = -1;
+                    try
+                    {
+                        connection.Open();
+                        command.CommandText = $"DELETE FROM {tableName} " +
+                                              $"WHERE {boardColumnName} = @board_id AND" +
+                                              $"{userColumnName} = @username";
+
+                        SQLiteParameter boardParam = new SQLiteParameter(@"board_id", boardID);
+                        SQLiteParameter userParam = new SQLiteParameter(@"username", userEmail);
+                        command.Parameters.Add(boardParam);
+                        command.Parameters.Add(userParam);
+
+                        command.Prepare();
+                        res = command.ExecuteNonQuery();
+                        _boardUsersDTOs.RemoveAll(x => x.BoardID == boardID && x.userName == userEmail);
+
+
+                        //BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
+                        //_boardUsersDTOs.Add(boardUser);
+
+                        // Console.WriteLine(res);
+                        // Console.WriteLine("success!");
+                        //return boardUser; // In case we want to return to return a boardUser object.
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(command.CommandText);
+                        Console.WriteLine(ex.Message);
+                        // log error
+                    }
+                    finally
+                    {
+                        command.Dispose();
+                        connection.Close();
+                    }
+                }
+            }
         }
 
         public void DeleteAllData()
-        {
-
-            string path = Path.GetFullPath(Path.Combine(
-                Directory.GetCurrentDirectory(), "kanban.db"));
-            string connectionString = $"Data Source={path}; Version=3;";
-
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
 
+                string path = Path.GetFullPath(Path.Combine(
+                    Directory.GetCurrentDirectory(), "kanban.db"));
+                string connectionString = $"Data Source={path}; Version=3;";
 
-
-                int res = -1;
-
-                try
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
                 {
-                    connection.Open();
-                    command.CommandText = $"DELETE FROM {tableName}";
-                    command.Prepare();
-                    res = command.ExecuteNonQuery();
-                    _boardUsersDTOs.Clear();
-                    Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
+                    SQLiteCommand command = new SQLiteCommand(null, connection);
 
-                }
-                catch (SQLiteException ex)
-                {
-                    Console.WriteLine(command.CommandText);
-                    Console.WriteLine(ex.Message);
-                    throw new DALException($"Delete data failed because " + ex.Message);
-                    // log error
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
+
+
+                    int res = -1;
+
+                    try
+                    {
+                        connection.Open();
+                        command.CommandText = $"DELETE FROM {tableName}";
+                        command.Prepare();
+                        res = command.ExecuteNonQuery();
+                        _boardUsersDTOs.Clear();
+                        Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
+
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        Console.WriteLine(command.CommandText);
+                        Console.WriteLine(ex.Message);
+                        throw new DALException($"Delete data failed because " + ex.Message);
+                        // log error
+                    }
+                    finally
+                    {
+                        command.Dispose();
+                        connection.Close();
+                    }
                 }
             }
         }
     }
-}
+

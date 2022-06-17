@@ -37,6 +37,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.taskDTOMapper = new TaskDTOMapper();
         }
 
+        internal void AddUserToBoard(int boardID, string email)
+        {
+            this.boardUsersMapper.AddUserToBoard(boardID, email);
+        }
+
+        internal void RemoveUserFromBoard(int boardID, string email)
+        {
+            this.boardUsersMapper.RemoveUser(boardID, email);
+        }
+
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
         {
 
@@ -103,33 +113,72 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         }
 
         /// <summary>
-        /// Not yet Implemented!!
+        /// Do NOT use! Use DeleteBoard(string ownerEmail, string boardName, int boardID)
         /// </summary>
         /// <param name="board_Id"></param>
         /// <returns></returns>
         internal bool DeleteBoard(int board_Id)
         {
-            boardUsersMapper.DeleteBoard(board_Id); // 
-            return true;
+            throw new NotImplementedException("Do NOT use! Use DeleteBoard(string ownerEmail, string boardName, int boardID");
         }
 
         /// <summary>
-        /// Not yet Implemented!!
+        /// Deletes a board from the DB
         /// </summary>
-        /// <param name="ownerEmail"></param>
-        /// <param name="boardName"></param>
-        /// <returns></returns>
-        internal bool DeleteBoard(string ownerEmail, string boardName)
+        /// <param name="ownerEmail">Email of the board owner</param>
+        /// <param name="boardName">Name of the board</param>
+        /// <param name="boardID">ID of the board</param>
+        internal void DeleteBoard(string ownerEmail, string boardName, int boardID)
         {
-            //Delete all Tasks of this board
-            boardUsersMapper.DeleteBoard(0);
-            boardUsersMapper.DeleteBoard(1);
-            return true;
+
+            {
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
+                string connectionString = $"Data Source={path}; Version=3;";
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    SQLiteCommand command = new SQLiteCommand(null, connection);
+                    int res = -1;
+                    try
+                    {
+                        connection.Open();
+                        command.CommandText = $"DELETE FROM {tableName} " +
+                                              $"WHERE {nameColumn} = @board_name AND" +
+                                              $"{ownerColumn} = @username";
+
+                        SQLiteParameter boardParam = new SQLiteParameter(@"board_name", boardName);
+                        SQLiteParameter userParam = new SQLiteParameter(@"username", ownerEmail);
+                        command.Parameters.Add(boardParam);
+                        command.Parameters.Add(userParam);
+
+                        command.Prepare();
+                        res = command.ExecuteNonQuery();
+                        boardDTOs.RemoveAll(x => x.Owner == ownerEmail && x.Name == boardName && x.ID==boardID);
+                        boardUsersMapper.DeleteBoard(boardID);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(command.CommandText);
+                        Console.WriteLine(ex.Message);
+                        // log error
+                    }
+                    finally
+                    {
+                        command.Dispose();
+                        connection.Close();
+                    }
+                }
+            }
         }
 
         internal int GetCount()
         {
             return this.boardCount;
+        }
+
+        public void ChangeOwnership()
+        {
+
         }
 
         public List<BoardDTO> LoadBoards()
@@ -232,5 +281,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
             }
         }
+
+        
     }
 }
