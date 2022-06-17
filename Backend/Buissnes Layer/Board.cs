@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
     {
         private Dictionary<int, Task> tasks = new Dictionary<int, Task>();
         private List<Task> inProgress = new List<Task>();
-        public string name; // Change to conventional C# getters and setters
+        public string name { get; set; } // Change to conventional C# getters and setters
         private const int InfinityTask = -1;
         private int[] maxTasks = new int[] {InfinityTask,InfinityTask,InfinityTask};
         private int[] numTasks =new int[] {0,0,0};
@@ -38,6 +38,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         public Board(string name , int BID , string owner)
         {
+            throw new NotImplementedException("Do Not Use!! This is an old constructor - consult Peleg before using");
             this.name = name;
             this.Owner = owner;
             this.BoardId = BID;
@@ -59,6 +60,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.boardDTO = boardDto;
             this.BoardId = boardDto.ID;
+            this.name = boardDto.Name;
             this.Owner = boardDto.Owner;
         }
 
@@ -80,7 +82,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public void DeleteFromJoinList(string newMember)
         {
-            this.listOfJoiners.Remove(newMember);
+            try
+            {
+                this.listOfJoiners.Remove(newMember);
+            }
+            catch 
+            {
+                throw new ArgumentException("THE USER IS NOT A MEMBER OF THIS BOARD");
+            }
+            
         }
         public List<string> GetListOfJoiners()
         {
@@ -166,12 +176,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-
                     for (int i = 0; i < this.tasks.Count; i++)
                     {
-                        if (this.tasks[i].GetState() == columnO)
+                        if (this.tasks[i+1].GetState() == columnO)
                         {
-                            taskListO.Add(this.tasks[i]);// get all the func that the user has at that column.
+                            taskListO.Add(this.tasks[i+1]);// get all the func that the user has at that column.
                         }
                     }
 
@@ -218,10 +227,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// This method returns all the In progress tasks of the user.
         /// </summary>
         /// <returns>Response with a list of the in progress tasks, unless an error occurs .</returns>
-        public List<Task> GetInProgress()   // property
-        {
-            return this.inProgress;
-        }
+        // public List<Task> GetInProgress()   // property
+        // {
+        //     return this.inProgress;
+        // }
         public List<Task> GetInProgressByAssignee(string assignee)   // property
         {
             List<Task> taskInProgList = new List<Task>();
@@ -263,15 +272,19 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public void leaveTasks(string userEmail)
         {
             List<Task> p= GetInProgressByAssignee(userEmail);
-            List<Task> e = this.GEtColList(0);
-            e.AddRange(p);
-            foreach (var taski in e)
+            List<Task> e = this.GEtColList(BacklogState);
+            if (e!=null && p!=null)
             {
-                if (taski.Assignee == userEmail)
+                e.AddRange(p);
+                foreach (var taski in e)
                 {
-                    taski.EditAssignee("Unassigned");
+                    if (taski.Assignee == userEmail)
+                    {
+                        taski.EditAssignee("Unassigned");
+                    }
                 }
             }
+            
             String msg = String.Format("leave tasks Successfully in BuissnesLayer! ");
             log.Info(msg);
         }
