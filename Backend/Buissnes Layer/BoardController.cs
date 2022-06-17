@@ -109,26 +109,23 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         {
                             if (isOwnerOfAnyBoard(userEmail))
                             {
-                                Board newBoard = new Board(boardName, this.bId, userEmail);
+                                Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                                //new Board(boardName, this.bId, userEmail); - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
                                 boardById.Add(this.bId ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
-                                // New:
-                                this.boardDTOMapper.CreateBoard(userEmail, boardName);
                             }
                             else
                             {
-                                Board newBoard = new Board(boardName, this.bId, userEmail);
+                                Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
                                 List<string> listBoard= new List<string>();
                                 listBoard.Add(newBoard.name);
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
                                 this.ownerBoards.Add(userEmail, listBoard);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
-                                // New
-                                this.boardDTOMapper.CreateBoard(userEmail, boardName);
                             }
                         }
                         else
@@ -140,7 +137,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     }
                     else
                     {
-                        Board newBoard = new Board(boardName , this.bId, userEmail);
+                        Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
                         List<string> listBoard = new List<string>();
                         listBoard.Add(newBoard.name);
                         newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
@@ -149,8 +146,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         Dictionary<string, Board> board = new Dictionary<string, Board>();
                         board.Add(boardName, newBoard);
                         BoardsOfUsers.Add(userEmail, board);
-                        //New:
-                        this.boardDTOMapper.CreateBoard(userEmail, boardName);
                     }
                     String msg = String.Format("Board created Successfully in BuissnesLayer! The Board {0} to email :{1}", boardName, userEmail);
                     log.Info(msg);
