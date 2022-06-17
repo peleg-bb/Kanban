@@ -144,7 +144,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
                                 //new Board(boardName, this.bId, userEmail); - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
-                                boardById.Add(this.BID+1 ,newBoard);
+                                this.boardById.Add(this.bId+1 ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);

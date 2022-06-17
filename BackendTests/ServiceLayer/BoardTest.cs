@@ -26,7 +26,7 @@ namespace BackendTests.ServiceLayer
         {
 
             Response r = new Response(null, true);
-            string email = "tamar@gmail.com";
+            string email = "johndoe@gmail.com";
             string boardName = "test2";
             Assert.AreEqual(_boardService.CreateBoard(boardName, email), r.OKJson());
 
