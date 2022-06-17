@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Exception ex = new ArgumentException();
 
-        public Task (string title, DateTime dueDate, int boardId, string description = "")
+        public Task (string title, DateTime dueDate, int boardId, string description = "", string assignee = "Unassinged")
         {
             this.Id = ID;
             this.CreationTime = DateTime.Today;
@@ -44,6 +44,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.Description = description;
             this.DueDate = dueDate;
             this.State = 0;
+            this.Assignee = assignee;
             ID += 1;
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
@@ -68,7 +69,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                String msg = String.Format("Task title edited! new title = {0}", newTitle);
+                String msg = String.Format("Task title edited in buisness layer! new title = {0}", newTitle);
                 log.Info(msg);
                 this.Title = newTitle;
             }
@@ -99,7 +100,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                String msg = String.Format("Task description edited! new description = {0}", newDescription);
+                String msg = String.Format("Task description edited in buisness layer! new description = {0}", newDescription);
                 log.Info(msg);
                 this.Description = newDescription;
             }
@@ -119,7 +120,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                String msg = String.Format("Task due date edited! new due date = {0}", newDueDate);
+                String msg = String.Format("Task due date edited in buisness layer! new due date = {0}", newDueDate);
                 log.Info(msg);
                 this.DueDate = newDueDate;
             }
