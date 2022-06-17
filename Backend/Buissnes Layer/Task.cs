@@ -11,6 +11,7 @@ using log4net.Config;
 using System.Reflection;
 using System.IO;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -32,6 +33,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private static int ID = 1;
         public int BoardId;
+        private TaskDTOMapper taskDTOMapper;
 
         public string Assignee { private set; get; }
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -53,6 +55,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
             BoardId = boardId;
+            this.taskDTOMapper = new TaskDTOMapper();
             // Do NOT Load Data!
 
         }
@@ -75,6 +78,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 String msg = String.Format("Task title edited in buisness layer! new title = {0}", newTitle);
                 log.Info(msg);
                 this.Title = newTitle;
+                this.taskDTOMapper.EditTitle(this.Id, newTitle);
             }
             
 
