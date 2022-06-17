@@ -589,7 +589,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with a list of IDs of all user's boards, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetUserBoards(string email)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Response r = new Response(null, boardService.boardController.GetUserBList(email));
+                return ToJson.toJson(r);
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
 
         /// <summary>
@@ -630,7 +639,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //List<Task> t = boardService.InProgress(email);
                 //Response response = new Response(null, email);
                 //return ToJson.toJson(response);
+<<<<<<< HEAD
                 return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,emailAssignee, taskID);
+=======
+                return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,email,taskID);
+>>>>>>> cccc97b02a123f828aa3caa9714afbd99c373ff8
 
             }
             catch (Exception e)
