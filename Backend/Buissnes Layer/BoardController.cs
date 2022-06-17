@@ -195,6 +195,129 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
+         /// <summary>
+        /// This method add new task.
+        /// </summary>
+        /// <param name="email">Email of the user. The user must be logged in.</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>Response with user-email, unless an error occurs .</returns>
+        public void AddTaskB(string email, string boardName, string title, string description, DateTime dueDate)
+        {
+            if (userController.IsLoggedIn(email))
+            {
+                try
+                {
+                    Board b = GetBoard(email, boardName);
+                    try
+                    {
+                        b.AddTask(title, description, dueDate , email);
+                        String msg = String.Format("task added Successfully! to board :{0}", boardName);
+                        log.Info(msg);
+
+                    }
+                    catch (Exception e)
+                    {
+                        log.Warn(e.Message);
+                        throw new Exception(e.Message);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    log.Warn(e.Message);
+                    throw new Exception(e.Message);
+                }
+
+            }
+            else
+            {
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
+            }
+           
+           
+        }
+        /// <summary>
+        /// This method updates the state of the  task.
+        /// </summary>
+        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
+        public void NextStateB(string email, string boardName, int columnOrdinal, int taskId)
+        {
+            try
+            {
+                if (userController.IsLoggedIn(email))
+                {
+                    try
+                    {
+                        if (columnOrdinal != null && taskId != null)
+                        {
+
+                            if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
+                            {
+                                Board b = GetBoard(email, boardName);
+                                if (b.GetTask(taskId).Assignee == email)
+                                {
+                                    try
+                                    {
+                                        b.ChangeState(taskId, email);
+                                        String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}", b.GetTask(taskId).GetState());
+                                        log.Info(msg);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        log.Warn(e.Message);
+                                        throw new Exception(e.Message);
+                                    }
+                                }
+                                else
+                                {
+                                    log.Warn("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
+                                    throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
+                                }
+                            }
+                            else
+                            {
+                                log.Warn("task does not at columnOrdinal given");
+                                throw new ArgumentException("task does not at columnOrdinal given");
+
+                            }
+                        }
+                        else
+                        {
+                            log.Warn("value can not be null!!");
+                            throw new ArgumentException("value can not be null!!");
+                        }
+                       
+
+                    }
+                    catch (Exception e)
+                    {
+                        log.Warn(e.Message);
+                        throw new ArgumentException(e.Message);
+                        //Response r = new Response(e.Message, false);
+                        //return r.BadJson();
+                    }
+                }
+                else
+                {
+                    log.Warn("user not logged in");
+                    throw new ArgumentException("user not logged in");
+                }
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+            }
+            
+        }
         /// <summary>
         /// This method assign a user from the board to a task.
         /// </summary>
@@ -544,6 +667,115 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
           
         }
+
+        /// <summary>
+        /// This method returns a column given it's name
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with  a list of the column's tasks, unless an error occurs </returns>
+        public List<Task> GetColum(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                return GetBoard(email, boardName).GEtColList(columnOrdinal);
+                String msg = String.Format("GetColum Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
+                log.Info(msg);
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new Exception(e.Message);
+            }
+        }
+        /// <summary>
+        /// This method limits the number of tasks in a specific column.
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
+        /// <returns>The string "{}", unless an error occurs </returns>
+        public void LimitColumn(string email, string boardName, int columnOrdinal, int limit)
+        {
+            try
+            {
+                GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
+                String msg = String.Format("set LimitColumn Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
+                log.Info(msg);
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method gets the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with column name value, unless an error occurs </returns>
+        public string GetColumnName(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                return GetBoard(email, boardName).GetNameOrdinal(columnOrdinal);
+                String msg = String.Format("GetColumnName Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
+                log.Info(msg);
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method gets the limit of a specific column.
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>Response with column limit value, unless an error occurs </returns>
+        public int GetColumnLim(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                return GetBoard(email, boardName).GetMaxTask(columnOrdinal);
+                String msg = String.Format(" GetColumnLim Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
+                log.Info(msg);
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new Exception(e.Message);
+            }
+        }
+        /// <summary>
+        /// This method get a specific Task to the specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <param name="taskId">The id of new task</param>
+        /// <returns>Task, unless an error occurs .</returns>
+        public Task GetTask(string email, string boardName, int taskId)
+        {
+            try
+            {
+                return GetBoard(email, boardName).GetTask(taskId);
+                String msg = String.Format("Got Task Successfully in BuissnesLayer!");
+                log.Info(msg);
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+            }
+        }
         /// <summary>
         /// This method LoadData to boardDTO.
         /// </summary>
@@ -573,27 +805,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             String msg = String.Format(" DeleteAllData Successfully in BuissnesLayer!");
             log.Info(msg);
         }
-        /// <summary>
-        /// This method get a specific Task to the specific user.
-        /// </summary>
-        /// <param name="userEmail">Email of the user. Must be logged in</param>
-        /// <param name="boardName">The name of the new board</param>
-        /// <param name="taskId">The id of new task</param>
-        /// <returns>Task, unless an error occurs .</returns>
-        public Task GetTask(string email, string boardName, int taskId)
-        {
-            try
-            {
-                return GetBoard(email, boardName).GetTask(taskId);
-                String msg = String.Format("Got Task Successfully in BuissnesLayer!");
-                log.Info(msg);
-            }
-            catch (Exception e)
-            {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
-            }
-        }
+      
 
     }
 }
