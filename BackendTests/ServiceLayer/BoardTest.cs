@@ -417,22 +417,25 @@ namespace BackendTests.ServiceLayer
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.DeleteBoard(boardName,email), "{}");
+            Response r = new Response(true);
+            Assert.AreEqual(_boardService.DeleteBoard(boardName,email),ToJson.toJson(r));
         }
         /// <summary>
-        /// Tests the deletion of a board which doesn't exist
+        /// Tests the deletion of a board with a user that not related to this board. 
         /// </summary>
-        public void InvalidDeleteBoard()
+        public void InvalidDeleteBoard()//run this test before join this member to the board 
         {
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"), "THIS USER ISN'T THE OWNER OF THE BOARD ! ");
+            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"), " BOARD IS NOT EXIST AT THIS USER ! ");
         }
         /// <summary>
         /// Tests a deletion attempt of a board by a user who is not the owner
         /// </summary>
-        public void InvalidDeleteBoard_2()
+        public void InvalidDeleteBoard_2()//run this test after join this member to the board 
         {
-
+            string boardName = "To do list";
+            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"),
+                "THIS USER ISN'T THE OWNER OF THE BOARD !");
         }
 
 
@@ -441,7 +444,10 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void JoinBoardSuccessfully()
         {
+            Response r = new Response(true);
 
+            Assert.AreEqual(_boardService.JoinBoard(1, "tamar@gmail.com"),
+                ToJson.toJson(r));
         }
 
         /// <summary>
@@ -449,15 +455,15 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void JoinBoardUnsuccessfully()
         {
-
+            Assert.AreEqual(_boardService.JoinBoard(2, "tamar@gmail.com"), "THIS BOARD DOES NOT EXSIT");
         }
 
         /// <summary>
-        /// Tests an invalid enrollment to a board which was deleted.
+        /// Tests an invalid enrollment to a board that the user us a member of already
         /// </summary>
         public void JoinBoardUnsuccessfully_2()
         {
-
+            Assert.AreEqual(_boardService.JoinBoard(2, "tamar@gmail.com"), "user already joined that board");
         }
 
         /// <summary>
@@ -465,7 +471,8 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void LeaveBoardSuccessfully()
         {
-
+            Response r = new Response(true);
+            Assert.AreEqual(_boardService.LeaveBoard(1, "tamar@gmail.com"), ToJson.toJson(r));
         }
 
         /// <summary>
@@ -473,7 +480,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void LeaveBoardUnsuccessfully()
         {
-
+            Assert.AreEqual(_boardService.LeaveBoard(1, "itay@gmail.com"), "user doesn't have that board");
         }
 
         /// <summary>
@@ -481,6 +488,15 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void LeaveBoardUnsuccessfully_2()
         {
+            Assert.AreEqual(_boardService.LeaveBoard(1, "johndoe@gmail.com"), "OWNER CAN'T LEAVE HIS OWN BOARD!");
+
+        }
+        /// <summary>
+        /// Tests an attempt to leave a board that does not exist
+        /// </summary>
+        public void LeaveBoardUnsuccessfully_3()
+        {
+            Assert.AreEqual(_boardService.LeaveBoard(2, "johndoe@gmail.com"), "OWNER CAN'T LEAVE HIS OWN BOARD!");
 
         }
 
