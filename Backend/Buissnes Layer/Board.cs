@@ -310,8 +310,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>void, throws an exception if error occurs </returns>>
-        public void ChangeState(int taskId)
+        public void ChangeState(int taskId , string userEmail)
         {
+
             if (this.tasks.ContainsKey(taskId))
             {
                 int state = this.tasks[taskId].GetState();
