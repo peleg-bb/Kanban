@@ -46,19 +46,21 @@ namespace BackendTests.ServiceLayer
             TaskService taskService = new TaskService(boardService.boardController);
             UserTests userTests = new UserTests(userController, userService);
             GradingService grading = new GradingService();
-            string email1 = "tamar@gmail.com";
-            string password = "Ai123456";
+            string email1 = "johndoe@gmail.com";
+            string password = "Hash123";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
-            
-            
 
-            // To delete all existing data from the database -
-            // call userService.DeleteAllData() and boardService.DeleteAllData()
 
-            // If these calls take a lot of time - the DB might be locked
+// <<<<<<< Peleg_DAL
+//             // If these calls take a lot of time - the DB might be locked
+// =======
+
+            userService.DeleteAllData();
+            boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
+
             ConsoleColor c = ConsoleColor.Green;
             Console.BackgroundColor = c;
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -69,10 +71,16 @@ namespace BackendTests.ServiceLayer
             // userService.CreateUser("johndoe@gmail.com", "Hash123");
             // userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
+// <<<<<<< Peleg_DAL
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             userService.DeleteAllData();
             boardService.DeleteAllData();
+// =======
+            //boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            //boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            
+// >>>>>>> main
 
             boardService.CreateBoard("To do list", email1);
             boardService.DeleteBoard("To do list", email1);
@@ -470,7 +478,11 @@ namespace BackendTests.ServiceLayer
 
 
 
+            // To delete all existing data from the database -
+            // call userService.DeleteAllData() and boardService.DeleteAllData()
 
+            userService.DeleteAllData();
+            boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
             Console.WriteLine(" ");
             Console.WriteLine("bye bye!");
 

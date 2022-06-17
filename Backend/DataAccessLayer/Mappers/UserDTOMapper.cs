@@ -45,6 +45,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(passwordParam);
 
                     command.Prepare();
+                    Console.WriteLine(path);
                     res = command.ExecuteNonQuery();
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
