@@ -117,6 +117,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         /// <summary>
         /// This method limits the number of tasks in a specific column.
+        /// NOTE! whichBoard seems to actually be the state (columnOrdinal). To be fixed please.
         /// </summary>
         /// <param name="whichBoard">The name of the board</param>
         /// <param name="newMaxTask">The new limit value. A value of -1 indicates no limit.</param>

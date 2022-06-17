@@ -24,11 +24,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         private const string nameColumn = "Name";
         private const string ownerColumn = "Owner_email";
         private const string backlogMaxColumn = "Backlog_max";
-        private const string inProgressMaxColumn = "In_Progress_Max";
-        private const string doneMaxColumn = "Done_Max";
+        private const string inProgressMaxColumn = "In_Progress_max";
+        private const string doneMaxColumn = "Done_max";
         private const int backlogMax = -1; //Default values
         private const int inProgressMax = -1; //Default values
         private const int doneMax = -1; //Default values
+        private Dictionary<int, string> columnNamesByOrdinal;
 
         internal BoardDTOMapper()
         {
@@ -36,6 +37,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardCount = 0;// LoadData and update count
             this.boardDTOs = new List<BoardDTO>();
             this.taskDTOMapper = new TaskDTOMapper();
+            columnNamesByOrdinal = new Dictionary<int, string>();
+            columnNamesByOrdinal[0] = backlogMaxColumn;
+            columnNamesByOrdinal[1] = inProgressMaxColumn;
+            columnNamesByOrdinal[2] = doneMaxColumn;
         }
 
         internal void AddUserToBoard(int boardID, string email)
@@ -207,6 +212,52 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
                     throw new DALException($"Change owner failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+
+        internal void ChangeColumnLimit(int boardId, int columnToChange, int newLimit)
+        {
+
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    string columnName = columnNamesByOrdinal[columnToChange];
+                    command.CommandText = $"UPDATE {tableName} SET {columnName} = @limit_val WHERE {idColumn} = @boardID_val";
+                    //SQLiteParameter columnParam = new SQLiteParameter(@"column_val", columnNamesByOrdinal[columnToChange]);
+                    SQLiteParameter limitParam = new SQLiteParameter(@"limit_val", newLimit);
+                    SQLiteParameter boardIDParam = new SQLiteParameter(@"boardID_val", boardId);
+                    //command.Parameters.Add(columnParam);
+                    command.Parameters.Add(limitParam);
+                    command.Parameters.Add(boardIDParam);
+                    res = command.ExecuteNonQuery();
+
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Change column limit failed because " + ex.Message);
                     // log error
                 }
                 finally

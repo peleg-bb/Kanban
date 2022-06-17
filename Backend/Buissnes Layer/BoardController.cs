@@ -478,7 +478,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
                     {
                         boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
-                            GetBoard(userEmailOwner, boardName).BoardID);
+                            GetBoard(userEmailOwner, boardName).BoardID);//Inform DAL
                         BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
                         if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
                         {
@@ -714,6 +714,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             try
             {
                 GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
+                this.boardDTOMapper.ChangeColumnLimit(
+                    this.GetBoard(email, boardName).BoardID,
+                    columnOrdinal, limit);
                 String msg = String.Format("set LimitColumn Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
                 log.Info(msg);
             }
@@ -819,6 +822,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             String msg = String.Format(" DeleteAllData Successfully in BusinessLayer!");
             log.Info(msg);
         }
+
       
 
     }
