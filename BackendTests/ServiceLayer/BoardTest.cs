@@ -113,8 +113,8 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             Response r = new Response(null, true);
 
-
             Assert.AreEqual(_boardService.NextState(email, boardName, 0, 0), r.OKJson());
+
 
         }
         /// <summary>
@@ -128,9 +128,7 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             try
             {
-
                 _boardService.NextState(email, boardName, 0, 0);
-
             }
             catch (Exception e)
             {
@@ -150,7 +148,9 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             try
             {
+
                 _boardService.NextState(email, boardName, 0, 0);
+
             }
             catch (Exception e)
             {
@@ -167,13 +167,11 @@ namespace BackendTests.ServiceLayer
             string email = "tamar@gmail.com";
             string boardName = "testName";
             int taskId = 0;
+
             _boardService.NextState(email, boardName, 0, 0);
             try
             {
-
-
                 _boardService.NextState(email, boardName, 0, 0);
-
             }
             catch (Exception e)
             {
@@ -400,7 +398,9 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void GetBoardID()
         {
-
+            string email = "johndoe@gmail.com";
+            string boardName = "To do list";
+            Assert.AreEqual(_boardService.boardController.GetBoardById(1), _boardService.boardController.GetBoard(email,boardName));
         }
 
         /// <summary>
