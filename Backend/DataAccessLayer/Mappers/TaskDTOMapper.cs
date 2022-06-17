@@ -98,7 +98,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
             return null; // If failed to create user
         }
-        
+
         public void EditTitle(int taskID, string newTitle)
         {
             string path = Path.GetFullPath(Path.Combine(
@@ -116,16 +116,122 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    
+
                     command.Prepare();
-                    res = command.ExecuteNonQuery();
+
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
-                    command.CommandText = $"UPDATE {tableName} SET Title = @title_val Where TaskID = @taskID_val";
+                    command.CommandText = $"UPDATE {tableName} SET Title = @title_val Where Task_ID = @taskID_val";
                     SQLiteParameter taskIDParam = new SQLiteParameter(@"taskID_val", taskID);
                     SQLiteParameter titleParam = new SQLiteParameter(@"title_val", newTitle);
                     command.Parameters.Add(taskIDParam);
                     command.Parameters.Add(titleParam);
+                    res = command.ExecuteNonQuery();
+                    //
+                    // command.CommandText = "Select * FROM Users";
+                    //
+                    // SQLiteDataReader reader = command.ExecuteReader();
+                    // while (reader.Read())
+                    // {
+                    //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
+                    // }
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Change task title failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+            public void EditDescription(int taskID, string newDescription)
+            {
+                string path = Path.GetFullPath(Path.Combine(
+                    Directory.GetCurrentDirectory(), "kanban.db"));
+                string connectionString = $"Data Source={path}; Version=3;";
+
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    SQLiteCommand command = new SQLiteCommand(null, connection);
+
+
+
+                    int res = -1;
+
+                    try
+                    {
+                        connection.Open();
+
+                        command.Prepare();
+
+                        // Console.WriteLine(res);
+                        // Console.WriteLine("success!");
+                        command.CommandText = $"UPDATE {tableName} SET Description = @description_val Where Task_ID = @taskID_val";
+                        SQLiteParameter taskIDParam = new SQLiteParameter(@"taskID_val", taskID);
+                        SQLiteParameter descriptionParam = new SQLiteParameter(@"description_val", newDescription);
+                        command.Parameters.Add(taskIDParam);
+                        command.Parameters.Add(descriptionParam);
+                        res = command.ExecuteNonQuery();
+                        //
+                        // command.CommandText = "Select * FROM Users";
+                        //
+                        // SQLiteDataReader reader = command.ExecuteReader();
+                        // while (reader.Read())
+                        // {
+                        //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
+                        // }
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        //Console.WriteLine(command.CommandText);
+                        Console.WriteLine(ex.Message);
+                        throw new DALException($"Change task title failed because " + ex.Message);
+                        // log error
+                    }
+                    finally
+                    {
+
+                        command.Dispose();
+                        connection.Close();
+                    }
+                }
+                // If failed to create user
+            }
+        public void EditDueDate(int taskID, string newDueDate)
+        {
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+
+
+
+                int res = -1;
+
+                try
+                {
+                    connection.Open();
+
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    command.CommandText = $"UPDATE {tableName} SET Due_Date = @dueDate_val Where Task_ID = @taskID_val";
+                    SQLiteParameter taskIDParam = new SQLiteParameter(@"taskID_val", taskID);
+                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDate_val", newDueDate);
+                    command.Parameters.Add(taskIDParam);
+                    command.Parameters.Add(dueDateParam);
+                    res = command.ExecuteNonQuery();
                     //
                     // command.CommandText = "Select * FROM Users";
                     //
