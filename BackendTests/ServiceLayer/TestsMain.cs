@@ -52,6 +52,7 @@ namespace BackendTests.ServiceLayer
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
+            DateTime newDueDate = new DateTime(2026, 8, 14);
 
 
             userService.DeleteAllData();
@@ -71,6 +72,9 @@ namespace BackendTests.ServiceLayer
 
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
+            taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
+            taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
             BoardTest boraTest = new BoardTest(boardService);
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
