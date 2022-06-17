@@ -639,11 +639,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //List<Task> t = boardService.InProgress(email);
                 //Response response = new Response(null, email);
                 //return ToJson.toJson(response);
-<<<<<<< HEAD
-                return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,emailAssignee, taskID);
-=======
+//                 return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,emailAssignee, taskID);
                 return boardService.AssignTask(emailAssignee,boardName,columnOrdinal,email,taskID);
->>>>>>> cccc97b02a123f828aa3caa9714afbd99c373ff8
 
             }
             catch (Exception e)
