@@ -633,7 +633,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             userService.DeleteAllData();
             boardService.DeleteAllData();
             // Probably need to add deletion of all tasks through TaskService
-            return "{}";
+            return ToJson.toJson(new Response(null,null));
         }
 
         /// <summary>
