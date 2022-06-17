@@ -168,70 +168,51 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="name">The name of the board</param>
         /// <param name="userEmail">Email of the user added.</param>
         /// <returns>An empty response, unless an error occurs.</returns>
-        public string JoinBoard(string userEmailOwner, string name, string userEmail)
+        public string JoinBoard(int boardId, string userEmail)
         {
-            if (boardController.userController.IsLoggedIn(userEmail))
+            try
             {
-                try
-                {
-                    boardController.joinBoard(userEmailOwner, name, userEmail);
-                    Response r = new Response(null, true);
-                    String msg = String.Format("joined Board! userEmailOwner = {0} the board :{1}", userEmail, name);
-                    log.Info(msg);
+                boardController.joinBoard(boardId, userEmail);
+                Response r = new Response(null, true);
+                String msg = String.Format("joined Board! userEmailOwner = {0} ", userEmail);
+                log.Info(msg);
 
-                    return ToJson.toJson(r);
-                }
-                catch (Exception e)
-                {
-
-                    //RETURN BAD JASON
-                    //Response r = new Response(e.Message, false);
-                    log.Warn(e.Message);
-                    //return r.BadJson();
-                    throw new ArgumentException(e.Message);
-                }
+                return ToJson.toJson(r);
             }
-            else
+            catch (Exception e) 
             {
-                log.Warn("user not logged in");
-                throw new ArgumentException("user not logged in");
+                //RETURN BAD JASON
+                //Response r = new Response(e.Message, false);
+                log.Warn(e.Message);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
-            
+        
         }
         /// <summary>
         /// This method remove a member from a board.
         /// </summary>
-        /// <param name="userEmailOwner">Email of the user owner.</param>
-        /// <param name="boardName">The name of the board</param>
+        /// <param name="boardId">The Id of the board</param>
         /// <param name="userEmailLeaving">Email of the user removed.</param>
         /// <returns>An empty response, unless an error occurs.</returns>
-        public string LeaveBoard(string userEmailOwner, string boardName, string userEmailLeaving)
+        public string LeaveBoard(int boardId, string userEmailLeaving)
         {
-            if (boardController.userController.IsLoggedIn(userEmailLeaving))
+            try
             {
-                try
-                {
-                    boardController.leaveBoard(userEmailOwner, boardName, userEmailLeaving);
-                    String msg = String.Format("Left Board! userEmailOwner = {0} the board :{1}", userEmailLeaving, boardName);
-                    log.Info(msg);
-                    Response r = new Response((object)userEmailLeaving);
-                    return ToJson.toJson(r);
-                }
-                catch (Exception e)
-                {
-
-                    //RETURN BAD JASON
-                    //Response r = new Response(e.Message, false);
-                    log.Warn(e.Message);
-                    //return r.BadJson();
-                    throw new ArgumentException(e.Message);
-                }
-
+                boardController.leaveBoard(boardId, userEmailLeaving);
+                String msg = String.Format("Left Board! userEmailOwner = {0}", userEmailLeaving);
+                log.Info(msg);
+                Response r = new Response((object)userEmailLeaving);
+                return ToJson.toJson(r);
             }
-            else
+            catch (Exception e)
             {
-                log.Warn("user not logged in");
-                throw new ArgumentException("user not logged in");
+
+                //RETURN BAD JASON
+                //Response r = new Response(e.Message, false);
+                log.Warn(e.Message);
+                //return r.BadJson();
+                throw new ArgumentException(e.Message);
             }
         }
 
@@ -246,26 +227,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>jason, unless an error occurs .</returns>
         public string AssignTask(string userEmailToAssign, string boardName,int columnOrdinal, string userEmailAssigning, int taskId)
         {
-            if (boardController.userController.IsLoggedIn(userEmailAssigning))
+            try
             {
-                try
-                {
-                    boardController.assignAssignee(userEmailToAssign, boardName, columnOrdinal, userEmailAssigning, taskId);
-                    String msg = String.Format("task assignee assigned Successfully ! The assignee :{0}", userEmailToAssign);
-                    log.Info(msg);
-                    Response r = new Response((object)userEmailToAssign);
-                    return ToJson.toJson(r);
-                }
-                catch (Exception e)
-                {
-                    log.Warn(e.Message);
-                    throw new ArgumentException(e.Message);
-                }
+                boardController.assignAssignee(userEmailToAssign, boardName, columnOrdinal, userEmailAssigning, taskId);
+                String msg = String.Format("task assignee assigned Successfully ! The assignee :{0}", userEmailToAssign);
+                log.Info(msg);
+                Response r = new Response((object)userEmailToAssign);
+                return ToJson.toJson(r);
             }
-            else
+            catch (Exception e)
             {
-                log.Warn("user not logged in");
-                throw new ArgumentException("user not logged in");
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
             }
 
 
