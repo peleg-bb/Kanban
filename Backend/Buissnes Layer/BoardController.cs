@@ -474,8 +474,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if ((userController.IsLoggedIn(userEmailOwner)))
                 {
-                    if (ownerBoards[userEmailOwner].Contains(boardName) && BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
+                    if (ownerBoards[userEmailOwner].Contains(boardName) && 
+                        BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
                     {
+                        boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                            GetBoard(userEmailOwner, boardName).BoardID);
                         BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
                         if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
                         {

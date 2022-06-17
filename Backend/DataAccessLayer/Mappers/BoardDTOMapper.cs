@@ -176,9 +176,50 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             return this.boardCount;
         }
 
-        public void ChangeOwnership()
+        public void ChangeOwnership(string newOwner, int boardID)
         {
+            string path = Path.GetFullPath(Path.Combine(
+               Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
 
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+
+
+
+                int res = -1;
+
+                try
+                {
+                    connection.Open();
+
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    command.CommandText = $"UPDATE {tableName} SET {ownerColumn} = @owner_val WHERE {idColumn} = @boardID_val";
+                    SQLiteParameter ownerParam = new SQLiteParameter(@"ownerID_val", newOwner);
+                    SQLiteParameter boardIDParam = new SQLiteParameter(@"boardID_val", boardID);
+                    command.Parameters.Add(ownerParam);
+                    command.Parameters.Add(boardIDParam);
+                    res = command.ExecuteNonQuery();
+                    
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Change owner failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
         }
 
         public List<BoardDTO> LoadBoards()
