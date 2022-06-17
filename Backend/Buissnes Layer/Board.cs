@@ -292,6 +292,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     SetTasks(newTask);
                     String msg = String.Format("set new task Successfully in BuissnesLayer! ");
                     log.Info(msg);
+                    boardDTO.AddTask(newTask.Id, newTask.BoardId, newTask.Assignee, newTask.GetStatus(), newTask.GetTitle(), newTask.GetDescription(), newTask.GetDueDate(), newTask.CreationTime.ToString());
                 }
                 catch (Exception e)
                 {

@@ -144,7 +144,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
                                 //new Board(boardName, this.bId, userEmail); - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
-                                this.boardById.Add(this.bId+1 ,newBoard);
+                                this.boardById.Add(newBoard.BoardID ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
@@ -468,9 +468,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         if (BoardsOfUsers[userEmail][boardName].GetOwner() == userEmail)
                         {
+                            this.boardById.Remove(GetBoard(userEmail, boardName).BoardID);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
-                            this.boardById.Remove(GetBoard(userEmail, boardName).BoardID);
                             // Logically speaking - boards are recognized by ID.
                             // However, the GradingService recognizes them by
                             // owner email and board name as a double key. 

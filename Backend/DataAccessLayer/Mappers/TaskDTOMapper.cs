@@ -12,14 +12,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
     internal class TaskDTOMapper
     {
         private List<TaskDTO> taskDTOs;
-        const string taskIDColumnName = "TaskID";
-        const string boardIDColumnName = "BoardID";
+        const string taskIDColumnName = "Task_ID";
+        const string boardIDColumnName = "Board_ID";
         const string assigneeColumnName = "Assignee";
         const string statusColumnName = "Status";
         const string titleColumnName = "Title";
         const string descriptionColumnName = "Description";
         const string dueDateColumnName = "Due_Date";
-        const string creationDateColumnName = "Creation_Date";
+        const string creationDateColumnName = "Creation_Time";
         const string tableName = "Tasks";
         internal TaskDTOMapper()
         {

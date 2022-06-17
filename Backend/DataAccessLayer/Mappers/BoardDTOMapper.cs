@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         private BoardUsersMapper boardUsersMapper;
         private List<BoardDTO> boardDTOs;
+        private TaskDTOMapper taskDTOMapper;
         private int boardCount;
         const string tableName = "Boards";
         const string BoardUsersTable = "Board_Users";
@@ -33,6 +34,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardUsersMapper = new BoardUsersMapper();
             this.boardCount = 0;// LoadData and update count
             this.boardDTOs = new List<BoardDTO>();
+            this.taskDTOMapper = new TaskDTOMapper();
         }
 
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
