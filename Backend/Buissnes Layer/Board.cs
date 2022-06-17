@@ -22,6 +22,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private int[] maxTasks = new int[] {InfinityTask,InfinityTask,InfinityTask};
         private int[] numTasks =new int[] {0,0,0};
         private int BoardId { get; }
+        public int BoardID => BoardId;
         private string Owner;
         private List<string> listOfJoiners = new List<string>();
         private BoardDTO boardDTO;

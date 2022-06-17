@@ -20,15 +20,27 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
-        public int bId { get; }
-        private int BID;
+        public int BID
+        {
+            get
+            {
+                return this.bID;
+
+            }
+
+            set
+            {
+                this.bID = value;
+            }
+        }
+        
+        private int bID;
         private BoardDTOMapper boardDTOMapper;
         private Dictionary<int,Board> boardById = new Dictionary<int,Board>();
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public BoardController(UserController UC)
-        {
-            this.bId = BID;
+        { 
             this.userController = UC;
             this.boardDTOMapper = new BoardDTOMapper();
             // this.boardDTOMapper.LoadData(); Do NOT activate! Ask Peleg why (constructors must not load data - if they throw an exception the entire program fails)
@@ -91,6 +103,26 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             return this.boardById[boardID];
         }
+
+        public List<int> GetUserBList(string userEmail)
+        {
+            if (userController.IsLoggedIn(userEmail))
+            {
+                List<int> listOfUserBoard = new List<int>();
+                foreach (var i in this.BoardsOfUsers[userEmail])
+                {
+                    listOfUserBoard.Add(i.Value.BoardID);
+                }
+                return listOfUserBoard;
+            }
+            else
+            {
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
+            }
+
+            
+        }
         /// <summary>
         /// This method adds a board to the specific user.
         /// </summary>
@@ -112,7 +144,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
                                 //new Board(boardName, this.bId, userEmail); - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
-                                boardById.Add(this.bId ,newBoard);
+                                boardById.Add(this.BID+1 ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
                                 BID++;
                                 this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
@@ -175,47 +207,56 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                Board b = GetBoard(userEmailAssigning,boardName);
-                if (columnOrdinal!= 2 && columnOrdinal !=null)
+                if ((userController.IsLoggedIn(userEmailAssigning)))
                 {
-                    if (b.IsInListOfJoiners(userEmailAssigning))
+                    Board b = GetBoard(userEmailAssigning, boardName);
+                    if (columnOrdinal != 2 && columnOrdinal != null)
                     {
-                        b.GetTask(taskId).EditAssignee(userEmailToAssign);
-                        String msg = String.Format("task assignee assigned Successfully in BuissnesLayer! The assignee :{0}", userEmailToAssign);
-                        log.Info(msg);
+                        if (b.IsInListOfJoiners(userEmailAssigning))
+                        {
+                            b.GetTask(taskId).EditAssignee(userEmailToAssign);
+                            String msg = String.Format("task assignee assigned Successfully in BuissnesLayer! The assignee :{0}", userEmailToAssign);
+                            log.Info(msg);
+                        }
+                        else
+                        {
+                            log.Warn("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                            throw new Exception("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                        }
                     }
                     else
                     {
-                        log.Warn("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
-                        throw new Exception("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                        log.Warn("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
+                        throw new Exception("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
                     }
                 }
                 else
                 {
-                    log.Warn("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
-                    throw new Exception("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
+                    log.Warn("user not logged in");
+                    throw new ArgumentException("user not logged in");
                 }
             }
             catch (Exception e)
             {
                 log.Warn(e.Message);
-                throw new Exception(e.Message);
+                throw new ArgumentException(e.Message);
             }
-            
+
 
         }
         /// <summary>
         /// This method add a new member to a board.
         /// </summary>
-        /// <param name="userEmailOwner">Email of the user owner.</param>
-        /// <param name="boardName">The name of the board</param>
         /// <param name="userEmailJoiner">Email of the user added.</param>
+        /// /// <param name="boardId">The id of the board</param>
         /// <returns>An empty response, unless an error occurs.</returns>
-        public void joinBoard(string userEmailOwner, string boardName, string userEmailJoiner)
+        public void joinBoard(int boardId,string userEmailJoiner)
         {
             try
             {
-                if ((userController.IsLoggedIn(userEmailOwner)))
+                string userEmailOwner = GetBoardById(boardId).GetOwner();
+                string boardName = GetBoardById(boardId).name;
+                if ((userController.IsLoggedIn(userEmailJoiner)))
                 {
                     if (!UserHasThisBoard(userEmailJoiner, boardName))
                     {
@@ -249,10 +290,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the board</param>
         /// <param name="userEmailLeaving">Email of the user removed.</param>
         /// <returns>An empty response, unless an error occurs.</returns>
-        public void leaveBoard(string userEmailOwner, string boardName, string userEmailLeaving)
+        public void leaveBoard(int boardId, string userEmailLeaving)
         {
             try
             {
+                string userEmailOwner = GetBoardById(boardId).GetOwner();
+                string boardName = GetBoardById(boardId).name;
                 if ((userController.IsLoggedIn(userEmailLeaving)))
                 {
                     if (UserHasThisBoard(userEmailLeaving, boardName))
@@ -427,7 +470,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         {
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
-                            //this.boardById - remove from list.!!!!!!!!!!!!!!!!!!!!!
+                            this.boardById.Remove(GetBoard(userEmail, boardName).BoardID);
                             // Logically speaking - boards are recognized by ID.
                             // However, the GradingService recognizes them by
                             // owner email and board name as a double key. 
