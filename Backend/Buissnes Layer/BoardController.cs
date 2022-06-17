@@ -221,6 +221,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     {
                         BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
                         BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                        boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
                         String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
                         log.Info(msg);
                     }
@@ -262,6 +263,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             BoardsOfUsers[userEmailOwner][boardName].leaveTasks(userEmailLeaving); // all joiner take become unAssigned
                             BoardsOfUsers[userEmailOwner][boardName].DeleteFromJoinList(userEmailLeaving);
                             BoardsOfUsers[userEmailLeaving].Remove(boardName); // delete to userEmailLeaving from boards
+                            this.boardDTOMapper.RemoveUserFromBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailLeaving);
                             String msg = String.Format("userEmail Left Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailLeaving, boardName);
                             log.Info(msg);
                         }

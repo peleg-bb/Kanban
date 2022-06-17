@@ -35,6 +35,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardDTOs = new List<BoardDTO>();
         }
 
+        internal void AddUserToBoard(int boardID, string email)
+        {
+            this.boardUsersMapper.AddUserToBoard(boardID, email);
+        }
+
+        internal void RemoveUserFromBoard(int boardID, string email)
+        {
+            this.boardUsersMapper.RemoveUser(boardID, email);
+        }
+
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
         {
 
