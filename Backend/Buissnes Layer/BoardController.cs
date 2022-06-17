@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.userController = UC;
             this.boardDTOMapper = new BoardDTOMapper();
             // this.boardDTOMapper.LoadData(); Do NOT activate! Ask Peleg why (constructors must not load data - if they throw an exception the entire program fails)
-            this.BID = boardDTOMapper.GetCount();
+            this.BID = boardDTOMapper.BoardCount;
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
@@ -796,13 +796,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             // this.boardsList = 
             List<BoardDTO> boardDTOs = this.boardDTOMapper.LoadBoards();
+            this.BID = boardDTOMapper.BoardCount;
             foreach (var boardDTO in boardDTOs)
             {
                 boardDTO.LoadBoard();
                 // Create Board object
                 // Load info based on boardDTOs (don't forget board_count)
             }
-            String msg = String.Format("LoadData Successfully in BuissnesLayer!");
+            String msg = String.Format("Boards loaded successfully in BusinessLayer!");
             log.Info(msg);
         }
         /// <summary>
@@ -814,7 +815,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.boardDTOMapper.DeleteAllData();
             this.BoardsOfUsers.Clear();
             this.ownerBoards.Clear();
-            String msg = String.Format(" DeleteAllData Successfully in BuissnesLayer!");
+            this.boardById.Clear();
+            String msg = String.Format(" DeleteAllData Successfully in BusinessLayer!");
             log.Info(msg);
         }
       

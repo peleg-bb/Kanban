@@ -16,6 +16,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         private List<BoardDTO> boardDTOs;
         private TaskDTOMapper taskDTOMapper;
         private int boardCount;
+        public int BoardCount => boardCount;
         const string tableName = "Boards";
         const string BoardUsersTable = "Board_Users";
         private const string TasksTable = "Tasks";
@@ -171,11 +172,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
         }
 
-        internal int GetCount()
-        {
-            return this.boardCount;
-        }
-
         public void ChangeOwnership(string newOwner, int boardID)
         {
             string path = Path.GetFullPath(Path.Combine(
@@ -235,7 +231,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"Select * FROM {tableName}";
+                    command.CommandText = $"Select * FROM {tableName};" +
+                                          $"SELECT max({idColumn}) FROM {tableName};";
                                           command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
@@ -251,6 +248,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                             inProgressMax: InProgressMax, doneMax: DoneMax);
                         boardDTOs.Add(board);
                         Console.WriteLine("Board " + ID + " loaded successfully");
+                    }
+
+                    reader.NextResult();
+                    while (reader.Read())
+                    {
+                        int nextBoardID = (int)reader["ID"];
+                        this.boardCount = nextBoardID;
                     }
 
                     return boardDTOs;
