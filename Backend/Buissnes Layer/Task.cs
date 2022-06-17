@@ -10,6 +10,7 @@ using log4net;
 using log4net.Config;
 using System.Reflection;
 using System.IO;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -30,12 +31,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private int State;
         [JsonIgnore]
         private static int ID = 1;
-        private int BoardId;
+        public int BoardId;
 
         public string Assignee { private set; get; }
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Exception ex = new ArgumentException();
-
+        private const int BacklogState = 0;
+        private const int InProgressState = 1;
+        private const int Done = 2;
         public Task (string title, DateTime dueDate, int boardId, string description = "", string assignee = "Unassinged")
         {
             this.Id = ID;
@@ -80,6 +83,30 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal int GetState()
         {
             return this.State;
+        }
+        internal string GetStatus()
+        {
+            {
+                if (this.State == BacklogState)
+                {
+                    return "backlog";
+                }
+                else if (this.State == InProgressState)
+                {
+                    return "in progress";
+                }
+                else if (this.State == Done)
+                {
+                    return "Done";
+                }
+                else
+                {
+                    log.Warn("this column state does not exist!");
+                    throw new ArgumentException("this column state does not exist!");
+                }
+                String msg = String.Format("Got the column name Successfully in BuissnesLayer!");
+                log.Info(msg);
+            }
         }
         internal void SetState(int state)
         {
@@ -130,6 +157,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             this.Assignee = userEmail;
         }
-        
+        public string GetTitle()
+        {
+            return this.Title;
+        }
+        public string GetDescription()
+        {
+            return this.Description;
+        }
+        public string GetDueDate()
+        {
+            return this.DueDate.ToString();
+        }
     }
 }
