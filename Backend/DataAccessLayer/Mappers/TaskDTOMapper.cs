@@ -151,7 +151,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
             }
         }
-            public void EditDescription(int taskID, string newDescription)
+        public void EditDescription(int taskID, string newDescription)
             {
                 string path = Path.GetFullPath(Path.Combine(
                     Directory.GetCurrentDirectory(), "kanban.db"));
@@ -257,6 +257,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
             // If failed to create user
         }
+
+
         internal List<TaskDTO> LoadTasks()
         {
             string path = Path.GetFullPath(Path.Combine(

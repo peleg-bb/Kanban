@@ -35,15 +35,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {tableName} ({emailColumnName}, {passwordColumnName}) " +
+                    command.CommandText = $"INSERT INTO {tableName}" +
+                                          $" ({emailColumnName}, {passwordColumnName}) " +
                                         $"VALUES (@email_val, @password_val)";
-
                     SQLiteParameter emailParam = new SQLiteParameter(@"email_val", email);
                     SQLiteParameter passwordParam = new SQLiteParameter(@"password_val", password);
-
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(passwordParam);
-
                     command.Prepare();
                     Console.WriteLine(path);
                     res = command.ExecuteNonQuery();

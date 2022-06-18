@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-using IntroSE.Kanban.Backend.ServiceLayer;
+﻿//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
-using Microsoft.VisualBasic;
+using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace BackendTests.ServiceLayer
 {
@@ -64,18 +59,35 @@ namespace BackendTests.ServiceLayer
             userService.DeleteAllData();
             boardService.DeleteAllData();
 
-            userTests.createUserTest();
-            userTests.validUserLoginTest();
+            // userTests.createUserTest();
+            // userTests.validUserLoginTest();
             userService.CreateUser("johndoe@gmail.com", "Hash123");
             //userTests.validUserLoginTest();
-            userTests.invalidUserLoginTest();
-
+            //userTests.invalidUserLoginTest();
+            userService.Login("johndoe@gmail.com", "Hash123");
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
             BoardTest boraTest = new BoardTest(boardService);
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
+
+            /* Lessons I've learned today -
+             1) You can't call methods in the gradingService after 
+            instantiating users\boards in the userService\boardService.
+            These are like 2 different environments. This may cause bugs in the future 
+            and perhaps even creates bugs rn.
+            Perhaps we do need to implement a ServiceFactory after all :(.
+            2) For some reason it seems as though you can't use column names as parameters 
+            when in command.Parameters - take note of that and insert column\table names 
+            as variables instead of parameters. - Needs confirmation.
+            3) We do need to start calling methods in the TestsMain using actual
+            tests. Without them we miss some crucial sanity checks which consume
+            a lot of time in debugging.
+              */
+            boardService.LimitColumn("johndoe@gmail.com", "To do list", 1, 17);
+            BoardTest boraTest = new BoardTest(boardService);
+
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
             userService.CreateUser("tamar@gmail.com", "Hash123");
@@ -148,7 +160,7 @@ namespace BackendTests.ServiceLayer
             userTests.invalidLogoutTest();
             userTests.invalidUserCreation_3();
 
-            
+
 
 
 
