@@ -517,6 +517,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerUnsuccessfully()
         {
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do list"), "USER DOES NOT A MEMBER OF THIS BOARD");
 
         }
 
@@ -525,6 +526,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerUnsuccessfully_2()
         {
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do list"), "USER DOES NOT A MEMBER OF THIS BOARD");
 
         }
 
