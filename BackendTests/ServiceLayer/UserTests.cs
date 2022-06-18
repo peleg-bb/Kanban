@@ -22,11 +22,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void createUserTest()
         {
+            Console.WriteLine("Create user test- ");
             Response response = new Response(null, null);
             Console.WriteLine(ToJson.toJson(response));
-            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Hash123"), response.OKJson());
-            
-            Console.WriteLine("User created successfully!");
+            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Hash123"), ToJson.toJson(response));
+            Console.WriteLine("");
+
         }
 
         /// <summary>
@@ -35,11 +36,12 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void validUserLoginTest()
         {
+            Console.WriteLine("Successful login test!");
             Response response = new Response((object)"johndoe@gmail.com");
             Console.WriteLine(ToJson.toJson(response));
 
             Assert.AreEqual(userService.Login("johndoe@gmail.com", "Hash123"), ToJson.toJson(response));
-            Console.WriteLine("Login successful!");
+            Console.WriteLine("");
         }
 
         /// <summary>
@@ -47,10 +49,11 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserLoginTest()
         {
+            Console.WriteLine("Invalid login test:");
             Response response = new Response("Wrong password");
             Console.WriteLine(ToJson.toJson(response));
             Assert.AreEqual(userService.Login("johndoe@gmail.com", "wrong_password"), ToJson.toJson(response));
-            Console.WriteLine("Login unsuccessful, user does not exist. Test passed!");
+            Console.WriteLine(" ");
         }
 
         /// <summary>
@@ -58,10 +61,11 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidLoginTest_2()
         {
-            Response response = new Response("User does not exist", false);
-            Console.WriteLine(response.BadJson());
-            Assert.AreEqual(userService.Login("null@gmail.com", "wrong"), response.BadJson());
-            Console.WriteLine("Login unsuccessful, user does not exist. Test passed!");
+            Console.WriteLine("Invalid login test");
+            Response response = new Response("User does not exist");
+            Console.WriteLine(ToJson.toJson(response));
+            Assert.AreEqual(userService.Login("null@gmail.com", "wrong"), ToJson.toJson(response));
+            Console.WriteLine(" ");
         }
 
         /// <summary>
@@ -69,13 +73,14 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserCreation()
         {
+            Console.WriteLine("Invalid registration test: ");
             Response response =
                 new Response(
                     "Illegal password. A legal password must be 6-20 characters" +
-                    " and must contain an Upper case, a lower case and a number", false);
-            Console.WriteLine(response.BadJson());
-            Assert.AreEqual(userService.CreateUser("tom@gmail.com", "1234"), response.BadJson());
-            Console.WriteLine("User not created, short password");
+                    " and must contain an Upper case, a lower case and a number");
+            Console.WriteLine(ToJson.toJson(response));
+            Assert.AreEqual(userService.CreateUser("tom@gmail.com", "1234"), ToJson.toJson(response));
+            Console.WriteLine(" ");
         }
 
         /// <summary>
@@ -83,10 +88,11 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserCreation_2()
         {
-            Response response = new Response("User already exists", false);
-            Console.WriteLine(response.BadJson());
-            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Ai9898"), response.BadJson());
-            Console.WriteLine("User not created, email already exists");
+            Console.WriteLine("Invalid registration test: ");
+            Response response = new Response("User already exists");
+            Console.WriteLine(ToJson.toJson(response));
+            Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Ai9898"), ToJson.toJson(response));
+            Console.WriteLine(" ");
         }
 
         /// <summary>
@@ -94,10 +100,11 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void invalidUserCreation_3()
         {
-            Response response = new Response("Not a valid email address", false);
-            Console.WriteLine(response.BadJson());
-            Assert.AreEqual(userService.CreateUser("_@gmailcom", "Ai9898"), response.BadJson());
-            Console.WriteLine("User not created, email already exists");
+            Console.WriteLine("Invalid registration test: ");
+            Response response = new Response("Not a valid email address");
+            Console.WriteLine(ToJson.toJson(response));
+            Assert.AreEqual(userService.CreateUser("_@gmailcom", "Ai9898"), ToJson.toJson(response));
+            Console.WriteLine(" ");
         }
 
 
@@ -106,10 +113,11 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void logoutTest()
         {
-            Response response = new Response(null, true);
-            Console.WriteLine(response.OKJson());
-            Assert.AreEqual(userService.logout("johndoe@gmail.com"), response.OKJson());
-            Console.WriteLine("User was logged out successfuly.");
+            Console.WriteLine("Logout test: ");
+            Response response = new Response(null);
+            Console.WriteLine(ToJson.toJson(response));
+            Assert.AreEqual(userService.logout("johndoe@gmail.com"), ToJson.toJson(response));
+            Console.WriteLine(" ");
         }
 
         /// <summary>
@@ -117,15 +125,21 @@ namespace BackendTests.ServiceLayer
         ///</summary>
         public void invalidLogoutTest()
         {
-            Response response = new Response("User is already logged out", false);
-            Console.WriteLine(response.BadJson());
-            Assert.AreEqual(userService.logout("johndoe@gmail.com"), response.BadJson());
-            Console.WriteLine("User was already logged out.");
+            Console.WriteLine("Invalid logout test: ");
+            Response response = new Response("User is already logged out");
+            Console.WriteLine(ToJson.toJson(response));
+            Assert.AreEqual(userService.logout("johndoe@gmail.com"), ToJson.toJson(response));
+            Console.WriteLine(" ");
         }
 
-        public void LoadUsersTest()
+        public string LoadUsersTest()
         {
-            userController.LoadUsers();
+            return userService.LoadData();
+        }
+
+        public string DeleteData()
+        {
+            return userService.DeleteAllData();
         }
     }
 }

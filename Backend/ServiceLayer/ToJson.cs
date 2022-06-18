@@ -16,8 +16,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public static string toJson(Response i)
         {
-            //return JsonConvert.SerializeObject(i, Formatting.Indented, new JsonSerializerSettings{NullValueHandling = NullValueHandling.Ignore});
-            return JsonSerializer.Serialize<Response>(i); 
+            return JsonConvert.SerializeObject(i, Formatting.Indented, new JsonSerializerSettings{NullValueHandling = NullValueHandling.Ignore});
+            //return JsonSerializer.Serialize<Response>(i); 
             // Which one should we use?
         }
         

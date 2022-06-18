@@ -27,11 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-
-
-
                 int res = -1;
-
                 try
                 {
                     connection.Open();
@@ -43,7 +39,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(passwordParam);
                     command.Prepare();
-                    Console.WriteLine(path);
                     res = command.ExecuteNonQuery();
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");

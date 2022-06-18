@@ -92,21 +92,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine(e.Message);
-                log.Warn(e.Message);
-
                 Response response = new Response(e.Message);
-                
                 return ToJson.toJson(response);
 
             }
             catch (DALException e)
             {
-                Console.WriteLine(e.Message);
-                log.Warn(e.Message);
                 Response response = new Response(e.Message);
                 return ToJson.toJson(response);
-
             }
 
 
@@ -135,10 +128,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                log.Warn(e.Message);
                 Response response = new Response(e.Message);
-
                 return ToJson.toJson(response); 
             }
         }
@@ -157,13 +147,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Login(username, password);
                 String msg = String.Format("Login successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response((object)username);
+                Response response = new Response((object)username.ToLower());
                 return ToJson.toJson(response);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                log.Error(e.Message);
                 Response response = new Response(e.Message);
                 return ToJson.toJson(response);
             }
@@ -188,8 +176,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e);
                 log.Warn(e.Message);
                 Response response = new Response(e.Message);
 
@@ -210,11 +196,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e);
                 log.Warn(e.Message);
                 Response response = new Response(e.Message);
-
                 return ToJson.toJson(response);
             }
             
@@ -232,11 +215,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e);
                 log.Warn(e.Message);
                 Response response = new Response(e.Message);
-
                 return ToJson.toJson(response);
             }
             

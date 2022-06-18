@@ -34,6 +34,9 @@ namespace BackendTests.ServiceLayer
         // [TestMethod()]
         static void Main(string[] args)
         {
+            ConsoleColor c = ConsoleColor.Black;
+            Console.BackgroundColor = c;
+            Console.ForegroundColor = ConsoleColor.White;
             // Display the number of command line arguments.
             UserController userController = new UserController();
             UserService userService = new UserService(userController);
@@ -49,19 +52,29 @@ namespace BackendTests.ServiceLayer
             DateTime dueDate = new DateTime(2025, 6, 15);
             DateTime newDueDate = new DateTime(2026, 8, 14);
 
-            
-            Console.WriteLine(grading.LoadData());
-            Console.WriteLine(grading.DeleteData());
-            Console.WriteLine(grading.Register(email1, password));
-            Console.WriteLine(grading.Logout(email1));
-            Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
-            Console.WriteLine(grading.Login(email1, password));
-            Console.WriteLine(grading.AddBoard(email1, boardName));
-            Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
-            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
-            Console.WriteLine(grading.DeleteData());
-            Console.WriteLine(grading.LoadData());
-            Console.WriteLine(grading.DeleteData());
+
+            // Console.WriteLine(grading.LoadData());
+            // Console.WriteLine(grading.DeleteData());
+            // Console.WriteLine(grading.Register(email1, password));
+            // Console.WriteLine(grading.Logout(email1));
+            // Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
+            // Console.WriteLine(grading.Login(email1, password));
+            // Console.WriteLine(grading.AddBoard(email1, boardName));
+            // Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
+            // Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
+            // Console.WriteLine(grading.DeleteData());
+            // Console.WriteLine(grading.LoadData());
+            // Console.WriteLine(grading.DeleteData());
+            userTests.DeleteData();
+            userTests.createUserTest();
+            userTests.invalidUserLoginTest();
+            userTests.invalidUserCreation();
+            userTests.invalidLoginTest_2();
+            userTests.invalidUserCreation_2();
+            userTests.logoutTest();
+            userTests.invalidLogoutTest();
+            userTests.validUserLoginTest();
+            userTests.invalidUserCreation_3();
 
 
 
@@ -69,9 +82,7 @@ namespace BackendTests.ServiceLayer
             userService.DeleteAllData();
             boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
 
-            ConsoleColor c = ConsoleColor.Green;
-            Console.BackgroundColor = c;
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            
             userService.DeleteAllData();
             boardService.DeleteAllData();
 
@@ -123,7 +134,7 @@ namespace BackendTests.ServiceLayer
             // boraTest.LeaveBoardUnsuccessfully_2();
             // boraTest.InvalidDeleteBoard_2();
             // boraTest.LeaveBoardUnsuccessfully_3();
-            boraTest.ChangeOwnerSuccessfully();
+            //boraTest.ChangeOwnerSuccessfully();
             boraTest.ValidDeleteBoard();
             userService.DeleteAllData();
             boardService.DeleteAllData();
@@ -171,16 +182,7 @@ namespace BackendTests.ServiceLayer
             TaskTests tests = new TaskTests(taskService, userService, boardService, grading);
 
 
-            userTests.createUserTest();
-            userTests.validUserLoginTest();
-            userTests.invalidUserLoginTest();
-            userTests.invalidUserCreation();
-            userTests.invalidLoginTest_2();
-            userTests.invalidUserCreation_2();
-            userTests.logoutTest();
-            userTests.invalidLogoutTest();
-            userTests.invalidUserCreation_3();
-
+            
 
 
 
