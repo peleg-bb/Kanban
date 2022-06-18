@@ -507,6 +507,8 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerSuccessfully()
         {
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "tamar@gmail.com", "To do list"), ToJson.toJson(r));
 
         }
 
