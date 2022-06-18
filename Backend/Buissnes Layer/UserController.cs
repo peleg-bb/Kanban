@@ -94,13 +94,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         public void CreateUser(string email, string password)
         {
+            string Email = email.ToLower();
             if (this.users != null)
             {
-                if (UserExists(email))
+                if (UserExists(Email))
                 {
                     throw new ArgumentException("User already exists");
                 }
-                if (!IsValidEmail(email) || IsHebrew(email)||!IsValidEmail2(email))
+                if (!IsValidEmail(Email) || IsHebrew(Email)||!IsValidEmail2(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -112,15 +113,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    UserDTO userDto = userDtoMapper.CreateUser(email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(Email, password);
                     User u = new User(userDto);
-                    users.Add(email, u);
+                    users.Add(Email, u);
                 }
             }
             else
             {
                
-                if (!IsValidEmail(email) || IsHebrew(email)||!IsValidEmail2(email))
+                if (!IsValidEmail(Email) || IsHebrew(Email)||!IsValidEmail2(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -131,9 +132,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    UserDTO userDto = userDtoMapper.CreateUser(email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(Email, password);
                     User u = new User(userDto);
-                    users.Add(email, u);
+                    users.Add(Email, u);
                 }
                 
             }
@@ -144,9 +145,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         public void DeleteUser(string email)
         {
+
             try
             {
-                users.Remove(email);
+                string Email = email.ToLower();
+                users.Remove(Email);
             }
             catch (Exception){
                 throw new ArgumentException("User does not exist");
