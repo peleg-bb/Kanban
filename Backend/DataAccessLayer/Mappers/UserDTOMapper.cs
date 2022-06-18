@@ -141,7 +141,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"DELETE FROM {tableName}";
+                    command.CommandText = $"DELETE FROM {tableName};";
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
