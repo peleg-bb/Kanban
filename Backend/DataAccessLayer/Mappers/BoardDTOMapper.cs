@@ -16,6 +16,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         private List<BoardDTO> boardDTOs;
         private TaskDTOMapper taskDTOMapper;
         private int boardCount;
+        public int BoardCount => boardCount;
         const string tableName = "Boards";
         const string BoardUsersTable = "Board_Users";
         private const string TasksTable = "Tasks";
@@ -23,11 +24,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         private const string nameColumn = "Name";
         private const string ownerColumn = "Owner_email";
         private const string backlogMaxColumn = "Backlog_max";
-        private const string inProgressMaxColumn = "In_Progress_Max";
-        private const string doneMaxColumn = "Done_Max";
+        private const string inProgressMaxColumn = "In_Progress_max";
+        private const string doneMaxColumn = "Done_max";
         private const int backlogMax = -1; //Default values
         private const int inProgressMax = -1; //Default values
         private const int doneMax = -1; //Default values
+        private Dictionary<int, string> columnNamesByOrdinal;
 
         internal BoardDTOMapper()
         {
@@ -35,6 +37,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardCount = 0;// LoadData and update count
             this.boardDTOs = new List<BoardDTO>();
             this.taskDTOMapper = new TaskDTOMapper();
+            columnNamesByOrdinal = new Dictionary<int, string>();
+            columnNamesByOrdinal[0] = backlogMaxColumn;
+            columnNamesByOrdinal[1] = inProgressMaxColumn;
+            columnNamesByOrdinal[2] = doneMaxColumn;
         }
 
         internal void AddUserToBoard(int boardID, string email)
@@ -171,14 +177,96 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
         }
 
-        internal int GetCount()
+        public void ChangeOwnership(string newOwner, int boardID)
         {
-            return this.boardCount;
+            string path = Path.GetFullPath(Path.Combine(
+               Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+
+
+
+                int res = -1;
+
+                try
+                {
+                    connection.Open();
+
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    command.CommandText = $"UPDATE {tableName} SET {ownerColumn} = @owner_val WHERE {idColumn} = @boardID_val";
+                    SQLiteParameter ownerParam = new SQLiteParameter(@"ownerID_val", newOwner);
+                    SQLiteParameter boardIDParam = new SQLiteParameter(@"boardID_val", boardID);
+                    command.Parameters.Add(ownerParam);
+                    command.Parameters.Add(boardIDParam);
+                    res = command.ExecuteNonQuery();
+                    
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Change owner failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
         }
 
-        public void ChangeOwnership()
+        internal void ChangeColumnLimit(int boardId, int columnToChange, int newLimit)
         {
 
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    string columnName = columnNamesByOrdinal[columnToChange];
+                    command.CommandText = $"UPDATE {tableName} SET {columnName} = @limit_val WHERE {idColumn} = @boardID_val";
+                    //SQLiteParameter columnParam = new SQLiteParameter(@"column_val", columnNamesByOrdinal[columnToChange]);
+                    SQLiteParameter limitParam = new SQLiteParameter(@"limit_val", newLimit);
+                    SQLiteParameter boardIDParam = new SQLiteParameter(@"boardID_val", boardId);
+                    //command.Parameters.Add(columnParam);
+                    command.Parameters.Add(limitParam);
+                    command.Parameters.Add(boardIDParam);
+                    res = command.ExecuteNonQuery();
+
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Change column limit failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
         }
 
         public List<BoardDTO> LoadBoards()
@@ -194,7 +282,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"Select * FROM {tableName}";
+                    command.CommandText = $"Select * FROM {tableName};" +
+                                          $"SELECT max({idColumn}) FROM {tableName};";
                                           command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
@@ -210,6 +299,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                             inProgressMax: InProgressMax, doneMax: DoneMax);
                         boardDTOs.Add(board);
                         Console.WriteLine("Board " + ID + " loaded successfully");
+                    }
+
+                    reader.NextResult();
+                    while (reader.Read())
+                    {
+                        int nextBoardID = (int)reader["ID"];
+                        this.boardCount = nextBoardID;
                     }
 
                     return boardDTOs;

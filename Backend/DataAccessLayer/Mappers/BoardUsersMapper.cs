@@ -188,7 +188,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             
         }
 
-
+        /// <summary>
+        /// Terminates the membership of a user in a board
+        /// </summary>
+        /// <param name="boardID"></param>
+        /// <param name="userEmail"></param>
         public void RemoveUser(int boardID, string userEmail)
         {
             {
