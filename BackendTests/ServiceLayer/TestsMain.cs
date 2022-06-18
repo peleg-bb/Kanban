@@ -86,7 +86,7 @@ namespace BackendTests.ServiceLayer
             a lot of time in debugging.
               */
             boardService.LimitColumn("johndoe@gmail.com", "To do list", 1, 17);
-            BoardTest boraTest = new BoardTest(boardService);
+            BoardTest boraTest1 = new BoardTest(boardService);
 
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
