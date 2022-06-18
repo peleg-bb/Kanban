@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 userController.CreateUser(email, password);
                 Response response = new Response(null, null);
-                return "{}";
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
@@ -102,7 +102,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 userController.Login(email, password);
                 Response response = new Response(null, email);
-                return JsonSerializer.Serialize(response);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
@@ -121,8 +121,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                userController.Logout(email);
-                return "{}";
+                userService.logout(email);
+                Response response = new Response(null, email);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
@@ -616,10 +617,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LoadData()
         {
-            this.boardService.LoadData();
-            this.userService.LoadData();
-            Response r = new Response(null);
-            return ToJson.toJson(r);
+            try
+            {
+                this.boardService.LoadData();
+                this.userService.LoadData();
+                Response r = new Response(null);
+                return ToJson.toJson(r);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Response r = new Response(null);
+                return ToJson.toJson(r);
+            }
+            
         }
 
         ///<summary>This method deletes all persisted data.
@@ -631,11 +642,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string DeleteData()
         {
-            userService.DeleteAllData();
-            boardService.DeleteAllData();
+            try
+            {
+                userService.DeleteAllData();
+                boardService.DeleteAllData();
+                Response r = new Response(null);
+                return ToJson.toJson(r);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Response r = new Response(null);
+                return ToJson.toJson(r);
+            }
+            
             // Probably need to add deletion of all tasks through TaskService
-            Response r = new Response(null);
-            return ToJson.toJson(r);
         }
 
         /// <summary>

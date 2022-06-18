@@ -22,7 +22,7 @@ namespace BackendTests.ServiceLayer
         [TestMethod()]
         public void createUserTest()
         {
-            Response response = new Response(null, true);
+            Response response = new Response(null, null);
             Console.WriteLine(ToJson.toJson(response));
             Assert.AreEqual(userService.CreateUser("johndoe@gmail.com", "Hash123"), response.OKJson());
             

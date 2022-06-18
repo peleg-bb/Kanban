@@ -321,6 +321,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
                 }
+                catch (System.IndexOutOfRangeException ex)
+                {
+                    Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    command.Dispose();
+                    connection.Close();
+                    throw new DALException($"Delete data failed because " + ex.Message);
+                    // log error
+                    // Maybe throw an exception? Probs not, might not reach finally
+                }
                 finally
                 {
                     // Console.WriteLine("Reached Finally");

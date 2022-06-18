@@ -50,6 +50,8 @@ namespace BackendTests.ServiceLayer
             DateTime newDueDate = new DateTime(2026, 8, 14);
 
 
+            Console.WriteLine(grading.LoadData());
+            Console.WriteLine(grading.DeleteData());
             userService.DeleteAllData();
             boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
 
