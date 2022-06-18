@@ -68,10 +68,12 @@ namespace BackendTests.ServiceLayer
             //userTests.invalidUserLoginTest();
             userService.Login("johndoe@gmail.com", "Hash123");
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            BoardTest boraTest = new BoardTest(boardService);
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
+
             /* Lessons I've learned today -
              1) You can't call methods in the gradingService after 
             instantiating users\boards in the userService\boardService.
@@ -87,12 +89,23 @@ namespace BackendTests.ServiceLayer
               */
             boardService.LimitColumn("johndoe@gmail.com", "To do list", 1, 17);
             BoardTest boraTest = new BoardTest(boardService);
+
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
-            boraTest.ValidDeleteBoard();
             userService.CreateUser("tamar@gmail.com", "Hash123");
             userController.Login("tamar@gmail.com", "Hash123");
-            boraTest.InvalidDeleteBoard();
+            // boraTest.InvalidDeleteBoard();
+            boraTest.JoinBoardSuccessfully();
+            // boraTest.JoinBoardUnsuccessfully_2();
+            // boraTest.JoinBoardUnsuccessfully();
+            boraTest.LeaveBoardSuccessfully();
+            userController.CreateUser("itay@gmail.com", "Hash123");
+            userController.Login("itay@gmail.com", "Hash123");
+            // boraTest.LeaveBoardUnsuccessfully();
+            // boraTest.LeaveBoardUnsuccessfully_2();
+            // boraTest.InvalidDeleteBoard_2();
+            // boraTest.LeaveBoardUnsuccessfully_3();
+            boraTest.ValidDeleteBoard();
             userService.DeleteAllData();
             boardService.DeleteAllData();
 

@@ -76,17 +76,23 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>bool </returns>
         public bool UserHasThisBoard(string userEmail,string boardName) //checks if board exists
         {
-            
-            if (this.BoardsOfUsers[userEmail].ContainsKey(boardName))
-            { 
-                
-                return true;
+            try
+            {
+                if (this.BoardsOfUsers[userEmail].ContainsKey(boardName))
+                {
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else 
-            { 
+            catch (Exception e)
+            {
                 return false;
             }
-
+            
             
         }
 
@@ -102,7 +108,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public Board GetBoardById( int boardID)
         {
-            return this.boardById[boardID];
+            try
+            {
+                return this.boardById[boardID];
+            }
+            catch
+            {
+                throw new Exception("THIS BOARD DOES NOT EXSIT");
+            }
         }
 
         public List<int> GetUserBList(string userEmail)
@@ -381,13 +394,23 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             try
             {
                 string userEmailOwner = GetBoardById(boardId).GetOwner();
-                string boardName = GetBoardById(boardId).name;
+                string boardName = GetBoardById(boardId).GetName();
                 if ((userController.IsLoggedIn(userEmailJoiner)))
                 {
                     if (!UserHasThisBoard(userEmailJoiner, boardName))
                     {
                         BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
-                        BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                        if (!UserHasAnyBoard(userEmailJoiner))
+                        {
+                            Dictionary<string,Board> b =new Dictionary<string,Board>();
+                            b.Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                            BoardsOfUsers[userEmailJoiner]= b;
+                        }
+                        else
+                        {
+                            BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+
+                        }
                         boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
                         String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
                         log.Info(msg);
@@ -427,7 +450,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     if (UserHasThisBoard(userEmailLeaving, boardName))
                     {
-                        if (!ownerBoards[userEmailLeaving].Contains(boardName))
+                        if (userEmailOwner!=userEmailLeaving)
                         {
                             BoardsOfUsers[userEmailOwner][boardName].leaveTasks(userEmailLeaving); // all joiner take become unAssigned
                             BoardsOfUsers[userEmailOwner][boardName].DeleteFromJoinList(userEmailLeaving);
@@ -449,6 +472,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         throw new ArgumentException("user doesn't have that board");
                     }
                 }
+                else
                 {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");

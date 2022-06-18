@@ -150,7 +150,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.leaveBoard(boardId, userEmailLeaving);
                 String msg = String.Format("Left Board! userEmailOwner = {0}", userEmailLeaving);
                 log.Info(msg);
-                Response r = new Response((object)userEmailLeaving);
+                Response r = new Response(true);
                 return ToJson.toJson(r);
             }
             catch (Exception e)

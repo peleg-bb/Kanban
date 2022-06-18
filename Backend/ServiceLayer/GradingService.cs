@@ -642,21 +642,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string DeleteData()
         {
-            try
-            {
-                userService.DeleteAllData();
-                boardService.DeleteAllData();
-                Response r = new Response(null);
-                return ToJson.toJson(r);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Response r = new Response(null);
-                return ToJson.toJson(r);
-            }
-            
+            userService.DeleteAllData();
+            boardService.DeleteAllData();
             // Probably need to add deletion of all tasks through TaskService
+
+
+            return ToJson.toJson(new Response(null,null));
+
         }
 
         /// <summary>
