@@ -60,7 +60,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            Console.WriteLine(path);
             string connectionString = $"Data Source={path}; Version=3;";
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -69,16 +68,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"Select * FROM {TasksTable}" +
-                                          $"WHERE Board_ID = {this.iD};" +
-                                          $"SELECT * FROM {BoardUsers} " +
-                                          $"WHERE Board_ID = {this.iD}";
+                    command.CommandText = $"Select * FROM {TasksTable} " +
+                                          $"WHERE Board_ID = {this.iD}; " +
+                                          $"SELECT * FROM {BoardUsersTable} " +
+                                          $"WHERE Board_ID = {this.iD};";
                     command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     { // Create Task DTOs and add Tasks
-                        int taskID = (int)reader["Task_ID"];
-                        int boardID = (int)reader["Board_ID"];
+                        int taskID = (int)Convert.ToInt64(reader["Task_ID"]);
+                        int boardID = (int)Convert.ToInt64(reader["Board_ID"]);
                         string assignee = reader["Assignee"].ToString();
                         string status = reader["Status"].ToString();
                         string title = reader["Title"].ToString();

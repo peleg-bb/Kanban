@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
@@ -273,7 +274,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            Console.WriteLine(path);
+            
             string connectionString = $"Data Source={path}; Version=3;";
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -288,12 +289,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        int ID = (int)reader["ID"];
+                        int ID = (int)Convert.ToInt64(reader["ID"]);
                         string owner = reader["Owner_email"].ToString();
                         string name = reader["Name"].ToString();
-                        int BacklogMax = (int)reader["Backlog_max"];
-                        int InProgressMax = (int)reader["In_Progress_max"];
-                        int DoneMax = (int)reader["Done_Max"];
+                        int BacklogMax = (int)Convert.ToInt64(reader["Backlog_max"]);
+                        int InProgressMax = (int)Convert.ToInt64(reader["In_Progress_max"]);
+                        int DoneMax = (int)Convert.ToInt64(reader["Done_max"]);
                         BoardDTO board = new BoardDTO(owner: owner,
                             name: name, iD: ID, backlogMax: BacklogMax,
                             inProgressMax: InProgressMax, doneMax: DoneMax);
@@ -302,35 +303,38 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     }
 
                     reader.NextResult();
-                    while (reader.Read())
+                    try
                     {
-                        int nextBoardID = (int)reader["ID"];
-                        this.boardCount = nextBoardID;
+                        while (reader.Read())
+                        {
+                            int nextBoardID = (int)Convert.ToInt64(reader["max(ID)"]);
+                            this.boardCount = nextBoardID;
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        
+                    }
+
+                    finally
+                    {
+                        
                     }
 
                     return boardDTOs;
 
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
                     command.Dispose();
                     connection.Close();
-                    throw new DALException($"Delete data failed because " + ex.Message);
+                    throw new DALException($"Load data failed because " + ex.Message);
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
                 }
-                catch (System.IndexOutOfRangeException ex)
-                {
-                    Console.WriteLine(command.CommandText);
-                    Console.WriteLine(ex.Message);
-                    command.Dispose();
-                    connection.Close();
-                    throw new DALException($"Delete data failed because " + ex.Message);
-                    // log error
-                    // Maybe throw an exception? Probs not, might not reach finally
-                }
+                
                 finally
                 {
                     // Console.WriteLine("Reached Finally");
@@ -368,6 +372,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     boardUsersMapper.DeleteAllData(); // Deletes all Board_Users table
                     foreach (var boardDTO in boardDTOs)
                     {
+                        // Major bug - opening a new SQL connection while the DB is still open.
+                        // causes DB to be locked!
                         boardDTO.DeleteAllData();// Deletes all tasks
                     }
                     boardDTOs.Clear();

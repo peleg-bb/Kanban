@@ -49,9 +49,22 @@ namespace BackendTests.ServiceLayer
             DateTime dueDate = new DateTime(2025, 6, 15);
             DateTime newDueDate = new DateTime(2026, 8, 14);
 
-
+            
             Console.WriteLine(grading.LoadData());
             Console.WriteLine(grading.DeleteData());
+            Console.WriteLine(grading.Register(email1, password));
+            Console.WriteLine(grading.Logout(email1));
+            Console.WriteLine(grading.Login(email1, password));
+            Console.WriteLine(grading.AddBoard(email1, boardName));
+            Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
+            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 0));
+            Console.WriteLine(grading.DeleteData());
+            Console.WriteLine(grading.LoadData());
+            Console.WriteLine(grading.DeleteData());
+
+
+
+
             userService.DeleteAllData();
             boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
 
@@ -61,6 +74,9 @@ namespace BackendTests.ServiceLayer
             userService.DeleteAllData();
             boardService.DeleteAllData();
 
+            
+            BoardTest boraTest = new BoardTest(boardService);
+            
             // userTests.createUserTest();
             // userTests.validUserLoginTest();
             userService.CreateUser("johndoe@gmail.com", "Hash123");
@@ -68,7 +84,7 @@ namespace BackendTests.ServiceLayer
             //userTests.invalidUserLoginTest();
             userService.Login("johndoe@gmail.com", "Hash123");
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
-            BoardTest boraTest = new BoardTest(boardService);
+          
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
@@ -88,7 +104,7 @@ namespace BackendTests.ServiceLayer
             a lot of time in debugging.
               */
             boardService.LimitColumn("johndoe@gmail.com", "To do list", 1, 17);
-            BoardTest boraTest = new BoardTest(boardService);
+            
 
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
