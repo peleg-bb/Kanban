@@ -81,6 +81,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userController.CreateUser(email, password);
+                userController.Login(email, password);
 
                 String msg = String.Format("UserService created! email = {0}", email);
                 log.Info(msg);
