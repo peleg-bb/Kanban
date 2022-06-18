@@ -384,24 +384,40 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 string boardName = GetBoardById(boardId).name;
                 if ((userController.IsLoggedIn(userEmailJoiner)))
                 {
-                    if (!UserHasThisBoard(userEmailJoiner, boardName))
+                    if (UserHasAnyBoard(userEmailJoiner))
+                    {
+                        if (!UserHasThisBoard(userEmailJoiner, boardName))
+                        {
+                            BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
+                            BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                            boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
+                            String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
+                            log.Info(msg);
+                        }
+                        else
+                        {
+                            log.Warn("user already joined that board");
+                            throw new ArgumentException("user already joined that board");
+                        }
+                    }
+                    else
                     {
                         BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
-                        BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                        Dictionary<string, Board> b = new Dictionary<string, Board>();
+                        b.Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                        BoardsOfUsers[userEmailJoiner] = b;
                         boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
                         String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
                         log.Info(msg);
                     }
-                    else
-                    {
-                        log.Warn("user already joined that board");
-                        throw new ArgumentException("user already joined that board");
-                    }
+                   
                 }
-                else {
+                else
+                {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");
                 }
+
             }
             catch (Exception e)
             {
@@ -427,7 +443,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     if (UserHasThisBoard(userEmailLeaving, boardName))
                     {
-                        if (!ownerBoards[userEmailLeaving].Contains(boardName))
+                        if (userEmailLeaving!=userEmailOwner)
                         {
                             BoardsOfUsers[userEmailOwner][boardName].leaveTasks(userEmailLeaving); // all joiner take become unAssigned
                             BoardsOfUsers[userEmailOwner][boardName].DeleteFromJoinList(userEmailLeaving);
@@ -449,6 +465,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         throw new ArgumentException("user doesn't have that board");
                     }
                 }
+                else
                 {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");
@@ -474,13 +491,44 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if ((userController.IsLoggedIn(userEmailOwner)))
                 {
-                    if (ownerBoards[userEmailOwner].Contains(boardName) && BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
+                    if (BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
                     {
-                        BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
-                        if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
+                        if (isOwnerOfAnyBoard(userEmailFutureOwner))
                         {
-                            ownerBoards[userEmailFutureOwner].Add(boardName);
-                            ownerBoards[userEmailOwner].Remove(boardName);
+                            if (!ownerBoards[userEmailFutureOwner].Contains(boardName))
+                            {
+                                if (ownerBoards[userEmailOwner].Contains(boardName))
+                                {
+                                    BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
+                                    ownerBoards[userEmailFutureOwner].Add(boardName);
+                                    ownerBoards[userEmailOwner].Remove(boardName);
+                                    // if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
+                                    // {
+                                    //     ownerBoards[userEmailFutureOwner].Add(boardName);
+                                    //     ownerBoards[userEmailOwner].Remove(boardName);
+                                    // }
+                                    // else
+                                    // {
+                                    //     List<string> listBoard = new List<string>();
+                                    //     listBoard.Add(boardName);
+                                    //     ownerBoards.Add(userEmailFutureOwner, listBoard);
+                                    //     ownerBoards[userEmailOwner].Remove(boardName);
+                                    // }
+                                    
+                                }
+                                else
+                                {
+                                    log.Warn("not the owner of this board!");
+                                    throw new ArgumentException("not the owner of this board!");
+                                }
+                            }
+                            else
+                            {
+                                log.Warn("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                                throw new ArgumentException("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                            }
+                        
+                            
                         }
                         else
                         {
@@ -491,13 +539,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         }
                         String msg = String.Format("Transfer the Ownership Successfully in BuissnesLayer!  new Owner userEmail = {0} of board :{1}", userEmailFutureOwner, boardName);
                         log.Info(msg);
+
                     }
                     else
                     {
-                        log.Warn("not the owner of this board!");
-                        throw new ArgumentException("not the owner of this board!");
+                        log.Warn("USER DOES NOT A MEMBER OF THIS BOARD");
+                        throw new ArgumentException("USER DOES NOT A MEMBER OF THIS BOARD");
                     }
                 }
+                else
                 {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");

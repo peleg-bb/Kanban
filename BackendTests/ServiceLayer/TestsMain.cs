@@ -114,16 +114,20 @@ namespace BackendTests.ServiceLayer
             userService.Login("tamar@gmail.com", "Hash123");
             // boraTest.InvalidDeleteBoard();
             boraTest.JoinBoardSuccessfully();
+
             // boraTest.JoinBoardUnsuccessfully_2();
             // boraTest.JoinBoardUnsuccessfully();
-            boraTest.LeaveBoardSuccessfully();
+            // boraTest.ChangeOwnerSuccessfully();
+            // boraTest.LeaveBoardSuccessfully();
             userController.CreateUser("itay@gmail.com", "Hash123");
             userController.Login("itay@gmail.com", "Hash123");
+            // boraTest.ChangeOwnerUnsuccessfully();
+            boardService.boardController.joinBoard(1, "itay@gmail.com");
+            boraTest.ChangeOwnerUnsuccessfully_2();
             // boraTest.LeaveBoardUnsuccessfully();
             // boraTest.LeaveBoardUnsuccessfully_2();
             // boraTest.InvalidDeleteBoard_2();
             // boraTest.LeaveBoardUnsuccessfully_3();
-            boraTest.ChangeOwnerSuccessfully();
             boraTest.ValidDeleteBoard();
             userService.DeleteAllData();
             boardService.DeleteAllData();

@@ -57,6 +57,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </param>
         internal Board(BoardDTO boardDto)
         {
+            this.name=boardDto.Name;
             this.boardDTO = boardDto;
             this.BoardId = boardDto.ID;
             this.Owner = boardDto.Owner;
@@ -167,11 +168,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 else
                 {
 
-                    for (int i = 0; i < this.tasks.Count; i++)
+                    foreach (var item in this.tasks.Values)
                     {
-                        if (this.tasks[i].GetState() == columnO)
+                        if (item.GetState() == columnO)
                         {
-                            taskListO.Add(this.tasks[i]);// get all the func that the user has at that column.
+                            taskListO.Add(item);// get all the func that the user has at that column.
                         }
                     }
 
@@ -263,7 +264,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public void leaveTasks(string userEmail)
         {
             List<Task> p= GetInProgressByAssignee(userEmail);
-            List<Task> e = this.GEtColList(0);
+            List<Task> e = this.GEtColList(BacklogState);
             e.AddRange(p);
             foreach (var taski in e)
             {
