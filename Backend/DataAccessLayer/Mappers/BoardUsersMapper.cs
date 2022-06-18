@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions.Impl;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
@@ -242,44 +243,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         }
 
         public void DeleteAllData()
-            {
-
-                string path = Path.GetFullPath(Path.Combine(
-                    Directory.GetCurrentDirectory(), "kanban.db"));
-                string connectionString = $"Data Source={path}; Version=3;";
-
-                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-                {
-                    SQLiteCommand command = new SQLiteCommand(null, connection);
-
-
-
-                    int res = -1;
-
-                    try
-                    {
-                        connection.Open();
-                        command.CommandText = $"DELETE FROM {tableName}";
-                        command.Prepare();
-                        res = command.ExecuteNonQuery();
-                        _boardUsersDTOs.Clear();
-                        Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
-
-                    }
-                    catch (SQLiteException ex)
-                    {
-                        Console.WriteLine(command.CommandText);
-                        Console.WriteLine(ex.Message);
-                        throw new DALException($"Delete data failed because " + ex.Message);
-                        // log error
-                    }
-                    finally
-                    {
-                        command.Dispose();
-                        connection.Close();
-                    }
-                }
-            }
+        {
+            this._boardUsersDTOs.Clear();
+            
         }
     }
+}
+      
 

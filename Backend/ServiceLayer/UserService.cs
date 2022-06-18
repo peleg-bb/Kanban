@@ -83,29 +83,29 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.CreateUser(email, password);
                 userController.Login(email, password);
 
-                String msg = String.Format("UserService created! email = {0}", email);
+                String msg = String.Format("User created! email = {0}", email);
                 log.Info(msg);
                 
-                Response response = new Response(null, true);
+                Response response = new Response(null, null);
                 // If successful returns user object in JSON
-                return response.OKJson();
+                return ToJson.toJson(response);
             }
             catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
                 log.Warn(e.Message);
 
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message);
                 
-                return response.BadJson();
+                return ToJson.toJson(response);
 
             }
             catch (DALException e)
             {
                 Console.WriteLine(e.Message);
                 log.Warn(e.Message);
-                Response response = new Response(e.Message, false);
-                return response.BadJson();
+                Response response = new Response(e.Message);
+                return ToJson.toJson(response);
 
             }
 
@@ -126,20 +126,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
+                // TODO: Make ServiceLayer unfamiliar
                 userController.GetUser(username).ChangePassword(oldP, newP);
                 String msg = String.Format("Password changed successfully for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response(null, true);
-
-                return response.OKJson(); 
+                Response response = new Response(null);
+                return ToJson.toJson(response); 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 log.Warn(e.Message);
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message);
 
-                return response.BadJson(); 
+                return ToJson.toJson(response); 
             }
         }
 
@@ -183,30 +183,63 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Logout(username);
                 String msg = String.Format("Logout successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response(null, true);
-
-                return response.OKJson();
+                Response response = new Response(null, null);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e);
                 log.Warn(e.Message);
-                Response response = new Response(e.Message, false);
+                Response response = new Response(e.Message);
 
-                return response.BadJson();
+                return ToJson.toJson(response);
             }
 
         }
 
-        public void LoadData()
+        public string LoadData()
         {
-            this.userController.LoadUsers();
+            try
+            {
+                this.userController.LoadUsers();
+                String msg = String.Format("Load Data successful in UserService.");
+                log.Info(msg);
+                Response response = new Response(null, null);
+                return ToJson.toJson(response);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
+                log.Warn(e.Message);
+                Response response = new Response(e.Message);
+
+                return ToJson.toJson(response);
+            }
+            
         }
 
-        public void DeleteAllData()
+        public string DeleteAllData()
         {
-            this.userController.DeleteAllData();
+            try
+            {
+                this.userController.DeleteAllData();
+                String msg = String.Format("Load Data successful in UserService.");
+                log.Info(msg);
+                Response response = new Response(null, null);
+                return ToJson.toJson(response);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
+                log.Warn(e.Message);
+                Response response = new Response(e.Message);
+
+                return ToJson.toJson(response);
+            }
+            
         }
 
     }

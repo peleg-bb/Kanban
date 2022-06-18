@@ -27,8 +27,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public int DoneMax => doneMax;
         private string TasksTable = "Tasks";
         private string BoardUsersTable = "Board_Users";
-        private List<TaskDTO> taskDTOs;
-        private List<string> BoardUsers;
+        private List<TaskDTO> taskDTOs = new List<TaskDTO>();
+        private List<string> BoardUsers = new List<string>();
         private TaskDTOMapper taskDTOMapper;
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             this.inProgressMax = inProgressMax;
             this.doneMax = doneMax;
             //BoardUsers = boardUsers;
-            this.taskDTOs = new List<TaskDTO>();
+            
         }
 
         public BoardDTO LoadBoard()
@@ -60,7 +60,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            Console.WriteLine(path);
             string connectionString = $"Data Source={path}; Version=3;";
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -69,16 +68,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"Select * FROM {TasksTable}" +
-                                          $"WHERE Board_ID = {this.iD};" +
-                                          $"SELECT * FROM {BoardUsers} " +
-                                          $"WHERE Board_ID = {this.iD}";
+                    command.CommandText = $"Select * FROM {TasksTable} " +
+                                          $"WHERE Board_ID = {this.iD}; " +
+                                          $"SELECT * FROM {BoardUsersTable} " +
+                                          $"WHERE Board_ID = {this.iD};";
                     command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     { // Create Task DTOs and add Tasks
-                        int taskID = (int)reader["Task_ID"];
-                        int boardID = (int)reader["Board_ID"];
+                        int taskID = (int)Convert.ToInt64(reader["Task_ID"]);
+                        int boardID = (int)Convert.ToInt64(reader["Board_ID"]);
                         string assignee = reader["Assignee"].ToString();
                         string status = reader["Status"].ToString();
                         string title = reader["Title"].ToString();
@@ -126,42 +125,52 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         public void DeleteAllData()
         {
-            string path = Path.GetFullPath(Path.Combine(
-                Directory.GetCurrentDirectory(), "kanban.db"));
-            string connectionString = $"Data Source={path}; Version=3;";
-
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            try
             {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-
-
-
-                int res = -1;
-
-                try
-                {
-                    connection.Open();
-                    command.CommandText = $"DELETE FROM {TasksTable}";
-                    command.Prepare();
-                    res = command.ExecuteNonQuery();
-                    taskDTOs.Clear();
-                    Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
-                }
-                catch (SQLiteException ex)
-                {
-                    Console.WriteLine(command.CommandText);
-                    Console.WriteLine(ex.Message);
-                    throw new DALException($"Delete tasks failed because " + ex.Message);
-                    // log error
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
+                this.BoardUsers.Clear();
+                this.taskDTOs.Clear();
             }
 
+            catch (NullReferenceException e) {}
+            
         }
+        /*
+        string path = Path.GetFullPath(Path.Combine(
+            Directory.GetCurrentDirectory(), "kanban.db"));
+        string connectionString = $"Data Source={path}; Version=3;";
+
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
+            SQLiteCommand command = new SQLiteCommand(null, connection);
+
+
+
+            int res = -1;
+
+            try
+            {
+                connection.Open();
+                command.CommandText = $"DELETE FROM {TasksTable}";
+                command.Prepare();
+                res = command.ExecuteNonQuery();
+                taskDTOs.Clear();
+                Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(command.CommandText);
+                Console.WriteLine(ex.Message);
+                throw new DALException($"Delete tasks failed because " + ex.Message);
+                // log error
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+        }
+        */
+
         
         public TaskDTO AddTask(int taskID, int boardID, string assignee, string status, string title, string description, string dueDate, string creationTime)
         {

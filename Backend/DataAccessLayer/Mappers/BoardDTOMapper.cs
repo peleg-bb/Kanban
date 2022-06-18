@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
@@ -11,9 +12,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
     internal class BoardDTOMapper
     {
-
         private BoardUsersMapper boardUsersMapper;
-        private List<BoardDTO> boardDTOs;
+        private List<BoardDTO> boardDTOs = new List<BoardDTO>();
         private TaskDTOMapper taskDTOMapper;
         private int boardCount;
         public int BoardCount => boardCount;
@@ -35,7 +35,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             this.boardUsersMapper = new BoardUsersMapper();
             this.boardCount = 0;// LoadData and update count
-            this.boardDTOs = new List<BoardDTO>();
             this.taskDTOMapper = new TaskDTOMapper();
             columnNamesByOrdinal = new Dictionary<int, string>();
             columnNamesByOrdinal[0] = backlogMaxColumn;
@@ -273,7 +272,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            Console.WriteLine(path);
+            
             string connectionString = $"Data Source={path}; Version=3;";
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -282,18 +281,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"Select * FROM {tableName};" +
+                    command.CommandText = $"Select * FROM {tableName}; " +
                                           $"SELECT max({idColumn}) FROM {tableName};";
-                                          command.Prepare();
+                    command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        int ID = (int)reader["ID"];
+                        int ID = (int)Convert.ToInt64(reader["ID"]);
                         string owner = reader["Owner_email"].ToString();
                         string name = reader["Name"].ToString();
-                        int BacklogMax = (int)reader["Backlog_max"];
-                        int InProgressMax = (int)reader["In_Progress_max"];
-                        int DoneMax = (int)reader["Done_Max"];
+                        int BacklogMax = (int)Convert.ToInt64(reader["Backlog_max"]);
+                        int InProgressMax = (int)Convert.ToInt64(reader["In_Progress_max"]);
+                        int DoneMax = (int)Convert.ToInt64(reader["Done_max"]);
                         BoardDTO board = new BoardDTO(owner: owner,
                             name: name, iD: ID, backlogMax: BacklogMax,
                             inProgressMax: InProgressMax, doneMax: DoneMax);
@@ -302,22 +301,29 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     }
 
                     reader.NextResult();
+
                     while (reader.Read())
                     {
-                        int nextBoardID = (int)reader["ID"];
+                        int nextBoardID = (int)Convert.ToInt64(reader["max(ID)"]);
                         this.boardCount = nextBoardID;
                     }
+
 
                     return boardDTOs;
 
                 }
-                catch (SQLiteException ex)
+                catch (System.InvalidCastException e)
                 {
-                    Console.WriteLine(command.CommandText);
-                    Console.WriteLine(ex.Message);
+                    this.boardCount = 0;
                     command.Dispose();
                     connection.Close();
-                    throw new DALException($"Delete data failed because " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    this.boardCount = 0;
+                    command.Dispose();
+                    connection.Close();
+                    throw new DALException($"Load data failed because " + ex.Message);
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
                 }
@@ -358,6 +364,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     boardUsersMapper.DeleteAllData(); // Deletes all Board_Users table
                     foreach (var boardDTO in boardDTOs)
                     {
+                        // Major bug - opening a new SQL connection while the DB is still open.
+                        // causes DB to be locked!
                         boardDTO.DeleteAllData();// Deletes all tasks
                     }
                     boardDTOs.Clear();

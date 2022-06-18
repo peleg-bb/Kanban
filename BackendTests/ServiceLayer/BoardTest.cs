@@ -218,7 +218,8 @@ namespace BackendTests.ServiceLayer
         public void ValidInProgress()
         {
             string email = "tamar@gmail.com";
-            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(_boardService.boardController.GetAllInPrograss(email)));
+            Response r = new Response(_boardService.boardController.GetAllInPrograss(email));
+            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(r));
 
         }
 
@@ -230,7 +231,8 @@ namespace BackendTests.ServiceLayer
         public void ValidInProgress_2()
         {
             string email = "tamar@gmail.com";
-            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(_boardService.boardController.GetAllInPrograss(email)));
+            Response r = new Response(_boardService.boardController.GetAllInPrograss(email));
+            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(r));
 
         }
 

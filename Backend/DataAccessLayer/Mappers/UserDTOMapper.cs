@@ -83,7 +83,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            Console.WriteLine(path);
             string connectionString = $"Data Source={path}; Version=3;";
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -130,7 +129,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         public void DeleteAllData()
         {
-
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
@@ -138,9 +136,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-
-
-
                 int res = -1;
 
                 try
