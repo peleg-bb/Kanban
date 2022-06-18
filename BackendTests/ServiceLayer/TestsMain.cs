@@ -122,6 +122,7 @@ namespace BackendTests.ServiceLayer
             // boraTest.LeaveBoardUnsuccessfully_2();
             // boraTest.InvalidDeleteBoard_2();
             // boraTest.LeaveBoardUnsuccessfully_3();
+            boraTest.ChangeOwnerSuccessfully();
             boraTest.ValidDeleteBoard();
             userService.DeleteAllData();
             boardService.DeleteAllData();
