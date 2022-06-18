@@ -111,7 +111,7 @@ namespace BackendTests.ServiceLayer
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
             userService.CreateUser("tamar@gmail.com", "Hash123");
-            userController.Login("tamar@gmail.com", "Hash123");
+            userService.Login("tamar@gmail.com", "Hash123");
             // boraTest.InvalidDeleteBoard();
             boraTest.JoinBoardSuccessfully();
             // boraTest.JoinBoardUnsuccessfully_2();
