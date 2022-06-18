@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                     while (reader.Read())
                     {
                         // Add Users
-                        string email = reader["User"].ToString();
+                        string email = reader["User_email"].ToString();
                         BoardUsers.Add(email);
                         
                     }
