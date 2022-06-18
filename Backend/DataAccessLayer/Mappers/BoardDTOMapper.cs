@@ -12,9 +12,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
     internal class BoardDTOMapper
     {
-
         private BoardUsersMapper boardUsersMapper;
-        private List<BoardDTO> boardDTOs;
+        private List<BoardDTO> boardDTOs = new List<BoardDTO>();
         private TaskDTOMapper taskDTOMapper;
         private int boardCount;
         public int BoardCount => boardCount;
@@ -36,7 +35,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             this.boardUsersMapper = new BoardUsersMapper();
             this.boardCount = 0;// LoadData and update count
-            this.boardDTOs = new List<BoardDTO>();
             this.taskDTOMapper = new TaskDTOMapper();
             columnNamesByOrdinal = new Dictionary<int, string>();
             columnNamesByOrdinal[0] = backlogMaxColumn;
@@ -283,9 +281,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"Select * FROM {tableName};" +
+                    command.CommandText = $"Select * FROM {tableName}; " +
                                           $"SELECT max({idColumn}) FROM {tableName};";
-                                          command.Prepare();
+                    command.Prepare();
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
@@ -303,38 +301,32 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     }
 
                     reader.NextResult();
-                    try
+
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            int nextBoardID = (int)Convert.ToInt64(reader["max(ID)"]);
-                            this.boardCount = nextBoardID;
-                        }
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                        
+                        int nextBoardID = (int)Convert.ToInt64(reader["max(ID)"]);
+                        this.boardCount = nextBoardID;
                     }
 
-                    finally
-                    {
-                        
-                    }
 
                     return boardDTOs;
 
                 }
+                catch (System.InvalidCastException e)
+                {
+                    this.boardCount = 0;
+                    command.Dispose();
+                    connection.Close();
+                }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(command.CommandText);
-                    Console.WriteLine(ex.Message);
+                    this.boardCount = 0;
                     command.Dispose();
                     connection.Close();
                     throw new DALException($"Load data failed because " + ex.Message);
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
                 }
-                
                 finally
                 {
                     // Console.WriteLine("Reached Finally");

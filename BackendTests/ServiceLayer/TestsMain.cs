@@ -57,7 +57,7 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.Login(email1, password));
             Console.WriteLine(grading.AddBoard(email1, boardName));
             Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
-            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 0));
+            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
             Console.WriteLine(grading.DeleteData());
             Console.WriteLine(grading.LoadData());
             Console.WriteLine(grading.DeleteData());
