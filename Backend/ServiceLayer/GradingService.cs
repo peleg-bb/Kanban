@@ -76,17 +76,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            try
-            {
-                userController.CreateUser(email, password);
-                Response response = new Response(null, null);
-                return ToJson.toJson(response);
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message, null);
-                return ToJson.toJson(response);
-            }
+
+            return userService.CreateUser(email, password);
+            // try
+            // {
+            //     userController.CreateUser(email, password);
+            //     Response response = new Response(null, null);
+            //     return ToJson.toJson(response);
+            // }
+            // catch (Exception e)
+            // {
+            //     Response response = new Response(e.Message, null);
+            //     return ToJson.toJson(response);
+            // }
         }
 
 
@@ -98,17 +100,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the user's email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            try
-            {
-                userController.Login(email, password);
-                Response response = new Response(null, email);
-                return ToJson.toJson(response);
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message, null);
-                return ToJson.toJson(response);
-            }
+            return userService.Login(email, password);
+            //     try
+            //     {
+            //         userController.Login(email, password);
+            //         Response response = new Response(null, email);
+            //         return ToJson.toJson(response);
+            //     }
+            //     catch (Exception e)
+            //     {
+            //         Response response = new Response(e.Message, null);
+            //         return ToJson.toJson(response);
+            //     }
         }
 
 
@@ -119,17 +122,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            try
-            {
-                userService.logout(email);
-                Response response = new Response(null, email);
-                return ToJson.toJson(response);
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message, null);
-                return ToJson.toJson(response);
-            }
+            return userService.logout(email);
+            // try
+            // {
+            //     userService.logout(email);
+            //     Response response = new Response(null, email);
+            //     return ToJson.toJson(response);
+            // }
+            // catch (Exception e)
+            // {
+            //     Response response = new Response(e.Message, null);
+            //     return ToJson.toJson(response);
+            // }
         }
 
         /// <summary>
@@ -145,6 +149,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardService.LimitColumn(email, boardName, columnOrdinal, limit);
+                // Response response = new Response(null, null);
+                // return ToJson.toJson(response);
                 return "{}";
 
             }
@@ -167,7 +173,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 string limVal = boardService.GetColumnLimit(email, boardName, columnOrdinal);
-                return limVal;
+                Response response = new Response( limVal);
+                return ToJson.toJson(response);
+                
 
             }
             catch (Exception e)
@@ -191,7 +199,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
-                return colName;
+                Response response = new Response((object)colName);
+                return ToJson.toJson(response);
+                //return colName;
 
             }
             catch (Exception e)
@@ -218,7 +228,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 string r = boardService.AddTask(email, boardName, title, description, dueDate);
-                return r;
+                Response response = new Response(null, null);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
@@ -252,7 +263,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                         try
                         {
                             taskService.EditDueDate(email, boardName, taskId, dueDate);
-                            return "{}";
+                            Response response = new Response(null, null);
+                            return ToJson.toJson(response);
+                            //return "{}";
                         }
                         catch (Exception e)
                         {
@@ -642,12 +655,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string DeleteData()
         {
-            userService.DeleteAllData();
-            boardService.DeleteAllData();
+            try
+            {
+                userService.DeleteAllData();
+                boardService.DeleteAllData();
+                Response r = new Response(null);
+                return ToJson.toJson(r);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Response r = new Response(null);
+                return ToJson.toJson(r);
+            }
+            
             // Probably need to add deletion of all tasks through TaskService
-
-
-            return ToJson.toJson(new Response(null,null));
 
         }
 
@@ -660,7 +682,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string TransferOwnership(string currentOwnerEmail, string newOwnerEmail, string boardName)
         {
-            throw new NotImplementedException();
+            return boardService.TransferOwnership(currentOwnerEmail, newOwnerEmail, boardName);
         }
     }
 }

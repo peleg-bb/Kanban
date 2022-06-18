@@ -204,7 +204,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 //NEED TO USE CHANGEsTATE
                 boardController.switchOwnership(currentOwnerEmail, boardName , newOwnerEmail);
-                Response r = new Response(null, true);
+                Response r = new Response(null);
                 String msg = String.Format("Transfer the Ownership!  new Owner userEmail = {0} of board :{1}", newOwnerEmail, boardName);
                 log.Info(msg);
 
@@ -214,10 +214,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
 
                 //RETURN BAD JASON
-                //Response r = new Response(e.Message, false);
+                Response r = new Response(e.Message);
                 log.Warn(e.Message);
-                //return r.BadJson();
-                throw new ArgumentException(e.Message);
+                return ToJson.toJson(r);
+                //throw new ArgumentException(e.Message);
             }
         }
         /// <summary>
