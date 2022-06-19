@@ -144,8 +144,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         {
                             if (isOwnerOfAnyBoard(userEmail))
                             {
-                                Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                                //new Board(boardName, this.bId, userEmail); - old constructor, do not use
+                                //Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                                Board newBoard = new Board(boardName,this.BID, userEmail);// - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
                                 this.boardById.Add(newBoard.BoardID ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
@@ -154,7 +154,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             }
                             else
                             {
-                                Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                                //Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                                Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
                                 List<string> listBoard= new List<string>();
                                 listBoard.Add(newBoard.name);
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
@@ -173,7 +174,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     }
                     else
                     {
-                        Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                        //Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                        Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
                         List<string> listBoard = new List<string>();
                         listBoard.Add(newBoard.name);
                         newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
