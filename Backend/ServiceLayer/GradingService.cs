@@ -173,9 +173,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 string limVal = boardService.GetColumnLimit(email, boardName, columnOrdinal);
-                Response response = new Response( limVal);
+                Response response = new Response(limVal);
                 return ToJson.toJson(response);
-                
+
 
             }
             catch (Exception e)
@@ -209,7 +209,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-            
+
         }
 
 
@@ -224,7 +224,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            
+
             try
             {
                 string r = boardService.AddTask(email, boardName, title, description, dueDate);
@@ -237,8 +237,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return ToJson.toJson(response);
             }
 
-            
-                
+
+
         }
 
 
@@ -253,48 +253,39 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            if (columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2)
+            try
             {
-                try
+                if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
+                    columnOrdinal)
                 {
-                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
-                        columnOrdinal)
+                    try
                     {
-                        try
-                        {
-                            taskService.EditDueDate(email, boardName, taskId, dueDate);
-                            Response response = new Response(null, null);
-                            return ToJson.toJson(response);
-                            //return "{}";
-                        }
-                        catch (Exception e)
-                        {
-                            Response response = new Response(e.Message, null);
-                            return ToJson.toJson(response);
-                        }
+                        taskService.EditDueDate(email, boardName, taskId, dueDate);
+                        Response response = new Response(null, null);
+                        return ToJson.toJson(response);
+                        //return "{}";
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Response response = new Response("Not the right colomn number", null);
+                        Response response = new Response(e.Message, null);
                         return ToJson.toJson(response);
                     }
-
                 }
-                catch (Exception e)
+                else
                 {
-                    Response response = new Response(e.Message, null);
+                    Response response = new Response("Not the right colomn number", null);
                     return ToJson.toJson(response);
                 }
 
             }
-            else
+            catch (Exception e)
             {
-                Response response = new Response("Not available column number", null);
+                Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
 
-
         }
+
 
 
         /// <summary>
@@ -308,11 +299,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            if ((columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2) && !(title is null))
-            {
                 try
                 {
-                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                    if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
                         columnOrdinal)
                     {
                         try
@@ -340,22 +329,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
             }
-            else
-            {
-                if (title is null)
-                {
-                    Response response = new Response("null is not title option", null);
-                    return ToJson.toJson(response);
-                }
-                else
-                {
-                    Response response = new Response("Not available colomn number", null);
-                    return ToJson.toJson(response);
-                }
-            }
 
 
-        }
+        
 
 
         /// <summary>
@@ -369,11 +345,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            if ((columnOrdinal == 0 || columnOrdinal == 1 || columnOrdinal == 2) && !(description is null))
-            {
                 try
                 {
-                    if (boardService.boardController.GetBoard(email, boardName).GetTask(taskId).GetState() ==
+                    if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
                         columnOrdinal)
                     {
                         try
@@ -401,22 +375,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
             }
-            else
-            {
-                if (description is null)
-                {
-                    Response response = new Response("null is not description option", null);
-                    return ToJson.toJson(response);
-                }
-                else
-                {
-                    Response response = new Response("Not available colomn number", null);
-                    return ToJson.toJson(response);
-                }
-            }
-
-
-        }
 
 
         /// <summary>

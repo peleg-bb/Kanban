@@ -20,6 +20,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
+        private const int BacklogState = 0;
+        private const int InProgressState = 1;
         private const int Done = 2;
         public int BID
         {
@@ -827,13 +829,21 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the new board</param>
         /// <param name="taskId">The id of new task</param>
         /// <returns>Task, unless an error occurs .</returns>
-        public Task GetTask(string email, string boardName, int taskId)
+        public Task GetTask(string email, string boardName, int taskId, int columnOrdinal=1406)
         {
             try
             {
-                return GetBoard(email, boardName).GetTask(taskId);
-                String msg = String.Format("Got Task Successfully in BuissnesLayer!");
-                log.Info(msg);
+                if (columnOrdinal!=BacklogState && columnOrdinal!=InProgressState && columnOrdinal != Done && columnOrdinal!=1406)
+                {
+                    throw new ArgumentException("got column ordinal diffrent the allowed");
+                }
+                else
+                {
+                    return GetBoard(email, boardName).GetTask(taskId);
+                    String msg = String.Format("Got Task Successfully in BuissnesLayer!");
+                    log.Info(msg);
+                }
+                
             }
             catch (Exception e)
             {

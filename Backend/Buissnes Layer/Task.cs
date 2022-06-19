@@ -158,6 +158,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 this.taskDTOMapper.EditDueDate(this.Id, newDueDate.ToString());
             }
         }
+        /// <summary>
+        /// This method edit the assignee of a task
+        /// </summary>
+        ///  <param name="userEmail">The new assignee of the task</param>
+        /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
         internal void EditAssignee(string userEmail)
         {
