@@ -30,6 +30,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.userDTO = user;
         }
 
+        internal User(string username, string password)
+        {
+            this.username = username;
+            this.password = password;
+        }
+
+
+
         /// <summary>
         /// Allows the UserController to change a user's password.
         /// </summary>
