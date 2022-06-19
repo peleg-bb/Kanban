@@ -90,22 +90,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 // If successful returns user object in JSON
                 return ToJson.toJson(response);
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
                 Response response = new Response(e.Message);
                 return ToJson.toJson(response);
 
             }
-            catch (DALException e)
-            {
-                Response response = new Response(e.Message);
-                return ToJson.toJson(response);
-            }
-
-
-
-
-
         }
 
         /// <summary>
