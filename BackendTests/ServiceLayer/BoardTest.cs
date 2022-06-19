@@ -517,7 +517,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerUnsuccessfully()
         {
-            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do list"), "USER DOES NOT A MEMBER OF THIS BOARD");
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "tamar@gmail.com", "To do list"), "USER DOES NOT A MEMBER OF THIS BOARD");
 
         }
 
@@ -526,23 +526,51 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerUnsuccessfully_2()
         {
-            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do list"), "USER DOES NOT A MEMBER OF THIS BOARD");
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do list"), "user not logged in");
+
+        }
+        /// <summary>
+        /// Tests an attempt to switch owner to board that does not exist
+        /// </summary>
+        public void ChangeOwnerUnsuccessfully_3()
+        {
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do "), "user not logged in");
+
+        }
+        /// <summary>
+        /// Tests an attempt to switch owner to board with a user that not an owner of any board.
+        /// </summary>
+        public void ChangeOwnerUnsuccessfully_4()
+        {
+            Assert.AreEqual(_boardService.TransferOwnership("tamar@gmail.com", "itay@gmail.com", "To do list"), "not owner of any board");
+
+        }
+
+        // /// <summary>
+        // /// This methods checks that a task indeed has a user assigned to it.
+        // /// </summary>
+        // public void AddTask_2()
+        // {
+        //     Assert.AreEqual(_boardService.AddTask("tamar@gmail.com"), "not owner of any board");
+        // }
+
+        /// <summary>
+        /// This methods checks that u can actuallu assigne user mamber a the board sucessfully.
+        /// </summary>
+        public void AssignTaskSuccessfully()
+        {
+            Response r = new Response((object)"tamar@gmail.com");
+            Assert.AreEqual(_boardService.AssignTask("tamar@gmail.com", "To do list", 0, "itay@gmail.com", 1), ToJson.toJson(r));
 
         }
 
         /// <summary>
         /// This methods checks that a task indeed has a user assigned to it.
         /// </summary>
-        public void AddTask_2()
+        public void AssignTaskUnSuccessfully()
         {
-
-        }
-
-        /// <summary>
-        /// This methods checks that a task indeed has a user assigned to it.
-        /// </summary>
-        public void GetAssignee()
-        {
+            Response r = new Response((object)"tamar@gmail.com");
+            Assert.AreEqual(_boardService.AssignTask("tamar@gmail.com", "To do list", 0, "itay@gmail.com", 1), ToJson.toJson(r));
 
         }
 
