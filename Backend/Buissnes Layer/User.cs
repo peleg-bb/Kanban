@@ -25,8 +25,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="user">A userDTO object, containing a username and a password</param>
         internal User(UserDTO user)
         {
-            this.username = user.getUsername();
-            this.password = user.getPassword();
+            this.username = user.Username;
+            this.password = user.Password;
             this.userDTO = user;
         }
 

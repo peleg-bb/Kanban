@@ -47,11 +47,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             this.boardUsersMapper.AddUserToBoard(boardID, email);
         }
 
+        /// <summary>
+        /// Removes a user from membership in a board
+        /// </summary>
+        /// <param name="boardID"></param>
+        /// <param name="email"></param>
         internal void RemoveUserFromBoard(int boardID, string email)
         {
             this.boardUsersMapper.RemoveUser(boardID, email);
         }
 
+        /// <summary>
+        /// Creates a board in the DB.
+        /// </summary>
+        /// <param name="ownerEmail"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
         internal BoardDTO CreateBoard(string ownerEmail, string boardName)
         {
 
@@ -175,7 +187,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
             }
         }
-
+        /// <summary>
+        /// Changes the board ownership in the database. Does not change the BoardDTO.
+        /// </summary>
+        /// <param name="newOwner"></param>
+        /// <param name="boardID"></param>
+        /// <exception cref="DALException"></exception>
         public void ChangeOwnership(string newOwner, int boardID)
         {
             string path = Path.GetFullPath(Path.Combine(
@@ -193,9 +210,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 try
                 {
                     connection.Open();
-
                     command.Prepare();
-
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
                     command.CommandText = $"UPDATE {tableName} SET {ownerColumn} = @owner_val WHERE {idColumn} = @boardID_val";
@@ -221,7 +236,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
             }
         }
-
+        /// <summary>
+        /// Updates the column limit in the DB.
+        /// </summary>
+        /// <param name="boardId">BoardID</param>
+        /// <param name="columnToChange">Column ordinal of the Column to change:
+        /// {Backlog: 0, InProgress: 1, Done: 2}</param>
+        /// <param name="newLimit">New limit</param>
+        /// <exception cref="DALException"></exception>
         internal void ChangeColumnLimit(int boardId, int columnToChange, int newLimit)
         {
 
@@ -268,6 +290,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
         }
 
+        /// <summary>
+        /// Loads all boards and creates BoardDTO objects
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
         public List<BoardDTO> LoadBoards()
         {
             string path = Path.GetFullPath(Path.Combine(

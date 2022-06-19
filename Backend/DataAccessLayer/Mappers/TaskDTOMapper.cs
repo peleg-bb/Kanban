@@ -9,7 +9,7 @@ using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
-    internal class TaskDTOMapper
+    internal class TaskDTOMapper    //TODO: Add AssignUser method
     {
         private List<TaskDTO> taskDTOs;
         const string taskIDColumnName = "Task_ID";
@@ -21,11 +21,27 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         const string dueDateColumnName = "Due_Date";
         const string creationDateColumnName = "Creation_Time";
         const string tableName = "Tasks";
+
+        
         internal TaskDTOMapper()
         {
             this.taskDTOs = new List<TaskDTO>();
         }
-        public TaskDTO CreateTask(int taskID, int boardID, string assignee, string status, string title, string description, string dueDate, string creationTime)
+        /// <summary>
+        /// Creates a task in the database and instantiates a task DTO.
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="boardID"></param>
+        /// <param name="assignee"></param>
+        /// <param name="status"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="creationTime"></param>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
+        public TaskDTO CreateTask(int taskID, int boardID, string assignee, string status, string title,
+            string description, string dueDate, string creationTime)
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
@@ -98,7 +114,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
             return null; // If failed to create user
         }
-
+        /// <summary>
+        /// Edits a task title in the database (does not edit the DTO).
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="newTitle"></param>
+        /// <exception cref="DALException"></exception>
         public void EditTitle(int taskID, string newTitle)
         {
             string path = Path.GetFullPath(Path.Combine(
@@ -151,6 +172,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
             }
         }
+        /// <summary>
+        /// Edits a task description in the database (does not edit the DTO).
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="newDescription"></param>
+        /// <exception cref="DALException"></exception>
         public void EditDescription(int taskID, string newDescription)
             {
                 string path = Path.GetFullPath(Path.Combine(
@@ -204,6 +231,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
                 // If failed to create user
             }
+        /// <summary>
+        /// Edits a task DueDate in the database (does not edit the DTO).
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="newDueDate"></param>
+        /// <exception cref="DALException"></exception>
         public void EditDueDate(int taskID, string newDueDate)
         {
             string path = Path.GetFullPath(Path.Combine(
@@ -258,9 +291,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             // If failed to create user
         }
 
-
+        /// <summary>
+        /// Redundant method. The Board DTO will load all of its tasks. Do not use.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
         internal List<TaskDTO> LoadTasks()
         {
+            throw NotImplementedException("Redundant method, DO NOT USE!");
+            /*
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             Console.WriteLine(path);
@@ -310,12 +349,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
             List<TaskDTO> ifFailed = new List<TaskDTO>();
             return ifFailed;
+            */
         }
 
-
+        /// <summary>
+        /// Redundant method. The BoardDTOMapper will delete all tasks. Do not use.
+        /// </summary>
         public void DeleteAllData()
         {
-
+            throw NotImplementedException("Redundant method, DO NOT USE!");
+            /*
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
@@ -350,7 +393,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Dispose();
                     connection.Close();
                 }
-            }
+            }*/
         }
     }
 }

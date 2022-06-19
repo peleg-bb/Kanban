@@ -110,6 +110,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         /// <summary>
         ///  This method changes the password of a given user.
+        /// Method is never referenced. Check if implemented in DAL.
         /// </summary>
         /// <param name="username">The email address of the user.</param>
         /// <param name="oldP">The old password of the user. Must match with existing password in database.</param>
