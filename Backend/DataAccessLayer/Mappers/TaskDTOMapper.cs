@@ -259,6 +259,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         }
         internal List<TaskDTO> LoadTasks()
         {
+            throw new NotImplementedException("Redundant method, DO NOT USE!");
+            /*
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             Console.WriteLine(path);
@@ -313,7 +315,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         public void DeleteAllData()
         {
-
+            throw NotImplementedException("Redundant method, DO NOT USE!");
+            /*
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
