@@ -499,6 +499,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             {
                                 if (ownerBoards[userEmailOwner].Contains(boardName))
                                 {
+                                    boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                                        GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                     BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
                                     ownerBoards[userEmailFutureOwner].Add(boardName);
                                     ownerBoards[userEmailOwner].Remove(boardName);
@@ -532,10 +534,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         }
                         else
                         {
+                            boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                                GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                             List<string> listBoard = new List<string>();
                             listBoard.Add(boardName);
                             ownerBoards.Add(userEmailFutureOwner, listBoard);
                             ownerBoards[userEmailOwner].Remove(boardName);
+                            
                         }
                         String msg = String.Format("Transfer the Ownership Successfully in BuissnesLayer!  new Owner userEmail = {0} of board :{1}", userEmailFutureOwner, boardName);
                         log.Info(msg);
@@ -761,6 +766,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             try
             {
                 GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
+                boardDTOMapper.ChangeColumnLimit(GetBoard(email, boardName).BoardID, columnOrdinal, limit);
                 String msg = String.Format("set LimitColumn Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
                 log.Info(msg);
             }

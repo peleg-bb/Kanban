@@ -55,6 +55,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             
         }
 
+        /// <summary>
+        /// Loads the users and tasks of a board and creates a board DTO.
+        /// </summary>
+        /// <returns></returns>
         public BoardDTO LoadBoard()
         {
 
@@ -123,6 +127,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             }
         }
 
+        /// <summary>
+        /// Deletes the DTO's lists. Does not access the database.
+        /// </summary>
         public void DeleteAllData()
         {
             try

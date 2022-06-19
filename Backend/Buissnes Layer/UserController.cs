@@ -142,6 +142,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         /// <summary>
         /// Deletes a user from the system.
+        /// NOT implemented in DAL.
         /// </summary>
         public void DeleteUser(string email)
         {
