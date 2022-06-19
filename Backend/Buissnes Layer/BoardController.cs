@@ -534,7 +534,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 else
                                 {
                                     //boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
-                                        GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                    //GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                     List<string> listBoard = new List<string>();
                                     listBoard.Add(boardName);
                                     ownerBoards.Add(userEmailFutureOwner, listBoard);
