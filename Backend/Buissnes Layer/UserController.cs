@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private List<string> loggedIn;
         private UserDTOMapper userDtoMapper;
         private const int MinPasswordLength = 6;
+        private const int MaxPasswordLength = 20;
         /// <summary>
         /// Constructor for the class. Instantiates its private fields.
         /// The class must be instantiated in order to call its methods and functionality.
@@ -172,16 +173,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         private bool UserExists(string email)
         {
-            string Email = email.ToLower();
-            return users.ContainsKey(Email);
+            //string Email = email.ToLower();
+            return users.ContainsKey(email);
         }
 
         /// <summary>
         /// Returns a user object. Used for internal purposes.
         /// </summary>
-        public User GetUser(string username)
+        public User GetUser(string Email)
         {
-            string Email = username.ToLower();
+            //string Email = username.ToLower();
             if (users.ContainsKey(Email))
             {
                 return users[Email];
@@ -203,7 +204,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return false;
             }
-            if (password.Length > 20 )
+            if (password.Length > MaxPasswordLength )
             {
                 return false;
             }
@@ -222,9 +223,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
         
-        private bool ValidatePassword(string email, string password)
+        private bool ValidatePassword(string Email, string password)
         {
-            string Email = email.ToLower();
+            //string Email = email.ToLower();
             if (users.ContainsKey(Email))
             {
                 return users[Email].ValidatePassword(password);
@@ -232,9 +233,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return false;
         }
 
-        public void Login(string email, string password)
+        public void Login(string Email, string password)
         {
-            string Email = email.ToLower();
+            //string Email = email.ToLower();
             if (!UserExists(Email))
             {
                 throw new ArgumentException("User does not exist");
@@ -257,9 +258,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-        public void Logout(string Email)
+        public void Logout(string email)
         {
-            string email = Email.ToLower();
+            //string email = Email.ToLower();
             if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
@@ -278,9 +279,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
-        public bool IsLoggedIn(string Email)
+        public bool IsLoggedIn(string email)
         {
-            string email = Email.ToLower();
+            //string email = Email.ToLower();
             if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
