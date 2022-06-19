@@ -125,6 +125,8 @@ namespace BackendTests.ServiceLayer
             userService.Login("tamar@gmail.com", "Hash123");
             // boraTest.InvalidDeleteBoard();
             boraTest.JoinBoardSuccessfully();
+            // boardService.CreateBoard("To do list", "tamar@gmail.com");
+            // boraTest.JoinBoardSuccessfully();// checks if  the user can join to board has the same name as a board he got.
 
             // boraTest.JoinBoardUnsuccessfully_2();
             // boraTest.JoinBoardUnsuccessfully();
@@ -132,10 +134,16 @@ namespace BackendTests.ServiceLayer
             // boraTest.LeaveBoardSuccessfully();
             userController.CreateUser("itay@gmail.com", "Hash123");
             userController.Login("itay@gmail.com", "Hash123");
-            // boraTest.ChangeOwnerUnsuccessfully();
             boardService.boardController.joinBoard(1, "itay@gmail.com");
-            boraTest.ChangeOwnerUnsuccessfully_2();
+            boraTest.AssignTaskSuccessfully();
+            // boraTest.ChangeOwnerSuccessfully(); \\ owner loged in and user is a member -> successfully
+            // boraTest.LeaveBoardSuccessfully();//tamar leave the board
+            // boraTest.ChangeOwnerUnsuccessfully(); //tamar is not a nenber of this board
+            // userService.logout("johndoe@gmail.com");// the owner of to do board loged out
+            // boraTest.ChangeOwnerUnsuccessfully_2();// the member of the board try to "steal" the ownership
             // boraTest.LeaveBoardUnsuccessfully();
+            // boraTest.ChangeOwnerUnsuccessfully_3();
+            // boraTest.ChangeOwnerUnsuccessfully_4();
             // boraTest.LeaveBoardUnsuccessfully_2();
             // boraTest.InvalidDeleteBoard_2();
             // boraTest.LeaveBoardUnsuccessfully_3();

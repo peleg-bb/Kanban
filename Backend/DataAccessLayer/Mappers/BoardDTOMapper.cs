@@ -213,7 +213,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Prepare();
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
-                    command.CommandText = $"UPDATE {tableName} SET {ownerColumn} = @owner_val WHERE {idColumn} = @boardID_val";
+                    command.CommandText = $"UPDATE {tableName} SET {ownerColumn} = @ownerID_val WHERE {idColumn} = @boardID_val";
                     SQLiteParameter ownerParam = new SQLiteParameter(@"ownerID_val", newOwner);
                     SQLiteParameter boardIDParam = new SQLiteParameter(@"boardID_val", boardID);
                     command.Parameters.Add(ownerParam);

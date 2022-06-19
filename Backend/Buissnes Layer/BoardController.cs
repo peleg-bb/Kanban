@@ -491,66 +491,75 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if ((userController.IsLoggedIn(userEmailOwner)))
                 {
-                    if (BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
+                    if (isOwnerOfAnyBoard(userEmailOwner))
                     {
-                        if (isOwnerOfAnyBoard(userEmailFutureOwner))
+                        if (ownerBoards[userEmailOwner].Contains(boardName))
                         {
-                            if (!ownerBoards[userEmailFutureOwner].Contains(boardName))
+                            if (BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
                             {
-                                if (ownerBoards[userEmailOwner].Contains(boardName))
+                                if (isOwnerOfAnyBoard(userEmailFutureOwner))// checks if userEmailFutureOwner is owner of other board
                                 {
-                                    boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
-                                        GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
-                                    BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
-                                    ownerBoards[userEmailFutureOwner].Add(boardName);
-                                    ownerBoards[userEmailOwner].Remove(boardName);
-                                    // if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
-                                    // {
-                                    //     ownerBoards[userEmailFutureOwner].Add(boardName);
-                                    //     ownerBoards[userEmailOwner].Remove(boardName);
-                                    // }
-                                    // else
-                                    // {
-                                    //     List<string> listBoard = new List<string>();
-                                    //     listBoard.Add(boardName);
-                                    //     ownerBoards.Add(userEmailFutureOwner, listBoard);
-                                    //     ownerBoards[userEmailOwner].Remove(boardName);
-                                    // }
-                                    
+                                    if (!ownerBoards[userEmailFutureOwner].Contains(boardName))
+                                    {
+                                        boardDTOMapper.ChangeOwnership(userEmailFutureOwner, GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                        BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
+                                        ownerBoards[userEmailFutureOwner].Add(boardName);
+                                        ownerBoards[userEmailOwner].Remove(boardName);
+                                        // if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
+                                        // {
+                                        //     ownerBoards[userEmailFutureOwner].Add(boardName);
+                                        //     ownerBoards[userEmailOwner].Remove(boardName);
+                                        // }
+                                        // else
+                                        // {
+                                        //     List<string> listBoard = new List<string>();
+                                        //     listBoard.Add(boardName);
+                                        //     ownerBoards.Add(userEmailFutureOwner, listBoard);
+                                        //     ownerBoards[userEmailOwner].Remove(boardName);
+                                        // }
+
+                                    }
+                                    else
+                                    {
+                                        log.Warn("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                                        throw new ArgumentException("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                                    }
+
+
                                 }
                                 else
                                 {
-                                    log.Warn("not the owner of this board!");
-                                    throw new ArgumentException("not the owner of this board!");
+                                    boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                                        GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                    List<string> listBoard = new List<string>();
+                                    listBoard.Add(boardName);
+                                    ownerBoards.Add(userEmailFutureOwner, listBoard);
+                                    ownerBoards[userEmailOwner].Remove(boardName);
+
                                 }
+                                String msg = String.Format("Transfer the Ownership Successfully in BuissnesLayer!  new Owner userEmail = {0} of board :{1}", userEmailFutureOwner, boardName);
+                                log.Info(msg);
+
                             }
                             else
                             {
-                                log.Warn("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
-                                throw new ArgumentException("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                                log.Warn("USER DOES NOT A MEMBER OF THIS BOARD");
+                                throw new ArgumentException("USER DOES NOT A MEMBER OF THIS BOARD");
                             }
-                        
-                            
+
                         }
                         else
                         {
-                            boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
-                                GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
-                            List<string> listBoard = new List<string>();
-                            listBoard.Add(boardName);
-                            ownerBoards.Add(userEmailFutureOwner, listBoard);
-                            ownerBoards[userEmailOwner].Remove(boardName);
-                            
+                            log.Warn("not the owner of this board!");
+                            throw new ArgumentException("not the owner of this board!");
                         }
-                        String msg = String.Format("Transfer the Ownership Successfully in BuissnesLayer!  new Owner userEmail = {0} of board :{1}", userEmailFutureOwner, boardName);
-                        log.Info(msg);
-
                     }
                     else
                     {
-                        log.Warn("USER DOES NOT A MEMBER OF THIS BOARD");
-                        throw new ArgumentException("USER DOES NOT A MEMBER OF THIS BOARD");
+                        log.Warn("not owner of any board");
+                        throw new ArgumentException("not owner of any board");
                     }
+                    
                 }
                 else
                 {
