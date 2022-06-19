@@ -351,7 +351,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Dispose();
                     connection.Close();
                 }
+            */
             }
         }
     }
-}
+
