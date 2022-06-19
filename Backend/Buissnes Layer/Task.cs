@@ -78,7 +78,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 String msg = String.Format("Task title edited in buisness layer! new title = {0}", newTitle);
                 log.Info(msg);
                 this.Title = newTitle;
-                this.taskDTOMapper.EditTitle(this.Id, newTitle);
+                //this.taskDTOMapper.EditTitle(this.Id, newTitle);
             }
             
 
@@ -134,7 +134,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 String msg = String.Format("Task description edited in buisness layer! new description = {0}", newDescription);
                 log.Info(msg);
                 this.Description = newDescription;
-                this.taskDTOMapper.EditDescription(this.Id, newDescription);
+                //this.taskDTOMapper.EditDescription(this.Id, newDescription);
             }
         }
         /// <summary>
@@ -155,7 +155,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 String msg = String.Format("Task due date edited in buisness layer! new due date = {0}", newDueDate);
                 log.Info(msg);
                 this.DueDate = newDueDate;
-                this.taskDTOMapper.EditDueDate(this.Id, newDueDate.ToString());
+                //this.taskDTOMapper.EditDueDate(this.Id, newDueDate.ToString());
             }
         }
         /// <summary>

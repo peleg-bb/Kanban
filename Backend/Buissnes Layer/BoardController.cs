@@ -505,7 +505,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 {
                                     if (!ownerBoards[userEmailFutureOwner].Contains(boardName))
                                     {
-                                        boardDTOMapper.ChangeOwnership(userEmailFutureOwner, GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                        //boardDTOMapper.ChangeOwnership(userEmailFutureOwner, GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                         BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
                                         ownerBoards[userEmailFutureOwner].Add(boardName);
                                         ownerBoards[userEmailOwner].Remove(boardName);
@@ -533,7 +533,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 }
                                 else
                                 {
-                                    boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                                    //boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
                                         GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                     List<string> listBoard = new List<string>();
                                     listBoard.Add(boardName);
@@ -673,7 +673,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             // owner email and board name as a double key. 
                             // I believe that ID's 
 
-                            this.boardDTOMapper.DeleteBoard(userEmail, boardName, IDtoRemove);
+                            //this.boardDTOMapper.DeleteBoard(userEmail, boardName, IDtoRemove);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
                             String msg = String.Format("Deleted Successfully in BuissnesLayer! userEmail = {0} deleted board :{1}", userEmail, boardName);
