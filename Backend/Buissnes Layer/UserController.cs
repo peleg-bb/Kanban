@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -62,16 +63,25 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Checks whether the an email address is valid using a regex.
         /// </summary>
-        private bool IsValidEmail(string email)
-        {
-            Regex regex = new Regex(
-                @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
-            return regex.IsMatch(email);
+        private bool IsValidEmail(string email){
+        // {
+        //     Regex regex = new Regex(
+        //         @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
+        //     return regex.IsMatch(email);
+        Regex regex1 = new Regex(@"^(\w.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        Regex regex2 = new Regex(@"^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$");
+        var emailValidation = new EmailAddressAttribute();
+        Match emailMatch1 = regex1.Match(email);
+        Match emailMatch2 = regex2.Match(email);
+        bool emailMatch3 = emailValidation.Match(email);
+            return emailMatch1.Success || emailMatch2.Success || emailMatch3;
+
+
         }
-        /// <summary>
-        /// Checks whether the an email address is valid using a regex.
-        /// </summary>
-        bool IsValidEmail2(string email)
+    /// <summary>
+    /// Checks whether the an email address is valid using a regex.
+    /// </summary>
+    bool IsValidEmail2(string email)
         {
             var trimmedEmail = email.Trim();
 
@@ -92,16 +102,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Creates a user. A new user's email must not preexist in the system and must have a valid email and password.
         /// </summary>
-        public void CreateUser(string email, string password)
+        public void CreateUser(string Email, string password)
         {
-            string Email = email.ToLower();
+            // string Email = email.ToLower();
             if (this.users != null)
             {
                 if (UserExists(Email))
                 {
                     throw new ArgumentException("User already exists");
                 }
-                if (!IsValidEmail(Email) || IsHebrew(Email)||!IsValidEmail2(Email))
+                if (!IsValidEmail(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -121,7 +131,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             else
             {
                
-                if (!IsValidEmail(Email) || IsHebrew(Email)||!IsValidEmail2(Email))
+                if (!IsValidEmail(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
