@@ -76,8 +76,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-
-            return userService.CreateUser(email, password);
+            //return userService.CreateUser(email, password);
+            return ToJson.toJson(new Response(null));
+            
             // try
             // {
             //     userController.CreateUser(email, password);
