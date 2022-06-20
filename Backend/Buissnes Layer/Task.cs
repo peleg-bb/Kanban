@@ -167,6 +167,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal void EditAssignee(string userEmail)
         {
             this.Assignee = userEmail;
+            this.taskDTOMapper.EditAssignee(this.Id, userEmail);
+            
         }
         public string GetTitle()
         {
