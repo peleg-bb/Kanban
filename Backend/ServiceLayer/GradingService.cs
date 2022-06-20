@@ -532,7 +532,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, null);
+                Response response = new Response(e.Message);
                 return ToJson.toJson(response);
             }
         }
