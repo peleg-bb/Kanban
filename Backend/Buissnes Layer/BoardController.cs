@@ -144,8 +144,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         {
                             if (isOwnerOfAnyBoard(userEmail))
                             {
-                                //Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                                Board newBoard = new Board(boardName,this.BID, userEmail);// - old constructor, do not use
+                                Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                                //Board newBoard = new Board(boardName,this.BID, userEmail);// - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
                                 this.boardById.Add(newBoard.BoardID ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
@@ -154,8 +154,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             }
                             else
                             {
-                                //Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                                Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
+                                Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                                //Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
                                 List<string> listBoard= new List<string>();
                                 listBoard.Add(newBoard.name);
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
@@ -174,8 +174,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     }
                     else
                     {
-                        //Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                        Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
+                        Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
+                        //Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
                         List<string> listBoard = new List<string>();
                         listBoard.Add(newBoard.name);
                         newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
@@ -505,7 +505,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 {
                                     if (!ownerBoards[userEmailFutureOwner].Contains(boardName))
                                     {
-                                        //boardDTOMapper.ChangeOwnership(userEmailFutureOwner, GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                        boardDTOMapper.ChangeOwnership(userEmailFutureOwner, GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                         BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
                                         ownerBoards[userEmailFutureOwner].Add(boardName);
                                         ownerBoards[userEmailOwner].Remove(boardName);
@@ -533,8 +533,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 }
                                 else
                                 {
-                                    //boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
-                                    //GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                    boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                                    GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                     List<string> listBoard = new List<string>();
                                     listBoard.Add(boardName);
                                     ownerBoards.Add(userEmailFutureOwner, listBoard);
@@ -668,12 +668,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             this.boardById.Remove(GetBoard(userEmail, boardName).BoardID);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
-                            // Logically speaking - boards are recognized by ID.
+                            // Issue - Logically speaking - boards are recognized by ID.
                             // However, the GradingService recognizes them by
                             // owner email and board name as a double key. 
-                            // I believe that ID's 
+                            // Issue solved - We added an ID-Board dictionary 
 
-                            //this.boardDTOMapper.DeleteBoard(userEmail, boardName, IDtoRemove);
+                            this.boardDTOMapper.DeleteBoard(userEmail, boardName, IDtoRemove);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
                             String msg = String.Format("Deleted Successfully in BuissnesLayer! userEmail = {0} deleted board :{1}", userEmail, boardName);

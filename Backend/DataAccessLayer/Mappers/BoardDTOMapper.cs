@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
         internal void AddUserToBoard(int boardID, string email)
         {
-            //this.boardUsersMapper.AddUserToBoard(boardID, email);
+            this.boardUsersMapper.AddUserToBoard(boardID, email);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         /// <param name="email"></param>
         internal void RemoveUserFromBoard(int boardID, string email)
         {
-            //this.boardUsersMapper.RemoveUser(boardID, email);
+            this.boardUsersMapper.RemoveUser(boardID, email);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         name: boardName, iD: boardCount+1, backlogMax: backlogMax,
                         inProgressMax: inProgressMax, doneMax: doneMax);
                     boardDTOs.Add(board);
-                    //boardUsersMapper.CreateBoard(boardCount, ownerEmail);
+                    boardUsersMapper.CreateBoard(boardCount, ownerEmail);
                     boardCount++;
                     return board;
                 }
@@ -170,7 +170,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         command.Prepare();
                         res = command.ExecuteNonQuery();
                         boardDTOs.RemoveAll(x => x.Owner == ownerEmail && x.Name == boardName && x.ID==boardID);
-                        //boardUsersMapper.DeleteBoard(boardID);
+                        boardUsersMapper.DeleteBoard(boardID);
 
                     }
                     catch (Exception ex)

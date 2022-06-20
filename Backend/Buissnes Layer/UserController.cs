@@ -124,9 +124,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    // UserDTO userDto = userDtoMapper.CreateUser(Email, password);
-                    // User u = new User(userDto);
-                    User u = new User(Email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(Email, password);
+                    User u = new User(userDto);
+                    // User u = new User(Email, password);
                     users.Add(Email, u);
                 }
             }
@@ -143,10 +143,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    // UserDTO userDto = userDtoMapper.CreateUser(Email, password);
-                    // User u = new User(userDto);
-                    // users.Add(Email, u);
-                    User u = new User(Email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(Email, password);
+                    User u = new User(userDto);
+                    users.Add(Email, u);
+                    // User u = new User(Email, password);
                     users.Add(Email, u);
                 }
                 
