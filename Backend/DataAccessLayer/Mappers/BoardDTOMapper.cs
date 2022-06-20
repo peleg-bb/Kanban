@@ -108,7 +108,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         name: boardName, iD: boardCount+1, backlogMax: backlogMax,
                         inProgressMax: inProgressMax, doneMax: doneMax);
                     boardDTOs.Add(board);
-                    boardUsersMapper.CreateBoard(boardCount, ownerEmail);
+                    boardUsersMapper.CreateBoard(boardCount+1, ownerEmail);
                     boardCount++;
                     return board;
                 }

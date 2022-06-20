@@ -52,7 +52,8 @@ namespace BackendTests.ServiceLayer
             DateTime dueDate = new DateTime(2025, 6, 15);
             DateTime newDueDate = new DateTime(2026, 8, 14);
 
-
+            userService.DeleteAllData();
+            boardService.DeleteAllData();
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());
             // Console.WriteLine(grading.Register(email1, password));
@@ -66,7 +67,7 @@ namespace BackendTests.ServiceLayer
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());
             userTests.DeleteData();
-            grading.Register("ho@klks.com", "Abc123");
+            //grading.Register("ho@klks.com", "Abc123");
             userTests.createUserTest();
             userTests.invalidUserLoginTest();
             userTests.invalidUserCreation();
@@ -87,19 +88,13 @@ namespace BackendTests.ServiceLayer
 
 
 
-            userService.DeleteAllData();
-            boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
-
-            
-            userService.DeleteAllData();
-            boardService.DeleteAllData();
-
             
             BoardTest boraTest = new BoardTest(boardService);
             
             // userTests.createUserTest();
             // userTests.validUserLoginTest();
             userService.CreateUser("johndoe@gmail.com", "Hash123");
+            userService.CreateUser("sa@aa.co", "Kkk666");
             //userTests.validUserLoginTest();
             //userTests.invalidUserLoginTest();
             userService.Login("johndoe@gmail.com", "Hash123");
@@ -144,6 +139,8 @@ namespace BackendTests.ServiceLayer
             userController.Login("itay@gmail.com", "Hash123");
             boardService.boardController.joinBoard(1, "itay@gmail.com");
             boraTest.AssignTaskSuccessfully();
+            boraTest.ChangeOwnerSuccessfully();
+            
             // boraTest.ChangeOwnerSuccessfully(); \\ owner loged in and user is a member -> successfully
             // boraTest.LeaveBoardSuccessfully();//tamar leave the board
             // boraTest.ChangeOwnerUnsuccessfully(); //tamar is not a nenber of this board

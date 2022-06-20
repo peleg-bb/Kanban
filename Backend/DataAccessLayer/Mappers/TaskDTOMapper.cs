@@ -288,7 +288,56 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     connection.Close();
                 }
             }
-            // If failed to create user
+            
+        }
+
+        internal void EditAssignee(int taskID, string newAssignee)
+        {
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            string connectionString = $"Data Source={path}; Version=3;";
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    command.CommandText = $"UPDATE {tableName}" +
+                                          $" SET {assigneeColumnName} = @assignee_val " +
+                                          $"WHERE {taskIDColumnName} = @taskID_val;";
+                    SQLiteParameter taskIDParam = new SQLiteParameter(@"taskID_val", taskID);
+                    SQLiteParameter assigneeParam = new SQLiteParameter(@"assignee_val", newAssignee);
+                    command.Parameters.Add(taskIDParam);
+                    command.Parameters.Add(assigneeParam);
+                    res = command.ExecuteNonQuery();
+                    //
+                    // command.CommandText = "Select * FROM Users";
+                    //
+                    // SQLiteDataReader reader = command.ExecuteReader();
+                    // while (reader.Read())
+                    // {
+                    //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
+                    // }
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    throw new DALException($"Change task title failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
         }
 
         /// <summary>
