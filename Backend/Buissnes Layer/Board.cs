@@ -285,27 +285,36 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>void, unless an error occurs </returns>
         public void AddTask(string title, string description, DateTime dueDate ,string userEmail)
         {
-            Task newTask = new Task(title, dueDate,this.BoardId, description);
-            if (this.IsInListOfJoiners(userEmail))
+            try
             {
-                try
+                Task newTask = new Task(title, dueDate, this.BoardId, description);
+                if (this.IsInListOfJoiners(userEmail))
                 {
-                    SetTasks(newTask);
-                    String msg = String.Format("set new task Successfully in BuissnesLayer! ");
-                    log.Info(msg);
-                    boardDTO.AddTask(newTask.Id, newTask.BoardId, newTask.Assignee, newTask.GetStatus(), newTask.GetTitle(), newTask.GetDescription(), newTask.GetDueDate(), newTask.CreationTime.ToString());
+                    try
+                    {
+                        SetTasks(newTask);
+                        String msg = String.Format("set new task Successfully in BuissnesLayer! ");
+                        log.Info(msg);
+                        boardDTO.AddTask(newTask.Id, newTask.BoardId, newTask.Assignee, newTask.GetStatus(), newTask.GetTitle(), newTask.GetDescription(), newTask.GetDueDate(), newTask.CreationTime.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        log.Warn(e.Message);
+                        throw new ArgumentException(e.Message);
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    log.Warn(e.Message);
-                    throw new ArgumentException(e.Message);
+                    log.Warn("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
+                    throw new Exception("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
                 }
             }
-            else
+            catch (Exception e)
             {
-                log.Warn("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
-                throw new Exception("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
             }
+          
         }
         /// <summary>
         /// This method updates the state of the  task.
