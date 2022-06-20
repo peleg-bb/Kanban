@@ -81,7 +81,7 @@ namespace BackendTests.ServiceLayer
             userService.CreateUser("j.ohndoe@Gmail.com", "Hash123");
             userService.CreateUser("j@Gmail.", "Hash123");
             userService.CreateUser("johndoe@", "Hash123");
-            userService.CreateUser("johndoegmail.com", "Hash123");
+            userService.CreateUser("johndoe@gmailcom", "Hash123");
             userService.CreateUser("johndoe@gmail.com", "ash123");
             userService.CreateUser("johndoe@gmail.com", "hasher");
 

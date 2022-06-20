@@ -64,18 +64,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Checks whether the an email address is valid using a regex.
         /// </summary>
-        private bool IsValidEmail(string email){
-        // {
-        //     Regex regex = new Regex(
-        //         @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
-        //     return regex.IsMatch(email);
+        private bool IsValidEmail(string email){ 
+            Regex regex = new Regex(
+                @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
+            
         Regex regex1 = new Regex(@"^(\w.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         Regex regex2 = new Regex(@"^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$");
         var emailValidation = new EmailAddressAttribute();
+        Match emailMatch = regex.Match(email);
         Match emailMatch1 = regex1.Match(email);
         Match emailMatch2 = regex2.Match(email);
         bool emailMatch3 = emailValidation.Match(email);
-            return emailMatch1.Success || emailMatch2.Success || emailMatch3;
+            return emailMatch1.Success || emailMatch2.Success || emailMatch3 || emailMatch.Success;
 
 
         }
@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     throw new ArgumentException("User already exists");
                 }
-                if (!IsValidEmail(Email))
+                if (!IsValidEmail(Email)||!IsValidEmail2(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
