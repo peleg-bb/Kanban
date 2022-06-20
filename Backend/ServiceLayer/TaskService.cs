@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message, false);
+                Response response = new Response(ex.Message);
                 return response.BadJson();
             }
         }
@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message, false);
+                Response response = new Response(ex.Message);
                 return response.BadJson();
             }
         }
@@ -162,7 +162,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message, false);
+                Response response = new Response(ex.Message);
                 return response.BadJson();
             }
         }

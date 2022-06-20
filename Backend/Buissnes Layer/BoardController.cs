@@ -20,6 +20,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
+        private const int BacklogState = 0;
+        private const int inProgressState = 1;
         private const int Done = 2;
         public int BID
         {
@@ -846,9 +848,40 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                return GetBoard(email, boardName).GetTask(taskId);
                 String msg = String.Format("Got Task Successfully in BuissnesLayer!");
-                log.Info(msg);
+                    log.Info(msg);
+                    return GetBoard(email, boardName).GetTask(taskId);
+                
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+            }
+        }
+        /// <summary>
+        /// This method get a specific Task to the specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <param name="taskId">The id of new task</param>
+        /// <returns>Task, unless an error occurs .</returns>
+        public Task GetTask(string email, string boardName, int taskId, int columnOrdinal = 18383)
+        {
+            try
+            {
+                if(columnOrdinal != BacklogState && columnOrdinal != inProgressState && columnOrdinal != Done)
+                {
+                    log.Warn("got column ordinal different the allowed parameters!");
+                    throw new ArgumentException("got column ordinal different the allowed parameters!");
+
+                }
+                else
+                {
+                    String msg = String.Format("Got Task Successfully in BuissnesLayer!");
+                    log.Info(msg);
+                    return GetBoard(email, boardName).GetTask(taskId);
+                }
             }
             catch (Exception e)
             {

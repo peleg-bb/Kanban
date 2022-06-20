@@ -201,7 +201,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
-                Response response = new Response((object)colName);
+                Response response = new Response(null, colName);
                 return ToJson.toJson(response);
                 //return colName;
 
