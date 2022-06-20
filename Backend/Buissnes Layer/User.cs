@@ -31,6 +31,20 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
 
         /// <summary>
+        /// Use only if disconnected from DB!
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        internal User(string username, string password)
+        {
+            throw new NotImplementedException("Use only if disconnected from DB!");
+            this.username = username;
+            this.password = password;
+        }
+
+
+
+        /// <summary>
         /// Allows the UserController to change a user's password.
         /// </summary>
         internal void ChangePassword(string oldP, string newP)

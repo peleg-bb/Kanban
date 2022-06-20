@@ -66,6 +66,7 @@ namespace BackendTests.ServiceLayer
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());
             userTests.DeleteData();
+            grading.Register("ho@klks.com", "Abc123");
             userTests.createUserTest();
             userTests.invalidUserLoginTest();
             userTests.invalidUserCreation();

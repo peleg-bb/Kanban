@@ -126,12 +126,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     UserDTO userDto = userDtoMapper.CreateUser(Email, password);
                     User u = new User(userDto);
+                    // User u = new User(Email, password);
                     users.Add(Email, u);
                 }
             }
             else
             {
-               
                 if (!IsValidEmail(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
@@ -145,6 +145,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     UserDTO userDto = userDtoMapper.CreateUser(Email, password);
                     User u = new User(userDto);
+                    users.Add(Email, u);
+                    // User u = new User(Email, password);
                     users.Add(Email, u);
                 }
                 
@@ -246,11 +248,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 throw new ArgumentException("Wrong password");
             }
 
-            else if (loggedIn.Contains(Email))
-
-            {
-                throw new ArgumentException("User is already logged in");
-            }
+            // else if (loggedIn.Contains(Email))
+            //
+            // {
+            //     throw new ArgumentException("User is already logged in");
+            // }
 
             else
             {

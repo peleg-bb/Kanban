@@ -138,7 +138,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Login(username, password);
                 String msg = String.Format("Login successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response((object)username.ToLower());
+                Response response = new Response((object)username);
                 return ToJson.toJson(response);
             }
             catch (Exception e)
@@ -162,7 +162,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Logout(username);
                 String msg = String.Format("Logout successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response(null, null);
+                Response response = new Response(null);
                 return ToJson.toJson(response);
             }
             catch (Exception e)

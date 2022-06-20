@@ -401,7 +401,7 @@ namespace BackendTests.ServiceLayer
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.boardController.GetBoardById(1), _boardService.boardController.GetBoard(email,boardName));
+            Assert.AreEqual(_boardService.boardController.GetBoardById(0), _boardService.boardController.GetBoard(email,boardName));
         }
         /// <summary>
         /// Tests if a board has an owner
