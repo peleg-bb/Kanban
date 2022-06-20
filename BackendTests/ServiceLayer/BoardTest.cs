@@ -300,9 +300,23 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             int limit = 10;
             int columnOrdinal = 2;
-            Response r = new Response(null, true);
-            Assert.AreEqual(_boardService.LimitColumn(email, boardName, columnOrdinal,limit), r.OKJson());
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.LimitColumn(email, boardName, columnOrdinal,limit), ToJson.toJson(r));
 
+        }
+        /// <summary>
+        /// This method tests a valid set of a column limit of certain board user in the system according to requirement  10.
+        /// </summary>
+        [TestMethod]
+        public void ValidLimitColumn2()
+        {
+            string email = "tamar@gmail.com";
+            string boardName = "testName";
+            int limit = 10;
+            int columnOrdinal = 1;
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.LimitColumn(email, "To do list", columnOrdinal, limit), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo coulmn limis succsusfully" , _boardService.GetColumnLimit(email,"To do list",columnOrdinal));
         }
         /// <summary>
         /// This method tests a invalid set of a column limit of certain board user in the system according to requirement  10.

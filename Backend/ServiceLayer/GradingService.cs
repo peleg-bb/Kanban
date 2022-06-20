@@ -303,8 +303,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
                 try
                 {
-                    if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                        columnOrdinal)
+                    if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() == columnOrdinal)
                     {
                         try
                         { 
