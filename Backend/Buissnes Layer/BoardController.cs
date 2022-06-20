@@ -20,8 +20,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
-        private const int BacklogState = 0;
-        private const int InProgressState = 1;
         private const int Done = 2;
         public int BID
         {
@@ -111,12 +109,26 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             if (userController.IsLoggedIn(userEmail))
             {
-                List<int> listOfUserBoard = new List<int>();
-                foreach (var i in this.BoardsOfUsers[userEmail])
+                if (UserHasAnyBoard(userEmail))
                 {
-                    listOfUserBoard.Add(i.Value.BoardID);
+                    List<int> listOfUserBoard = new List<int>();
+                    foreach (var i in this.BoardsOfUsers[userEmail])
+                    {
+                        listOfUserBoard.Add(i.Value.BoardID);
+                    }
+                    String msg = String.Format("Got User BList Successfully in BuissnesLayer! Board of {0}", userEmail);
+                    log.Info(msg);
+                    return listOfUserBoard;
                 }
-                return listOfUserBoard;
+                else
+                {
+                    List<int> listOfUserBoard = new List<int>();
+                    String msg = String.Format("Got User BList Successfully in BuissnesLayer!{0} has None boards", userEmail);
+                    log.Info(msg);
+                    return listOfUserBoard;
+
+                }
+               
             }
             else
             {
@@ -145,7 +157,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             if (isOwnerOfAnyBoard(userEmail))
                             {
                                 Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                                //Board newBoard = new Board(boardName,this.BID, userEmail);// - old constructor, do not use
+                                //new Board(boardName, this.bId, userEmail); - old constructor, do not use
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
                                 this.boardById.Add(newBoard.BoardID ,newBoard);
                                 this.ownerBoards[userEmail].Add(newBoard.name);
@@ -155,7 +167,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             else
                             {
                                 Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                                //Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
                                 List<string> listBoard= new List<string>();
                                 listBoard.Add(newBoard.name);
                                 newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
@@ -175,7 +186,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                     else
                     {
                         Board newBoard = new Board(boardDTOMapper.CreateBoard(userEmail, boardName));
-                        //Board newBoard = new Board(boardName, this.BID, userEmail);// - old constructor, do not use
                         List<string> listBoard = new List<string>();
                         listBoard.Add(newBoard.name);
                         newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
@@ -257,73 +267,65 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
         public void NextStateB(string email, string boardName, int columnOrdinal, int taskId)
         {
-            try
+            if (userController.IsLoggedIn(email))
             {
-                if (userController.IsLoggedIn(email))
+                try
                 {
-                    try
+                    if (columnOrdinal != null && taskId != null)
                     {
-                        if (columnOrdinal != null && taskId != null)
-                        {
 
-                            if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
+                        if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
+                        {
+                            Board b = GetBoard(email, boardName);
+                            if (b.GetTask(taskId).Assignee == email)
                             {
-                                Board b = GetBoard(email, boardName);
-                                if (b.GetTask(taskId).Assignee == email)
+                                try
                                 {
-                                    try
-                                    {
-                                        b.ChangeState(taskId, email);
-                                        String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}", b.GetTask(taskId).GetState());
-                                        log.Info(msg);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        log.Warn(e.Message);
-                                        throw new Exception(e.Message);
-                                    }
+                                    b.ChangeState(taskId, email);
+                                    String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}", b.GetTask(taskId).GetState());
+                                    log.Info(msg);
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    log.Warn("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
-                                    throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
+                                    log.Warn(e.Message);
+                                    throw new Exception(e.Message);
                                 }
                             }
                             else
                             {
-                                log.Warn("task does not at columnOrdinal given");
-                                throw new ArgumentException("task does not at columnOrdinal given");
-
+                                log.Warn("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
+                                throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
                             }
                         }
                         else
                         {
-                            log.Warn("value can not be null!!");
-                            throw new ArgumentException("value can not be null!!");
-                        }
-                       
+                            log.Warn("task does not at columnOrdinal given");
+                            throw new ArgumentException("task does not at columnOrdinal given");
 
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        log.Warn(e.Message);
-                        throw new ArgumentException(e.Message);
-                        //Response r = new Response(e.Message, false);
-                        //return r.BadJson();
+                        log.Warn("value can not be null!!");
+                        throw new ArgumentException("value can not be null!!");
                     }
+
+
                 }
-                else
+                catch (Exception e)
                 {
-                    log.Warn("user not logged in");
-                    throw new ArgumentException("user not logged in");
+                    log.Warn(e.Message);
+                    throw new ArgumentException(e.Message);
+                    //Response r = new Response(e.Message, false);
+                    //return r.BadJson();
                 }
             }
-            catch (Exception e)
+            else
             {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
-            
+
         }
         /// <summary>
         /// This method assign a user from the board to a task.
@@ -534,7 +536,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                                 else
                                 {
                                     boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
-                                    GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                        GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
                                     List<string> listBoard = new List<string>();
                                     listBoard.Add(boardName);
                                     ownerBoards.Add(userEmailFutureOwner, listBoard);
@@ -668,10 +670,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             this.boardById.Remove(GetBoard(userEmail, boardName).BoardID);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
                             this.ownerBoards[userEmail].Remove(boardName);
-                            // Issue - Logically speaking - boards are recognized by ID.
+                            // Logically speaking - boards are recognized by ID.
                             // However, the GradingService recognizes them by
                             // owner email and board name as a double key. 
-                            // Issue solved - We added an ID-Board dictionary 
+                            // I believe that ID's 
 
                             this.boardDTOMapper.DeleteBoard(userEmail, boardName, IDtoRemove);
                             this.BoardsOfUsers[userEmail].Remove(boardName);
@@ -840,21 +842,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the new board</param>
         /// <param name="taskId">The id of new task</param>
         /// <returns>Task, unless an error occurs .</returns>
-        public Task GetTask(string email, string boardName, int taskId, int columnOrdinal=1406)
+        public Task GetTask(string email, string boardName, int taskId)
         {
             try
             {
-                if (columnOrdinal!=BacklogState && columnOrdinal!=InProgressState && columnOrdinal != Done && columnOrdinal!=1406)
-                {
-                    throw new ArgumentException("got column ordinal diffrent the allowed");
-                }
-                else
-                {
-                    return GetBoard(email, boardName).GetTask(taskId);
-                    String msg = String.Format("Got Task Successfully in BuissnesLayer!");
-                    log.Info(msg);
-                }
-                
+                return GetBoard(email, boardName).GetTask(taskId);
+                String msg = String.Format("Got Task Successfully in BuissnesLayer!");
+                log.Info(msg);
             }
             catch (Exception e)
             {
