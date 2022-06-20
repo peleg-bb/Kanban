@@ -526,7 +526,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-              boardService.boardController.joinBoard(boardID,email);
+              boardService.JoinBoard(boardID,email);
               Response response = new Response(null);
               return ToJson.toJson(response);
             }
@@ -547,7 +547,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardService.boardController.leaveBoard(boardID, email);
+                boardService.LeaveBoard(boardID, email);
                 Response response = new Response(null);
                 return ToJson.toJson(response);
             }
