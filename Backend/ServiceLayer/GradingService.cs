@@ -623,7 +623,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                userService.DeleteAllData();
+                userService.DeleteAllDataVoid();
                 boardService.DeleteAllData();
                 Response r = new Response(null);
                 return ToJson.toJson(r);
@@ -631,7 +631,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                Response r = new Response(null);
+                Response r = new Response(e.Message);
                 return ToJson.toJson(r);
             }
             

@@ -15,8 +15,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class Response
     {
-
-
         public string ErrorMessage { get; }
         public object ReturnValue { get; }
 

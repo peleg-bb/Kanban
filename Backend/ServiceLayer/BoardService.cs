@@ -380,6 +380,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.boardController.DeleteAllData();
         }
+
     }
   
 }

@@ -213,5 +213,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             
         }
 
+        public void DeleteAllDataVoid()
+        {
+            this.userController.DeleteAllData();
+            // try
+            // {
+            //     this.userController.DeleteAllData();
+            //     String msg = String.Format("Load Data successful in UserService.");
+            //     log.Info(msg);
+            //     Response response = new Response(null, null);
+            //     return ToJson.toJson(response);
+            // }
+            // catch (Exception e)
+            // {
+            //     log.Warn(e.Message);
+            //     Response response = new Response(e.Message);
+            //     return ToJson.toJson(response);
+            // }
+
+        }
+
     }
 }
