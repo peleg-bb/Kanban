@@ -42,15 +42,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string OKJson()
         {
-            string json = $"ReturnValue: {JsonConvert.SerializeObject(this.ReturnValue)}"; 
+            string json = JsonConvert.SerializeObject(this.ReturnValue, Newtonsoft.Json.Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });  
             return json;
         }
 
         public string BadJson()
         {
-            string json = "{" +
-                          $"Error message: {this.ErrorMessage}" +
-                          "}";
+            string json = JsonConvert.SerializeObject(this.ErrorMessage, Newtonsoft.Json.Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); 
             return json;
         }
         JsonSerializerOptions options = new()
