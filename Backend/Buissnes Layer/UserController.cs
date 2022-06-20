@@ -284,10 +284,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public bool IsLoggedIn(string email)
         {
             //string email = Email.ToLower();
-            if (!UserExists(email))
-            {
-                throw new ArgumentException("User does not exist");
-            }
+            // if (!UserExists(email))
+            // {
+            //     throw new ArgumentException("User does not exist");
+            // }
             return loggedIn.Contains(email);
         }
 
