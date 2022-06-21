@@ -44,6 +44,7 @@ namespace BackendTests.ServiceLayer
             TaskService taskService = new TaskService(boardService.boardController);
             UserTests userTests = new UserTests(userController, userService);
             GradingService grading = new GradingService();
+            TaskTests taskTests = new TaskTests(taskService, userService, boardService, grading);
             string email1 = "johndoe@gmail.com";
             string password = "Hash123";
             string boardName = "testName";
@@ -51,7 +52,6 @@ namespace BackendTests.ServiceLayer
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
             DateTime newDueDate = new DateTime(2026, 8, 14);
-
             userService.DeleteAllData();
             boardService.DeleteAllData();
             // Console.WriteLine(grading.LoadData());
@@ -99,7 +99,6 @@ namespace BackendTests.ServiceLayer
             //userTests.invalidUserLoginTest();
             userService.Login("johndoe@gmail.com", "Hash123");
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
-          
             boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
@@ -139,8 +138,10 @@ namespace BackendTests.ServiceLayer
             userController.CreateUser("itay@gmail.com", "Hash123");
             userController.Login("itay@gmail.com", "Hash123");
             boardService.boardController.joinBoard(1, "itay@gmail.com");
-            boraTest.AssignTaskSuccessfully();
+            boraTest.AssignTaskSuccessfully("itay@gmail.com", "To do list");
+            taskTests.IsAssigneeTest("itay@gmail.com", "To do list");
             boraTest.ChangeOwnerSuccessfully();
+
             
             // boraTest.ChangeOwnerSuccessfully(); \\ owner loged in and user is a member -> successfully
             // boraTest.LeaveBoardSuccessfully();//tamar leave the board

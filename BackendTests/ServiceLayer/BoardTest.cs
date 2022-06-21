@@ -571,11 +571,10 @@ namespace BackendTests.ServiceLayer
         /// <summary>
         /// This methods checks that u can actuallu assigne user mamber a the board sucessfully.
         /// </summary>
-        public void AssignTaskSuccessfully()
+        public void AssignTaskSuccessfully(string email, string boardName)
         {
-            Response r = new Response((object)"tamar@gmail.com");
-            Assert.AreEqual(_boardService.AssignTask("tamar@gmail.com", "To do list", 0, "itay@gmail.com", 1), ToJson.toJson(r));
-
+            Response r = new Response((object)email);
+            Assert.AreEqual(_boardService.AssignTask(email, boardName, 0, "itay@gmail.com", 1), ToJson.toJson(r));
         }
 
         /// <summary>

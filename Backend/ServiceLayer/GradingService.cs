@@ -102,20 +102,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Login(string email, string password)
         {
             return userService.Login(email, password);
-            //     try
-            //     {
-            //         userController.Login(email, password);
-            //         Response response = new Response(null, email);
-            //         return ToJson.toJson(response);
-            //     }
-            //     catch (Exception e)
-            //     {
-            //         Response response = new Response(e.Message, null);
-            //         return ToJson.toJson(response);
-            //     }
         }
-
-
         /// <summary>
         /// This method logs out a logged in user. 
         /// </summary>
@@ -124,17 +111,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Logout(string email)
         {
             return userService.logout(email);
-            // try
-            // {
-            //     userService.logout(email);
-            //     Response response = new Response(null, email);
-            //     return ToJson.toJson(response);
-            // }
-            // catch (Exception e)
-            // {
-            //     Response response = new Response(e.Message, null);
-            //     return ToJson.toJson(response);
-            // }
         }
 
         /// <summary>
@@ -150,11 +126,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardService.LimitColumn(email, boardName, columnOrdinal, limit);
-                // Response response = new Response(null, null);
-                // return ToJson.toJson(response);
                 Response response = new Response(null);
                 return ToJson.toJson(response);
-
             }
             catch (Exception e)
             {
@@ -174,11 +147,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                // string limVal = boardService.GetColumnLimit(email, boardName, columnOrdinal);
-                // Response response = new Response((object)limVal);
                 return boardService.GetColumnLimit(email, boardName, columnOrdinal);
-
-
             }
             catch (Exception e)
             {
@@ -203,7 +172,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
                 Response response = new Response(null, colName);
                 return ToJson.toJson(response);
-                //return colName;
 
             }
             catch (Exception e)
@@ -255,38 +223,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            try
+            if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
+                columnOrdinal)
             {
-                if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                    columnOrdinal)
-                {
-                    try
-                    {
-                        taskService.EditDueDate(email, boardName, taskId, dueDate);
-                        Response response = new Response(null, null);
-                        return ToJson.toJson(response);
-                        
-                    }
-                    catch (Exception e)
-                    {
-                        Response response = new Response(e.Message, null);
-                        return ToJson.toJson(response);
-                    }
-                }
-                else
-                {
-                    Response response = new Response("Not the right colomn number", null);
-                    return ToJson.toJson(response);
-                }
-
+                return taskService.EditDueDate(email, boardName, taskId, dueDate);
             }
-            catch (Exception e)
+            else
             {
-                Response response = new Response(e.Message, null);
+                Response response = new Response("Not the right colomn number", null);
                 return ToJson.toJson(response);
             }
-
         }
+    }
 
 
 
@@ -306,8 +254,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() == columnOrdinal)
                     {
                         try
-                        { 
-                            taskService.EditTitle(email, boardName, taskId, title);
+                        { taskService.EditTitle(email, boardName, taskId, title);
                         Response response = new Response(null);
                         return ToJson.toJson(response);
                         }
@@ -319,7 +266,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     }
                     else
                     {
-                        Response response = new Response("Not the right colomn number", null);
+                        Response response = new Response("Not the right column number", null);
                         return ToJson.toJson(response);
                     }
 
@@ -330,9 +277,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     return ToJson.toJson(response);
                 }
         }
-
-
-        
 
 
         /// <summary>

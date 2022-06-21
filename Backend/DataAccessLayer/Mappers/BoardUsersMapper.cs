@@ -164,16 +164,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     _boardUsersDTOs.RemoveAll(x => x.BoardID == boardID);
-
-
-                    //BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
-                    //_boardUsersDTOs.Add(boardUser);
-
-                    // Console.WriteLine(res);
-                    // Console.WriteLine("success!");
-                    //return boardUser; // In case we want to return to return a boardUser object.
-
-
                 }
                 catch (Exception ex)
                 {

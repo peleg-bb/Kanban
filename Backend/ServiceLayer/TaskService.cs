@@ -140,31 +140,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Task task = boardController.GetTask(email, boardName,taskId);
-                try
-                {
-                    task.EditDueDate(newDueDate);
-                    Response response = new Response(null, task);
-                    String msg = String.Format("Task due date edited! new due date = {0}", newDueDate);
-                    log.Info(msg);
-                    Console.WriteLine(msg);
-                    return response.OKJson();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    log.Warn(ex.Message);
-                    Response response = new Response(ex.Message, task);
-                    return response.BadJson();
-                }
+                var task = boardController.GetTask(email, boardName, taskId);
+                task.EditDueDate(newDueDate);
+                var response = new Response(null, task);
+                var msg = $"Task due date edited! new due date = {newDueDate}";
+                log.Info(msg);
+                return ToJson.toJson(response);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message);
-                return response.BadJson();
+                var response = new Response(ex.Message);
+                return ToJson.toJson(response);
             }
         }
+            
+        }
     }
-}
