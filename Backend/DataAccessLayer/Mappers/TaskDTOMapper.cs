@@ -162,7 +162,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 catch (SQLiteException ex)
                 {
                     //Console.WriteLine(command.CommandText);
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                     throw new DALException($"Change task title failed because " + ex.Message);
                     // log error
                 }

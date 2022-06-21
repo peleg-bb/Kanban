@@ -42,7 +42,7 @@ namespace BackendTests.ServiceLayer
             UserService userService = new UserService(userController);
             BoardService boardService = new BoardService(userController);
             TaskService taskService = new TaskService(boardService.boardController);
-            UserTests userTests = new UserTests(userController, userService);
+            UserTests userTests = new UserTests(userController, userService); 
             GradingService grading = new GradingService();
             string email1 = "johndoe@gmail.com";
             string password = "Hash123";
@@ -68,43 +68,48 @@ namespace BackendTests.ServiceLayer
             // Console.WriteLine(grading.DeleteData());
             userTests.DeleteData();
             //grading.Register("ho@klks.com", "Abc123");
-            userTests.createUserTest();
-            userTests.invalidUserLoginTest();
-            userTests.invalidUserCreation();
-            userTests.invalidLoginTest_2();
-            userTests.invalidUserCreation_2();
-            userTests.logoutTest();
-            userTests.invalidLogoutTest();
-            userTests.validUserLoginTest();
-            userTests.invalidUserCreation_3();
-            userService.CreateUser("j@Gmail.com", "Hash123");
-            userService.CreateUser("j.ohndoe@Gmail.com", "Hash123");
-            userService.CreateUser("j@Gmail.", "Hash123");
-            userService.CreateUser("johndoe@", "Hash123");
-            userService.CreateUser("johndoe@gmailcom", "Hash123");
-            userService.CreateUser("johndoe@gmail.com", "ash123");
-            userService.CreateUser("johndoe@gmail.com", "hasher");
+            //userTests.createUserTest();
+            //userTests.invalidUserLoginTest();
+            //userTests.invalidUserCreation();
+            //userTests.invalidLoginTest_2();
+            //userTests.invalidUserCreation_2();
+            //userTests.logoutTest();
+            //userTests.invalidLogoutTest();
+            //userTests.validUserLoginTest();
+            //userTests.invalidUserCreation_3();
+            
+            //userService.CreateUser("j@Gmail.com", "Hash123");
+            //userService.CreateUser("j.ohndoe@Gmail.com", "Hash123");
+            //userService.CreateUser("j@Gmail.", "Hash123");
+            //userService.CreateUser("johndoe@", "Hash123");
+            //userService.CreateUser("johndoe@gmailcom", "Hash123");
+            //userService.CreateUser("johndoe@gmail.com", "ash123");
+            //userService.CreateUser("johndoe@gmail.com", "hasher");
 
 
 
 
             
             BoardTest boraTest = new BoardTest(boardService);
-            
+
             // userTests.createUserTest();
             // userTests.validUserLoginTest();
-            userService.CreateUser("johndoe@gmail.com", "Hash123");
-            userService.CreateUser("sa@aa.co", "Kkk666");
+            //userService.CreateUser("johndoe@gmail.com", "Hash123");
+            grading.Register("johndoe@gmail.com", "Hash123");
+            //userService.CreateUser("sa@aa.co", "Kkk666");
             //userTests.validUserLoginTest();
             //userTests.invalidUserLoginTest();
-            userService.Login("johndoe@gmail.com", "Hash123");
-            boardService.CreateBoard("To do list", "johndoe@gmail.com");
-          
-            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
-            taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
+            //userService.Login("johndoe@gmail.com", "Hash123");
+            //boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            grading.Login("johndoe@gmail.com", "Hash123");
+            Console.WriteLine(grading.AddBoard("johndoe@gmail.com","To do list"));
+
+            //boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            grading.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            Console.WriteLine("invalid input to edit title:");
+            Console.WriteLine(grading.UpdateTaskTitle("johndoe@gmail.com", "To do list", 0,1, null));
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
-
             /* Lessons I've learned today -
              1) You can't call methods in the gradingService after 
             instantiating users\boards in the userService\boardService.

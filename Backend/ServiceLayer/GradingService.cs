@@ -308,8 +308,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                         try
                         { 
                             taskService.EditTitle(email, boardName, taskId, title);
-                        Response response = new Response(null);
-                        return ToJson.toJson(response);
+                            Response response = new Response(null);
+                            return ToJson.toJson(response);
                         }
                         catch (Exception e)
                         {
@@ -354,8 +354,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                         try
                         {
                             taskService.EditDescription(email, boardName, taskId, description);
-                        Response response = new Response(null);
-                        return ToJson.toJson(response); ;
+                            Response response = new Response(null);
+                            return ToJson.toJson(response); ;
                         }
                         catch (Exception e)
                         {

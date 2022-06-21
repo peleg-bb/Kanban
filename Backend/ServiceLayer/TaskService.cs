@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                     log.Warn(ex.Message);
                     Response response = new Response(ex.Message, task);
                     return response.BadJson();
@@ -82,7 +82,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
                 Response response = new Response(ex.Message);
                 return response.BadJson();
