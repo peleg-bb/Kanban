@@ -74,6 +74,8 @@ namespace BackendTests.ServiceLayer
             Response r = new Response(null, email);
             Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), ToJson.toJson(r));
             Console.WriteLine("wwoohooo added task succsusfully");
+            Assert.AreEqual(_boardService.AddTask(email, boardName, "ss", description, new DateTime(14 / 10 / 2025)), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo added task2 succsusfully");
         }
         
         /// <summary>
