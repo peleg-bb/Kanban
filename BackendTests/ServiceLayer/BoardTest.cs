@@ -67,13 +67,13 @@ namespace BackendTests.ServiceLayer
         {
             
             string email = "tamar@gmail.com";
-            string boardName = "testName";
+            string boardName = "To do list";
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(14 / 07 / 2025);
             Response r = new Response(null, email);
-            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), r.OKJson());
-
+            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo added task succsusfully");
         }
         
         /// <summary>
@@ -316,7 +316,6 @@ namespace BackendTests.ServiceLayer
             int columnOrdinal = 1;
             Response r = new Response(null);
             Assert.AreEqual(_boardService.LimitColumn(email, "To do list", columnOrdinal, limit), ToJson.toJson(r));
-            Console.WriteLine("wwoohooo coulmn limis succsusfully" , _boardService.GetColumnLimit(email,"To do list",columnOrdinal));
         }
         /// <summary>
         /// This method tests a invalid set of a column limit of certain board user in the system according to requirement  10.
