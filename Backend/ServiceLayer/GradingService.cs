@@ -59,6 +59,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private BoardService boardService;
         public UserService userService;
         private TaskService taskService;
+
         public GradingService()
         {
             this.userController = new UserController();
@@ -77,8 +78,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Register(string email, string password)
         {
             return userService.CreateUser(email, password);
-            
-            
+
+
             // try
             // {
             //     userController.CreateUser(email, password);
@@ -102,19 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Login(string email, string password)
         {
             return userService.Login(email, password);
-            //     try
-            //     {
-            //         userController.Login(email, password);
-            //         Response response = new Response(null, email);
-            //         return ToJson.toJson(response);
-            //     }
-            //     catch (Exception e)
-            //     {
-            //         Response response = new Response(e.Message, null);
-            //         return ToJson.toJson(response);
-            //     }
         }
-
 
         /// <summary>
         /// This method logs out a logged in user. 
@@ -124,17 +113,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Logout(string email)
         {
             return userService.logout(email);
-            // try
-            // {
-            //     userService.logout(email);
-            //     Response response = new Response(null, email);
-            //     return ToJson.toJson(response);
-            // }
-            // catch (Exception e)
-            // {
-            //     Response response = new Response(e.Message, null);
-            //     return ToJson.toJson(response);
-            // }
         }
 
         /// <summary>
@@ -150,11 +128,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardService.LimitColumn(email, boardName, columnOrdinal, limit);
-                // Response response = new Response(null, null);
-                // return ToJson.toJson(response);
                 Response response = new Response(null);
                 return ToJson.toJson(response);
-
             }
             catch (Exception e)
             {
@@ -174,11 +149,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                // string limVal = boardService.GetColumnLimit(email, boardName, columnOrdinal);
-                // Response response = new Response((object)limVal);
                 return boardService.GetColumnLimit(email, boardName, columnOrdinal);
-
-
             }
             catch (Exception e)
             {
@@ -203,7 +174,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string colName = boardService.GetColumnName(email, boardName, columnOrdinal);
                 Response response = new Response(null, colName);
                 return ToJson.toJson(response);
-                //return colName;
 
             }
             catch (Exception e)
@@ -255,38 +225,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            try
+            if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
+                columnOrdinal)
             {
-                if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                    columnOrdinal)
-                {
-                    try
-                    {
-                        taskService.EditDueDate(email, boardName, taskId, dueDate);
-                        Response response = new Response(null, null);
-                        return ToJson.toJson(response);
-                        
-                    }
-                    catch (Exception e)
-                    {
-                        Response response = new Response(e.Message, null);
-                        return ToJson.toJson(response);
-                    }
-                }
-                else
-                {
-                    Response response = new Response("Not the right colomn number", null);
-                    return ToJson.toJson(response);
-                }
-
+                return taskService.EditDueDate(email, boardName, taskId, dueDate);
             }
-            catch (Exception e)
+            else
             {
-                Response response = new Response(e.Message, null);
+                Response response = new Response("Not the right colomn number", null);
                 return ToJson.toJson(response);
             }
-
         }
+
 
 
 
@@ -301,10 +251,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-                try
+            try
+            {
+                if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
+                    columnOrdinal)
                 {
-                    if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() == columnOrdinal)
+                    try
                     {
+<<<<<<< HEAD
                         try
                         { 
                             taskService.EditTitle(email, boardName, taskId, title);
@@ -316,23 +270,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                             Response response = new Response(e.Message, null);
                             return ToJson.toJson(response);
                         }
+=======
+                        taskService.EditTitle(email, boardName, taskId, title);
+                        Response response = new Response(null);
+                        return ToJson.toJson(response);
+>>>>>>> 058e3b8df8d9c05c47ec21509fc354b5415f5f2b
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Response response = new Response("Not the right colomn number", null);
+                        Response response = new Response(e.Message, null);
                         return ToJson.toJson(response);
                     }
-
                 }
-                catch (Exception e)
+                else
                 {
-                    Response response = new Response(e.Message, null);
+                    Response response = new Response("Not the right column number", null);
                     return ToJson.toJson(response);
                 }
+
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
-
-
-        
 
 
         /// <summary>
@@ -344,13 +306,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="description">New description for the task</param>
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
-        public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
+        public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId,
+            string description)
         {
-                try
+            try
+            {
+                if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
+                    columnOrdinal)
                 {
-                    if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                        columnOrdinal)
+                    try
                     {
+<<<<<<< HEAD
                         try
                         {
                             taskService.EditDescription(email, boardName, taskId, description);
@@ -362,19 +328,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                             Response response = new Response(e.Message, null);
                             return ToJson.toJson(response);
                         }
+=======
+                        taskService.EditDescription(email, boardName, taskId, description);
+                        Response response = new Response(null);
+                        return ToJson.toJson(response);
+                        ;
+>>>>>>> 058e3b8df8d9c05c47ec21509fc354b5415f5f2b
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Response response = new Response("Not the right column number");
+                        Response response = new Response(e.Message, null);
                         return ToJson.toJson(response);
                     }
-
                 }
-                catch (Exception e)
+                else
                 {
-                    Response response = new Response(e.Message, null);
+                    Response response = new Response("Not the right column number");
                     return ToJson.toJson(response);
                 }
+
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
         }
 
 
@@ -400,7 +378,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-            
+
 
 
         }
@@ -416,7 +394,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string GetColumn(string email, string boardName, int columnOrdinal)
         {
             try
-            { 
+            {
                 return boardService.GetColum(email, boardName, columnOrdinal);
             }
             catch (Exception e)
@@ -447,9 +425,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-            
-           
-            
+
+
+
         }
 
 
@@ -472,8 +450,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-            
-              
+
+
         }
 
 
@@ -495,8 +473,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-            
+
         }
+
         /// <summary>
         /// This method returns a list of IDs of all user's boards.
         /// </summary>
@@ -526,9 +505,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-              boardService.JoinBoard(boardID,email);
-              Response response = new Response(null);
-              return ToJson.toJson(response);
+                boardService.JoinBoard(boardID, email);
+                Response response = new Response(null);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
             {
@@ -574,9 +553,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //List<Task> t = boardService.InProgress(email);
                 //Response response = new Response(null, email);
                 //return ToJson.toJson(response);
-                 boardService.AssignTask(emailAssignee,boardName,columnOrdinal,email,taskID);
-                 Response response = new Response(null);
-                 return ToJson.toJson(response);
+                boardService.AssignTask(emailAssignee, boardName, columnOrdinal, email, taskID);
+                Response response = new Response(null);
+                return ToJson.toJson(response);
             }
             catch (Exception e)
 
@@ -608,7 +587,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r = new Response(null);
                 return ToJson.toJson(r);
             }
-            
+
         }
 
         ///<summary>This method deletes all persisted data.
@@ -633,7 +612,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r = new Response(e.Message);
                 return ToJson.toJson(r);
             }
-            
+
             // Probably need to add deletion of all tasks through TaskService
 
         }
@@ -651,4 +630,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
     }
 }
+
 

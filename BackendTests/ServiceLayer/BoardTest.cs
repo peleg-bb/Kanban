@@ -67,13 +67,15 @@ namespace BackendTests.ServiceLayer
         {
             
             string email = "tamar@gmail.com";
-            string boardName = "testName";
+            string boardName = "To do list";
             string title = "HW";
             string description = "EX3";
-            DateTime dueDate = new DateTime(14 / 07 / 2025);
+            DateTime dueDate = new DateTime(2025,05,10);
             Response r = new Response(null, email);
-            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), r.OKJson());
-
+            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo added task succsusfully");
+            Assert.AreEqual(_boardService.AddTask(email, boardName, "ss", description, new DateTime(2025, 05, 22)), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo added task2 succsusfully");
         }
         
         /// <summary>
@@ -316,7 +318,6 @@ namespace BackendTests.ServiceLayer
             int columnOrdinal = 1;
             Response r = new Response(null);
             Assert.AreEqual(_boardService.LimitColumn(email, "To do list", columnOrdinal, limit), ToJson.toJson(r));
-            Console.WriteLine("wwoohooo coulmn limis succsusfully" , _boardService.GetColumnLimit(email,"To do list",columnOrdinal));
         }
         /// <summary>
         /// This method tests a invalid set of a column limit of certain board user in the system according to requirement  10.
@@ -571,11 +572,10 @@ namespace BackendTests.ServiceLayer
         /// <summary>
         /// This methods checks that u can actuallu assigne user mamber a the board sucessfully.
         /// </summary>
-        public void AssignTaskSuccessfully()
+        public void AssignTaskSuccessfully(string email, string boardName)
         {
-            Response r = new Response((object)"tamar@gmail.com");
-            Assert.AreEqual(_boardService.AssignTask("tamar@gmail.com", "To do list", 0, "itay@gmail.com", 1), ToJson.toJson(r));
-
+            Response r = new Response((object)email);
+            Assert.AreEqual(_boardService.AssignTask(email, boardName, 0, "itay@gmail.com", 1), ToJson.toJson(r));
         }
 
         /// <summary>

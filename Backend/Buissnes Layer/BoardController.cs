@@ -230,19 +230,28 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 try
                 {
-                    Board b = GetBoard(email, boardName);
-                    try
+                    if (UserHasThisBoard(email,boardName))
                     {
-                        b.AddTask(title, description, dueDate , email);
+                        Board b = GetBoard(email, boardName);
+                        b.AddTask(title, description, dueDate, email);
                         String msg = String.Format("task added Successfully! to board :{0}", boardName);
                         log.Info(msg);
-
                     }
-                    catch (Exception e)
+                    else
                     {
-                        log.Warn(e.Message);
-                        throw new Exception(e.Message);
+                        log.Warn("USER DON'T HAVE THIS BOARD!");
+                        throw new Exception("USER DON'T HAVE THIS BOARD!");
                     }
+                    
+                    // try
+                    // {
+                    
+                    // }
+                    // catch (Exception e)
+                    // {
+                    //     log.Warn(e.Message);
+                    //     throw new Exception(e.Message);
+                    // }
 
                 }
                 catch (Exception e)
@@ -267,16 +276,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
+        /// <returns>VOID.</returns>
         public void NextStateB(string email, string boardName, int columnOrdinal, int taskId)
         {
             if (userController.IsLoggedIn(email))
             {
                 try
                 {
-                    if (columnOrdinal != null && taskId != null)
+                    if (UserHasThisBoard(email,boardName) && taskId != null)
                     {
-
                         if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
                         {
                             Board b = GetBoard(email, boardName);
@@ -340,41 +348,50 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>void, unless an error occurs .</returns>
         public void assignAssignee(string userEmailToAssign , string boardName ,int columnOrdinal, string userEmailAssigning ,int taskId )
         {
-            try
+            if ((userController.IsLoggedIn(userEmailAssigning)))
             {
-                if ((userController.IsLoggedIn(userEmailAssigning)))
+                try
                 {
                     Board b = GetBoard(userEmailAssigning, boardName);
-                    if (columnOrdinal != Done && columnOrdinal != null)
+                    if (columnOrdinal == b.GetTask(taskId).GetState())//?????
                     {
-                        if (b.IsInListOfJoiners(userEmailAssigning))
+                        if (columnOrdinal != Done && columnOrdinal != null)
                         {
-                            b.GetTask(taskId).EditAssignee(userEmailToAssign);
-                            String msg = String.Format("task assignee assigned Successfully in BuissnesLayer! The assignee :{0}", userEmailToAssign);
-                            log.Info(msg);
+                            if (b.IsInListOfJoiners(userEmailAssigning))
+                            {
+                                b.GetTask(taskId).EditAssignee(userEmailToAssign);
+                                String msg = String.Format("task assignee assigned Successfully in BuissnesLayer! The assignee :{0}", userEmailToAssign);
+                                log.Info(msg);
+                            }
+                            else
+                            {
+                                log.Warn("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                                throw new Exception("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                            }
                         }
                         else
                         {
-                            log.Warn("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
-                            throw new Exception("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                            log.Warn("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
+                            throw new Exception("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
                         }
                     }
                     else
                     {
-                        log.Warn("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
-                        throw new Exception("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
+                        log.Warn("task does not exist at this ordinal");
+                        throw new ArgumentException("task does not exist at this ordinal");
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    log.Warn("user not logged in");
-                    throw new ArgumentException("user not logged in");
+                    log.Warn(e.Message);
+                    throw new ArgumentException(e.Message);
                 }
+
             }
-            catch (Exception e)
+            else
             {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
 
 
@@ -719,35 +736,27 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Board, unless an error occurs .</returns>
         public Board GetBoard(string userEmail, string boardName)
         {
-            try
+            if (userController.IsLoggedIn(userEmail))
             {
-                if (userController.IsLoggedIn(userEmail))
+                if (UserHasThisBoard(userEmail, boardName))
                 {
-                    if (UserHasThisBoard(userEmail, boardName))
-                    {
-                        return this.BoardsOfUsers[userEmail][boardName];
-                        String msg = String.Format("Got board Successfully in BuissnesLayer! userEmail = {0}  board ={1}", userEmail, boardName);
-                        log.Info(msg);
-                    }
-                    else
-                    {
-                        log.Warn("BOARD IS NOT EXIST AT THIS USER ! ");
-                        throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
-                    }
-                    
+                    return this.BoardsOfUsers[userEmail][boardName];
+                    String msg = String.Format("Got board Successfully in BuissnesLayer! userEmail = {0}  board ={1}", userEmail, boardName);
+                    log.Info(msg);
                 }
                 else
                 {
-                    log.Warn("user not logged in");
-                    throw new ArgumentException("user not logged in");
+                    log.Warn("BOARD IS NOT EXIST AT THIS USER ! ");
+                    throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
                 }
+
             }
-            catch (Exception e)
+            else
             {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
-          
+
         }
 
         /// <summary>

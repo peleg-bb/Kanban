@@ -44,6 +44,7 @@ namespace BackendTests.ServiceLayer
             TaskService taskService = new TaskService(boardService.boardController);
             UserTests userTests = new UserTests(userController, userService); 
             GradingService grading = new GradingService();
+            TaskTests taskTests = new TaskTests(taskService, userService, boardService, grading);
             string email1 = "johndoe@gmail.com";
             string password = "Hash123";
             string boardName = "testName";
@@ -51,7 +52,6 @@ namespace BackendTests.ServiceLayer
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
             DateTime newDueDate = new DateTime(2026, 8, 14);
-
             userService.DeleteAllData();
             boardService.DeleteAllData();
             // Console.WriteLine(grading.LoadData());
@@ -99,6 +99,7 @@ namespace BackendTests.ServiceLayer
             //userService.CreateUser("sa@aa.co", "Kkk666");
             //userTests.validUserLoginTest();
             //userTests.invalidUserLoginTest();
+<<<<<<< HEAD
             //userService.Login("johndoe@gmail.com", "Hash123");
             //boardService.CreateBoard("To do list", "johndoe@gmail.com");
             grading.Login("johndoe@gmail.com", "Hash123");
@@ -108,6 +109,12 @@ namespace BackendTests.ServiceLayer
             grading.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             Console.WriteLine("invalid input to edit title:");
             Console.WriteLine(grading.UpdateTaskTitle("johndoe@gmail.com", "To do list", 0,1, null));
+=======
+            userService.Login("johndoe@gmail.com", "Hash123");
+            boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
+            taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
+>>>>>>> 058e3b8df8d9c05c47ec21509fc354b5415f5f2b
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
             /* Lessons I've learned today -
@@ -133,6 +140,7 @@ namespace BackendTests.ServiceLayer
             userService.Login("tamar@gmail.com", "Hash123");
             // boraTest.InvalidDeleteBoard();
             boraTest.JoinBoardSuccessfully();
+            boraTest.AddValidTaskTest();
             boraTest.ValidLimitColumn2();
             // boardService.CreateBoard("To do list", "tamar@gmail.com");
             // boraTest.JoinBoardSuccessfully();// checks if  the user can join to board has the same name as a board he got.
@@ -144,8 +152,10 @@ namespace BackendTests.ServiceLayer
             userController.CreateUser("itay@gmail.com", "Hash123");
             userController.Login("itay@gmail.com", "Hash123");
             boardService.boardController.joinBoard(1, "itay@gmail.com");
-            boraTest.AssignTaskSuccessfully();
+            boraTest.AssignTaskSuccessfully("itay@gmail.com", "To do list");
+            taskTests.IsAssigneeTest("itay@gmail.com", "To do list");
             boraTest.ChangeOwnerSuccessfully();
+
             
             // boraTest.ChangeOwnerSuccessfully(); \\ owner loged in and user is a member -> successfully
             // boraTest.LeaveBoardSuccessfully();//tamar leave the board

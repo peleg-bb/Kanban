@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
@@ -29,6 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         private string BoardUsersTable = "Board_Users";
         private List<TaskDTO> taskDTOs = new List<TaskDTO>();
         private List<string> BoardUsers = new List<string>();
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private TaskDTOMapper taskDTOMapper;
 
         /// <summary>
@@ -52,7 +56,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             this.inProgressMax = inProgressMax;
             this.doneMax = doneMax;
             //BoardUsers = boardUsers;
-            
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
+
         }
 
         /// <summary>
@@ -105,7 +112,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                         BoardUsers.Add(email);
                         
                     }
-
+                    String msg = String.Format("loaded Data Successfully ib BoardDTO!!");
+                    log.Info(msg);
                     return this;
 
                 }
@@ -113,6 +121,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
                 }
