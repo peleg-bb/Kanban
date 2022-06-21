@@ -71,9 +71,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new(){DataSource = path};
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
@@ -150,8 +151,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
             {
                 string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
+                SQLiteConnectionStringBuilder builder = new() { DataSource = path };
                 string connectionString = $"Data Source={path}; Version=3;";
-                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+
+                using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
                 {
                     SQLiteCommand command = new SQLiteCommand(null, connection);
                     int res = -1;
@@ -197,9 +200,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
 
@@ -249,9 +253,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
@@ -299,10 +304,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            
+
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
@@ -334,8 +340,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         int nextBoardID = (int)Convert.ToInt64(reader["max(ID)"]);
                         this.boardCount = nextBoardID;
                     }
-
-
                     return boardDTOs;
 
                 }
@@ -374,9 +378,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
-
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;

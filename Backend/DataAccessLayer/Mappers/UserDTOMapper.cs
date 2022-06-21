@@ -22,9 +22,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            string connectionString = $"Data Source={path}; Version=3;";
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
@@ -78,9 +78,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            string connectionString = $"Data Source={path}; Version=3;";
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
@@ -126,9 +126,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            string connectionString = $"Data Source={path}; Version=3;";
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
