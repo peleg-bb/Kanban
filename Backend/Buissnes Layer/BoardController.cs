@@ -276,16 +276,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
+        /// <returns>VOID.</returns>
         public void NextStateB(string email, string boardName, int columnOrdinal, int taskId)
         {
             if (userController.IsLoggedIn(email))
             {
                 try
                 {
-                    if (columnOrdinal != null && taskId != null)
+                    if (UserHasThisBoard(email,boardName) && taskId != null)
                     {
-
                         if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
                         {
                             Board b = GetBoard(email, boardName);
