@@ -258,23 +258,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     try
                     {
-<<<<<<< HEAD
-                        try
-                        { 
-                            taskService.EditTitle(email, boardName, taskId, title);
-                            Response response = new Response(null);
-                            return ToJson.toJson(response);
-                        }
-                        catch (Exception e)
-                        {
-                            Response response = new Response(e.Message, null);
-                            return ToJson.toJson(response);
-                        }
-=======
                         taskService.EditTitle(email, boardName, taskId, title);
                         Response response = new Response(null);
                         return ToJson.toJson(response);
->>>>>>> 058e3b8df8d9c05c47ec21509fc354b5415f5f2b
                     }
                     catch (Exception e)
                     {
@@ -316,7 +302,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     try
                     {
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
+                        taskService.EditDescription(email, boardName, taskId, description);
+                        Response response = new Response(null);
+                        return ToJson.toJson(response);
+                        ;
+=========
                         try
                         {
                             taskService.EditDescription(email, boardName, taskId, description);
@@ -328,12 +319,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                             Response response = new Response(e.Message, null);
                             return ToJson.toJson(response);
                         }
-=======
-                        taskService.EditDescription(email, boardName, taskId, description);
-                        Response response = new Response(null);
-                        return ToJson.toJson(response);
-                        ;
->>>>>>> 058e3b8df8d9c05c47ec21509fc354b5415f5f2b
+>>>>>>>>> Temporary merge branch 2
                     }
                     catch (Exception e)
                     {

@@ -109,12 +109,7 @@ namespace BackendTests.ServiceLayer
             grading.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             Console.WriteLine("invalid input to edit title:");
             Console.WriteLine(grading.UpdateTaskTitle("johndoe@gmail.com", "To do list", 0,1, null));
-=======
-            userService.Login("johndoe@gmail.com", "Hash123");
-            boardService.CreateBoard("To do list", "johndoe@gmail.com");
-            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
-            taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
->>>>>>> 058e3b8df8d9c05c47ec21509fc354b5415f5f2b
+>>>>>>>>> Temporary merge branch 2
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
             /* Lessons I've learned today -
