@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.AddTaskB(email,boardName,title,description,dueDate);
                 String msg = String.Format("task added Successfully! to board :{0}", boardName);
                 log.Info(msg);
-                Response r = new Response(email);
+                Response r = new Response(null,email);
                 return ToJson.toJson(r);
             }
             catch (Exception e)
