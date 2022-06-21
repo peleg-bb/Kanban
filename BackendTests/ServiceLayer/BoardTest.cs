@@ -70,11 +70,11 @@ namespace BackendTests.ServiceLayer
             string boardName = "To do list";
             string title = "HW";
             string description = "EX3";
-            DateTime dueDate = new DateTime(14 / 07 / 2025);
+            DateTime dueDate = new DateTime(2025,05,10);
             Response r = new Response(null, email);
             Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), ToJson.toJson(r));
             Console.WriteLine("wwoohooo added task succsusfully");
-            Assert.AreEqual(_boardService.AddTask(email, boardName, "ss", description, new DateTime(14 / 10 / 2025)), ToJson.toJson(r));
+            Assert.AreEqual(_boardService.AddTask(email, boardName, "ss", description, new DateTime(2025, 05, 22)), ToJson.toJson(r));
             Console.WriteLine("wwoohooo added task2 succsusfully");
         }
         
