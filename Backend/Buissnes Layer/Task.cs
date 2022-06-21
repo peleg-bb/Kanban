@@ -12,6 +12,7 @@ using System.Reflection;
 using System.IO;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
+using System.Text.RegularExpressions;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -68,7 +69,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal void EditTitle(string newTitle)
         {
 
-            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null)
+            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null || IsOnlySpaces(newTitle))
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -124,7 +125,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription)
         {
-            if (newDescription.Length>300 || newDescription==null)
+            if (newDescription.Length>300 || newDescription==null || IsOnlySpaces(newDescription))
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -181,6 +182,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public string GetDueDate()
         {
             return this.DueDate.ToString();
+        }
+        private Boolean IsOnlySpaces(string str)
+        {
+            Regex reg = new Regex(@"^\s*$");
+            Match strMatch = reg.Match(str);
+            return strMatch.Success;
         }
     }
 }
