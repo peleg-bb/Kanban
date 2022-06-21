@@ -21,6 +21,7 @@ namespace BackendTests.ServiceLayer
             this.user = us;
             this.boardService = bs;
             this.grading = gs;
+
         }
 
         /// <summary>
@@ -184,7 +185,7 @@ namespace BackendTests.ServiceLayer
 
             string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
             Assert.AreEqual(jsonup,
-                response.OKJson()
+                ToJson.toJson(response)
             );
         }
 
@@ -211,9 +212,10 @@ namespace BackendTests.ServiceLayer
         /// <summary>
         /// This methods checks that a task indeed has a user assigned to it.
         /// </summary>
-        public void GetAssignee()
+        public void IsAssigneeTest(string email, string boardName)
         {
-
+            string assignee = boardService.boardController.GetBoard(email, boardName).GetTask(1).Assignee;
+            Assert.AreEqual(email, assignee);
         }
 
         /// <summary>

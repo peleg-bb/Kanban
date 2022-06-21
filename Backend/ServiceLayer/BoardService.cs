@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.AddTaskB(email,boardName,title,description,dueDate);
                 String msg = String.Format("task added Successfully! to board :{0}", boardName);
                 log.Info(msg);
-                Response r = new Response(email);
+                Response r = new Response(null,email);
                 return ToJson.toJson(r);
             }
             catch (Exception e)
@@ -96,7 +96,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.NextStateB(email, boardName,columnOrdinal, taskId);
                 String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}");
                 log.Info(msg);
-                Response r = new Response(true);
+                Response r = new Response(null);
                 return ToJson.toJson(r);
 
             }

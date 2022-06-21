@@ -242,7 +242,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         public Task GetTask(int taskId)   // property
         {
-            return this.tasks[taskId];
+            if (this.tasks.ContainsKey(taskId))
+            {
+                return this.tasks[taskId];
+            }
+            else
+            {
+                throw new ArgumentException("task does noe exist");
+            }
         }
         private void SetTasks(Task newTask)   // property
         {
