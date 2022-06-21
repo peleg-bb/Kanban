@@ -305,7 +305,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                         taskService.EditDescription(email, boardName, taskId, description);
                         Response response = new Response(null);
                         return ToJson.toJson(response);
-                        ;
                     }
                     catch (Exception e)
                     {

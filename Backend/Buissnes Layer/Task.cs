@@ -69,7 +69,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal void EditTitle(string newTitle)
         {
 
-            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null || IsOnlySpaces(newTitle))
+
+            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle))
+
             {
                 log.Warn(ex.Message);
                 throw ex;
