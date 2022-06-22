@@ -123,16 +123,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r = new Response(null);
                 String msg = String.Format("joined Board! userEmailOwner = {0} ", userEmail);
                 log.Info(msg);
-
                 return ToJson.toJson(r);
             }
             catch (Exception e) 
             {
-                //RETURN BAD JASON
-                //Response r = new Response(e.Message, false);
-                log.Warn(e.Message);
-                //return r.BadJson();
-                throw new ArgumentException(e.Message);
+                Response response = new Response(e.Message);
+                return ToJson.toJson(response);
             }
         
         }

@@ -490,17 +490,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string JoinBoard(string email, int boardID)
         {
-            try
-            {
-                boardService.JoinBoard(boardID, email);
-                Response response = new Response(null);
-                return ToJson.toJson(response);
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message);
-                return ToJson.toJson(response);
-            }
+            return boardService.JoinBoard(boardID, email);
+             
         }
 
         /// <summary>
