@@ -239,16 +239,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         private Boolean IsValidDescription(string description)
         {
-            return (description == null || description.Length > 300 || IsOnlySpaces(description));
+            return (description.Length > 300 || IsOnlySpaces(description));
         }
 
         private Boolean IsValidTitle(string title)
         {
             return (title == null || title.Length == 0 || title.Length > 50 || IsOnlySpaces(title));
-        }
-        private Boolean IsValidDueDate(DateTime dueDate)
-        {
-            return (dueDate == null);
         }
         public Dictionary<int, Task> GetTasks()   // property
         {
