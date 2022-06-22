@@ -120,7 +120,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.joinBoard(boardId, userEmail);
-                Response r = new Response(null, true);
+                Response r = new Response(null);
                 String msg = String.Format("joined Board! userEmailOwner = {0} ", userEmail);
                 log.Info(msg);
 
@@ -149,7 +149,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.leaveBoard(boardId, userEmailLeaving);
                 String msg = String.Format("Left Board! userEmailOwner = {0}", userEmailLeaving);
                 log.Info(msg);
-                Response r = new Response(true);
+                Response r = new Response(null);
                 return ToJson.toJson(r);
             }
             catch (Exception e)
@@ -230,7 +230,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.DeleteBoard(userEmail, boardName);
-                Response r = new Response(null, true);
+                Response r = new Response(null);
                 String msg = String.Format("BoardService deleted! userEmail = {0} deleted board :{1}", userEmail, boardName);
                 log.Info(msg);
 
@@ -354,7 +354,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 int colVal = boardController.GetColumnLim(email, boardName,columnOrdinal);
-                Response r = new Response(null, (object)colVal);
+                Response r = new Response(null, colVal);
                 String msg = String.Format("Got  the Column Limit! columnOrdinal = {0} ", columnOrdinal);
                 log.Info(msg);
                 return ToJson.toJson(r);

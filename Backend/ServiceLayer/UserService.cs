@@ -138,7 +138,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 userController.Login(username, password);
                 String msg = String.Format("Login successful for user - {0}", username);
                 log.Info(msg);
-                Response response = new Response((object)username);
+                Response response = new Response(null, username);
                 return ToJson.toJson(response);
             }
             catch (Exception e)
