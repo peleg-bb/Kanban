@@ -37,7 +37,7 @@ namespace BackendTests.ServiceLayer
         public void validUserLoginTest()
         {
             Console.WriteLine("Successful login test!");
-            Response response = new Response((object)"johndoe@gmail.com");
+            Response response = new Response(null, "johndoe@gmail.com");
             Console.WriteLine(ToJson.toJson(response));
 
             Assert.AreEqual(userService.Login("johndoe@gmail.com", "Hash123"), ToJson.toJson(response));

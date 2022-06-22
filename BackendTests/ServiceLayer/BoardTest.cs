@@ -434,7 +434,7 @@ namespace BackendTests.ServiceLayer
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
-            Response r = new Response(true);
+            Response r = new Response(null);
             Assert.AreEqual(_boardService.DeleteBoard(boardName,email),ToJson.toJson(r));
         }
         /// <summary>
@@ -461,7 +461,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void JoinBoardSuccessfully()
         {
-            Response r = new Response(true);
+            Response r = new Response(null);
 
             Assert.AreEqual(_boardService.JoinBoard(1, "tamar@gmail.com"),
                 ToJson.toJson(r));
@@ -574,7 +574,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void AssignTaskSuccessfully(string email, string boardName)
         {
-            Response r = new Response((object)email);
+            Response r = new Response(null, email);
             Assert.AreEqual(_boardService.AssignTask(email, boardName, 0, "itay@gmail.com", 1), ToJson.toJson(r));
         }
 
@@ -583,7 +583,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void AssignTaskUnSuccessfully()
         {
-            Response r = new Response((object)"tamar@gmail.com");
+            Response r = new Response(null, "tamar@gmail.com");
             Assert.AreEqual(_boardService.AssignTask("tamar@gmail.com", "To do list", 0, "itay@gmail.com", 1), ToJson.toJson(r));
 
         }

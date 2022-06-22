@@ -422,8 +422,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         }
                         else
                         {
-                            log.Warn("user already joined that board");
-                            throw new ArgumentException("user already joined that board");
+                            log.Warn("user rejoins a board they're already in");
                         }
                     }
                     else

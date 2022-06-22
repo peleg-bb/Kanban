@@ -52,7 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         internal void AddUserToBoard(int boardID, string email)
         {
             this.boardUsersMapper.AddUserToBoard(boardID, email);
-            String msg = String.Format("AddUserToBoard Successfully in BoardDTOM!!");
+            String msg = String.Format("AddUserToBoard Successfully in BoardDTO!!");
             log.Info(msg);
         }
 

@@ -224,16 +224,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                columnOrdinal)
+            try
             {
-                return taskService.EditDueDate(email, boardName, taskId, dueDate);
+                if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
+                    columnOrdinal)
+                {
+                    return taskService.EditDueDate(email, boardName, taskId, dueDate);
+                }
+                else
+                {
+                    Response response = new Response("Not the right column number", null);
+                    return ToJson.toJson(response);
+                }
             }
-            else
+            catch (Exception e)
             {
-                Response response = new Response("Not the right colomn number", null);
+                Response response = new Response(e.Message);
                 return ToJson.toJson(response);
             }
+            
         }
 
 
@@ -351,21 +360,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            try
-            {
-                boardService.NextState(email, boardName, columnOrdinal, taskId);
-                Response r = new Response(null);
-                return ToJson.toJson(r);
-
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message, null);
-                return ToJson.toJson(response);
-            }
-
-
-
+            
+                return boardService.NextState(email, boardName, columnOrdinal, taskId);
         }
 
 
@@ -481,17 +477,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string JoinBoard(string email, int boardID)
         {
-            try
-            {
-                boardService.JoinBoard(boardID, email);
-                Response response = new Response(null);
-                return ToJson.toJson(response);
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message);
-                return ToJson.toJson(response);
-            }
+            return boardService.JoinBoard(boardID, email);
+             
         }
 
         /// <summary>

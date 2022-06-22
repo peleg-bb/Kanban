@@ -103,9 +103,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Creates a user. A new user's email must not preexist in the system and must have a valid email and password.
         /// </summary>
-        public void CreateUser(string Email, string password)
+        public void CreateUser(string email, string password)
         {
-            // string Email = email.ToLower();
+            string Email = email.ToLower();
             if (this.users != null)
             {
                 if (UserExists(Email))
@@ -175,16 +175,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         private bool UserExists(string email)
         {
-            //string Email = email.ToLower();
-            return users.ContainsKey(email);
+            string Email = email.ToLower();
+            return users.ContainsKey(Email);
         }
 
         /// <summary>
         /// Returns a user object. Used for internal purposes.
         /// </summary>
-        public User GetUser(string Email)
+        public User GetUser(string username)
         {
-            //string Email = username.ToLower();
+            string Email = username.ToLower();
             if (users.ContainsKey(Email))
             {
                 return users[Email];
@@ -225,9 +225,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
         
-        private bool ValidatePassword(string Email, string password)
+        private bool ValidatePassword(string email, string password)
         {
-            //string Email = email.ToLower();
+            string Email = email.ToLower();
             if (users.ContainsKey(Email))
             {
                 return users[Email].ValidatePassword(password);
@@ -237,7 +237,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public void Login(string Email, string password)
         {
-            //string Email = email.ToLower();
+            string email = Email.ToLower();
             if (!UserExists(Email))
             {
                 throw new ArgumentException("User does not exist");
@@ -260,9 +260,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
         }
 
-        public void Logout(string email)
+        public void Logout(string Email)
         {
-            //string email = Email.ToLower();
+            string email = Email.ToLower();
             if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
@@ -281,9 +281,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
-        public bool IsLoggedIn(string email)
+        public bool IsLoggedIn(string Email)
         {
-            //string email = Email.ToLower();
+            string email = Email.ToLower();
             // if (!UserExists(email))
             // {
             //     throw new ArgumentException("User does not exist");

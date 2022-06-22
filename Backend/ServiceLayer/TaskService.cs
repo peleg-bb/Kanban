@@ -142,7 +142,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 var task = boardController.GetTask(email, boardName, taskId);
                 task.EditDueDate(newDueDate);
-                var response = new Response(null, task);
+                var response = new Response(null);
                 var msg = $"Task due date edited! new due date = {newDueDate}";
                 log.Info(msg);
                 return ToJson.toJson(response);
