@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.ServiceLayer;
@@ -236,6 +237,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             return taskInProgList;
         }
+        private Boolean IsValidDescription(string description)
+        {
+            return (description.Length < 300 || !IsOnlySpaces(description));
+        }
+
+        private Boolean IsValidTitle(string title)
+        {
+            return (title.Length <= 50 || !IsOnlySpaces(title));
+        }
         public Dictionary<int, Task> GetTasks()   // property
         {
             return this.tasks;
@@ -248,7 +258,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                throw new ArgumentException("task does noe exist");
+                throw new ArgumentException("task does not exist");
             }
         }
         private void SetTasks(Task newTask)   // property
@@ -294,8 +304,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
+
                 Task newTask = new Task(title, dueDate, this.BoardId, description);
-                if (this.IsInListOfJoiners(userEmail)||!String.IsNullOrEmpty(title))
+                if (this.IsInListOfJoiners(userEmail)&&!String.IsNullOrEmpty(title)&&IsValidDescription(description)&& IsValidTitle(title))
                 {
                     try
                     {
@@ -380,6 +391,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             
 
         }
-
+        private Boolean IsOnlySpaces(string str)
+        {
+            Regex reg = new Regex(@"^\s*$");
+            Match strMatch = reg.Match(str);
+            return strMatch.Success;
+        }
     }
 }

@@ -44,7 +44,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private const int Done = 2;
         public Task (string title, DateTime dueDate, int boardId, string description = "", string assignee = "Unassinged")
         {
-
             this.Id = ID;
             this.CreationTime = DateTime.Today;
             this.Title = title;
@@ -53,6 +52,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.State = 0;
             this.Assignee = assignee;
             ID += 1;
+            if (dueDate <= CreationTime)
+            {
+                throw ex;
+            }
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
@@ -70,7 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
 
 
-            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle))
+            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle))
 
             {
                 log.Warn(ex.Message);
@@ -127,7 +130,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription)
         {
-            if (newDescription.Length>300 || newDescription==null || IsOnlySpaces(newDescription))
+            if (newDescription==null || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription))
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -148,7 +151,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDueDate(DateTime newDueDate)
         {
-            if (newDueDate<=this.CreationTime || newDueDate == null)
+            if (newDueDate<=this.CreationTime)
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -190,6 +193,26 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             Regex reg = new Regex(@"^\s*$");
             Match strMatch = reg.Match(str);
             return strMatch.Success;
+        }
+        private bool IsHebrew(string str)
+        {
+            string[] heb =
+            {
+                "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש",
+                "ת", "ף", "ץ", "ך", "ן"
+            };
+            List<string> hebrew = new List<string>(heb);
+            for (int i = 0; i < heb.Length; i++)
+            {
+                if (str.Contains(heb[i]))
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+
         }
     }
 }
