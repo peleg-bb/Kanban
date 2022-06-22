@@ -412,19 +412,18 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     if (UserHasAnyBoard(userEmailJoiner))
                     {
-                        // if (!UserHasThisBoard(userEmailJoiner, boardName))
-                        // {
+                        if (!UserHasThisBoard(userEmailJoiner, boardName))
+                        {
                             BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
                             BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
                             boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
                             String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
                             log.Info(msg);
-                        // }
-                        // else
-                        // {
-                        //     log.Warn("user already joined that board");
-                        //     throw new ArgumentException("user already joined that board");
-                        // }
+                        }
+                        else
+                        {
+                            log.Warn("user rejoins a board they're already in");
+                        }
                     }
                     else
                     {

@@ -360,21 +360,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            try
-            {
-                boardService.NextState(email, boardName, columnOrdinal, taskId);
-                Response r = new Response(null);
-                return ToJson.toJson(r);
-
-            }
-            catch (Exception e)
-            {
-                Response response = new Response(e.Message, null);
-                return ToJson.toJson(response);
-            }
-
-
-
+            
+                return boardService.NextState(email, boardName, columnOrdinal, taskId);
         }
 
 

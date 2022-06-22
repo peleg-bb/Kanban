@@ -48,7 +48,9 @@ namespace BackendTests.ServiceLayer
             string email1 = "johndoe@gmail.com";
             string password = "Hash123";
             string email2 = "johndoe2@gmail.com";
-            string password2 = "Bad_Password!#!@67";
+            string password2 = "Bad_Password!#!@6";
+            string email3 = "johndoe3@gmail.com";
+            string password3 = "Bad_Password78@@;";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
@@ -79,7 +81,9 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.GetColumn(email1, boardName, 1));
             Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 2, DateTime.MaxValue));
             Console.WriteLine(grading.Register(email2, password2));
-            Console.WriteLine(grading.JoinBoard(email1, 1));
+            Console.WriteLine(grading.JoinBoard(email2, 1));
+            Console.WriteLine(grading.Register(email3, password3));
+            Console.WriteLine(grading.JoinBoard(email3, 1));
             Console.WriteLine(grading.DeleteData());
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());
