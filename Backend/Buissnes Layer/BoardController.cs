@@ -770,7 +770,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                return GetBoard(email, boardName).GEtColList(columnOrdinal);
+                return GetBoard(email, boardName).GEtColList(columnOrdinal, email); // Very important to send with the email.
                 String msg = String.Format("GetColum Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
                 log.Info(msg);
             }

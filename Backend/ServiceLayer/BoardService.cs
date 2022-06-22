@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.NextStateB(email, boardName,columnOrdinal, taskId);
-                String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}");
+                String msg = String.Format($"task changed state Successfully in BuissnesLayer! to state {columnOrdinal}");
                 log.Info(msg);
                 Response r = new Response(null);
                 return ToJson.toJson(r);
@@ -179,7 +179,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 boardController.assignAssignee(userEmailToAssign, boardName, columnOrdinal, userEmailAssigning, taskId);
                 String msg = String.Format("task assignee assigned Successfully ! The assignee :{0}", userEmailToAssign);
                 log.Info(msg);
-                Response r = new Response((object)userEmailToAssign);
+                Response r = new Response(null, userEmailToAssign);
                 return ToJson.toJson(r);
             }
             catch (Exception e)

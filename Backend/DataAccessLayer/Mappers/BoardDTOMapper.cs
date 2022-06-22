@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         name: boardName, iD: boardCount+1, backlogMax: backlogMax,
                         inProgressMax: inProgressMax, doneMax: doneMax);
                     boardDTOs.Add(board);
-                    boardUsersMapper.CreateBoard(boardCount+1, ownerEmail);
+                    boardUsersMapper.CreateBoard(boardCount+1, ownerEmail); //bug? Are we not trying to access the DB while it's open?
                     boardCount++;
                     return board;
                 }
