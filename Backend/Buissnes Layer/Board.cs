@@ -295,7 +295,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             try
             {
                 Task newTask = new Task(title, dueDate, this.BoardId, description);
-                if (this.IsInListOfJoiners(userEmail))
+                if (this.IsInListOfJoiners(userEmail)||!String.IsNullOrEmpty(title))
                 {
                     try
                     {
