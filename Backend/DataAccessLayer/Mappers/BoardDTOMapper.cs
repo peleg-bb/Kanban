@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         name: boardName, iD: boardCount+1, backlogMax: backlogMax,
                         inProgressMax: inProgressMax, doneMax: doneMax);
                     boardDTOs.Add(board);
-                    boardUsersMapper.CreateBoard(boardCount+1, ownerEmail);
+                    boardUsersMapper.CreateBoard(boardCount+1, ownerEmail); //bug? Are we not trying to access the DB while it's open?
                     boardCount++;
                     return board;
                 }
@@ -375,8 +375,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
-            string connectionString = $"Data Source={path}; Version=3;";
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path }; 
+            //string connectionString = $"Data Source={path}; Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);

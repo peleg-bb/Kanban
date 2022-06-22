@@ -196,7 +196,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-
             try
             {
                 string r = boardService.AddTask(email, boardName, title, description, dueDate);
@@ -302,24 +301,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     try
                     {
-<<<<<<<<< Temporary merge branch 1
+
                         taskService.EditDescription(email, boardName, taskId, description);
                         Response response = new Response(null);
                         return ToJson.toJson(response);
-                        ;
-=========
-                        try
-                        {
-                            taskService.EditDescription(email, boardName, taskId, description);
-                            Response response = new Response(null);
-                            return ToJson.toJson(response); ;
-                        }
-                        catch (Exception e)
-                        {
-                            Response response = new Response(e.Message, null);
-                            return ToJson.toJson(response);
-                        }
->>>>>>>>> Temporary merge branch 2
+                        
+
+                        // try
+                        // {
+                        //     taskService.EditDescription(email, boardName, taskId, description);
+                        //     Response response = new Response(null);
+                        //     return ToJson.toJson(response); ;
+                        // }
+                        // catch (Exception e)
+                        // {
+                        //     Response response = new Response(e.Message, null);
+                        //     return ToJson.toJson(response);
+                        // }
+
                     }
                     catch (Exception e)
                     {
@@ -411,9 +410,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-
-
-
         }
 
 
@@ -436,8 +432,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-
-
         }
 
 
@@ -454,12 +448,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             }
             catch (Exception e)
-
             {
                 Response response = new Response(e.Message, null);
                 return ToJson.toJson(response);
             }
-
         }
 
         /// <summary>
