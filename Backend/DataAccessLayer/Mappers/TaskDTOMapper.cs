@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
+using System.Reflection;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
@@ -21,11 +24,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         const string dueDateColumnName = "Due_Date";
         const string creationDateColumnName = "Creation_Time";
         const string tableName = "Tasks";
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        
+
         internal TaskDTOMapper()
         {
             this.taskDTOs = new List<TaskDTO>();
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
         /// <summary>
         /// Creates a task in the database and instantiates a task DTO.
@@ -87,6 +94,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     TaskDTO newTask = new TaskDTO(taskID, boardID, assignee, status, title, description, dueDate, creationTime);
                     taskDTOs.Add(newTask);
+                    String msg = String.Format("CreateTask Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     return newTask;
 
 
@@ -103,12 +112,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Create task failed because " + ex.Message);
                     // log error
                 }
                 finally
                 {
-
                     command.Dispose();
                     connection.Close();
                 }
@@ -150,6 +159,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(taskIDParam);
                     command.Parameters.Add(titleParam);
                     res = command.ExecuteNonQuery();
+                    String msg = String.Format("EditTitle Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     //
                     // command.CommandText = "Select * FROM Users";
                     //
@@ -162,7 +173,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 catch (SQLiteException ex)
                 {
                     //Console.WriteLine(command.CommandText);
-                    //Console.WriteLine(ex.Message);
+
+                    Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
+
                     throw new DALException($"Change task title failed because " + ex.Message);
                     // log error
                 }
@@ -209,19 +223,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         command.Parameters.Add(taskIDParam);
                         command.Parameters.Add(descriptionParam);
                         res = command.ExecuteNonQuery();
-                        //
-                        // command.CommandText = "Select * FROM Users";
-                        //
-                        // SQLiteDataReader reader = command.ExecuteReader();
-                        // while (reader.Read())
-                        // {
-                        //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
-                        // }
+                        String msg = String.Format("EditTitle Successfully in TaskDTOM!!");
+                        log.Info(msg);
+
                     }
                     catch (SQLiteException ex)
                     {
                         //Console.WriteLine(command.CommandText);
                         Console.WriteLine(ex.Message);
+                        log.Warn(ex.Message);
                         throw new DALException($"Change task title failed because " + ex.Message);
                         // log error
                     }
@@ -269,6 +279,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(taskIDParam);
                     command.Parameters.Add(dueDateParam);
                     res = command.ExecuteNonQuery();
+                    String msg = String.Format("EditDueDate Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     //
                     // command.CommandText = "Select * FROM Users";
                     //
@@ -282,6 +294,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Change task title failed because " + ex.Message);
                     // log error
                 }
@@ -320,6 +333,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(taskIDParam);
                     command.Parameters.Add(assigneeParam);
                     res = command.ExecuteNonQuery();
+                    String msg = String.Format("EditAssignee Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     //
                     // command.CommandText = "Select * FROM Users";
                     //
@@ -333,6 +348,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Change task title failed because " + ex.Message);
                     // log error
                 }

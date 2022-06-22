@@ -5,8 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
+using System.Reflection;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
@@ -16,7 +19,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         const string emailColumnName = "email";
         const string passwordColumnName = "password";
         const string tableName = "Users";
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        public UserDTOMapper()
+        {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
+        }
         public UserDTO CreateUser(string email, string password)
         {
 
@@ -45,6 +55,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     UserDTO user = new UserDTO(email, password);
                     userDTOs.Add(user);
+                    String msg = String.Format("EditAssignee Successfully in UserDTOMapper!!");
+                    log.Info(msg);
                     return user;
 
 
@@ -61,6 +73,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Create user failed because " + ex.Message);
                     // log error
                 }
@@ -99,7 +112,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         
                     }
 
-                    
+                    String msg = String.Format("LoadUsers Successfully in UserDTOMapper!!");
+                    log.Info(msg);
                     return userDTOs;
 
                 }

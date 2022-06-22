@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
                         BoardUsers.Add(email);
                         
                     }
-                    String msg = String.Format("loaded Data Successfully ib BoardDTO!!");
+                    String msg = String.Format("loaded Data Successfully in BoardDTO!!");
                     log.Info(msg);
                     return this;
 
@@ -145,6 +145,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             {
                 this.BoardUsers.Clear();
                 this.taskDTOs.Clear();
+                String msg = String.Format("deleted Data Successfully in BoardDTO!!");
+                log.Info(msg);
             }
 
             catch (NullReferenceException e) {}
@@ -191,6 +193,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public TaskDTO AddTask(int taskID, int boardID, string assignee, string status, string title, string description, string dueDate, string creationTime)
         {
             TaskDTO newTask = taskDTOMapper.CreateTask(taskID, boardID, assignee, status, title, description, dueDate, creationTime);
+            String msg = String.Format("added task Successfully ib BoardDTO!!");
+            log.Info(msg);
             return newTask;
         
         }
