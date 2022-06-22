@@ -73,9 +73,11 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
             Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email1));
             Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
+            Console.WriteLine("should failed");
             Console.WriteLine(grading.AddTask(email1, boardName, "", description, dueDate));
             Console.WriteLine(grading.AssignTask(email1, boardName, 0, 2, email1));
             Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
+            Console.WriteLine("should failed");
             Console.WriteLine(grading.AddTask(email1, boardName, ",al;", description, dueDate));
             Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
             Console.WriteLine(grading.GetColumn(email1, boardName, 1));

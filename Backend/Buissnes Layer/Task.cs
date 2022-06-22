@@ -44,7 +44,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private const int Done = 2;
         public Task (string title, DateTime dueDate, int boardId, string description = "", string assignee = "Unassinged")
         {
-
             this.Id = ID;
             this.CreationTime = DateTime.Today;
             this.Title = title;
@@ -53,6 +52,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.State = 0;
             this.Assignee = assignee;
             ID += 1;
+            if (dueDate <= CreationTime)
+            {
+                throw ex;
+            }
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");

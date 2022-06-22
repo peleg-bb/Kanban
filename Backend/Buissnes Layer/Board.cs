@@ -239,12 +239,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         }
         private Boolean IsValidDescription(string description)
         {
-            return (description.Length > 300 || IsOnlySpaces(description));
+            return (description.Length < 300 || !IsOnlySpaces(description));
         }
 
         private Boolean IsValidTitle(string title)
         {
-            return (title == null || title.Length == 0 || title.Length > 50 || IsOnlySpaces(title));
+            return (title.Length <= 50 || !IsOnlySpaces(title));
         }
         public Dictionary<int, Task> GetTasks()   // property
         {
@@ -258,7 +258,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             else
             {
-                throw new ArgumentException("task does noe exist");
+                throw new ArgumentException("task does not exist");
             }
         }
         private void SetTasks(Task newTask)   // property
@@ -306,7 +306,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
 
                 Task newTask = new Task(title, dueDate, this.BoardId, description);
-                if (this.IsInListOfJoiners(userEmail)&&!String.IsNullOrEmpty(title)&& IsValidDescription(description)&& IsValidTitle(title)&&dueDate<DateTime.Now )
+                if (this.IsInListOfJoiners(userEmail)&&!String.IsNullOrEmpty(title)&&IsValidDescription(description)&& IsValidTitle(title))
                 {
                     try
                     {
