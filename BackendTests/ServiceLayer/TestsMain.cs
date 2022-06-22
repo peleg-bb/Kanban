@@ -75,6 +75,7 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.AddTask(email1, boardName, ",al;", description, dueDate));
             Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
             Console.WriteLine(grading.GetColumn(email1, boardName, 1));
+            Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 2, DateTime.UtcNow));
             Console.WriteLine(grading.DeleteData());
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());
