@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
 
 
-            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle))
+            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle))
 
             {
                 log.Warn(ex.Message);
@@ -130,7 +130,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription)
         {
-            if (newDescription==null || newDescription.Length > 300 || IsOnlySpaces(newDescription))
+            if (newDescription==null || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription))
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -193,6 +193,26 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             Regex reg = new Regex(@"^\s*$");
             Match strMatch = reg.Match(str);
             return strMatch.Success;
+        }
+        private bool IsHebrew(string str)
+        {
+            string[] heb =
+            {
+                "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש",
+                "ת", "ף", "ץ", "ך", "ן"
+            };
+            List<string> hebrew = new List<string>(heb);
+            for (int i = 0; i < heb.Length; i++)
+            {
+                if (str.Contains(heb[i]))
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+
         }
     }
 }
