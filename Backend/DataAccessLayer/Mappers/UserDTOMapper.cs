@@ -121,6 +121,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Create user failed because " + ex.Message);
                     // log error
                 }
@@ -155,12 +156,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     res = command.ExecuteNonQuery();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed");
                     userDTOs.Clear();
+                    String msg = String.Format("DeleteAllData Successfully in UserDTOMapper!!");
+                    log.Info(msg);
 
                 }
                 catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Delete data failed because " + ex.Message);
                     // log error
                 }
