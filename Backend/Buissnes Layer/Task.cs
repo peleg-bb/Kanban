@@ -127,7 +127,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription)
         {
-            if (newDescription.Length>300 || newDescription==null || IsOnlySpaces(newDescription))
+            if (newDescription==null || newDescription.Length > 300 || IsOnlySpaces(newDescription))
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -148,7 +148,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDueDate(DateTime newDueDate)
         {
-            if (newDueDate<=this.CreationTime || newDueDate == null)
+            if (newDueDate<=this.CreationTime)
             {
                 log.Warn(ex.Message);
                 throw ex;
