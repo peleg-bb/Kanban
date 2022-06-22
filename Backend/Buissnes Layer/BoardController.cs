@@ -770,7 +770,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                return GetBoard(email, boardName).GEtColList(columnOrdinal);
+                return GetBoard(email, boardName).GEtColList(columnOrdinal, email); // Very important to send with the email.
                 String msg = String.Format("GetColum Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
                 log.Info(msg);
             }
@@ -858,7 +858,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                String msg = String.Format("Got Task Successfully in BuissnesLayer!");
+                String msg = String.Format("Got Task Successfully in boardcontroller BuissnesLayer!");
                     log.Info(msg);
                     return GetBoard(email, boardName).GetTask(taskId);
                 
@@ -876,7 +876,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the new board</param>
         /// <param name="taskId">The id of new task</param>
         /// <returns>Task, unless an error occurs .</returns>
-        public Task GetTask(string email, string boardName, int taskId, int columnOrdinal = 18383)
+        public Task GetTask(string email, string boardName, int taskId, int columnOrdinal)
         {
             try
             {

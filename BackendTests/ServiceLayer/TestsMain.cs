@@ -42,7 +42,7 @@ namespace BackendTests.ServiceLayer
             UserService userService = new UserService(userController);
             BoardService boardService = new BoardService(userController);
             TaskService taskService = new TaskService(boardService.boardController);
-            UserTests userTests = new UserTests(userController, userService);
+            UserTests userTests = new UserTests(userController, userService); 
             GradingService grading = new GradingService();
             TaskTests taskTests = new TaskTests(taskService, userService, boardService, grading);
             string email1 = "johndoe@gmail.com";
@@ -54,20 +54,27 @@ namespace BackendTests.ServiceLayer
             DateTime newDueDate = new DateTime(2026, 8, 14);
             userService.DeleteAllData();
             boardService.DeleteAllData();
-            // Console.WriteLine(grading.LoadData());
-            // Console.WriteLine(grading.DeleteData());
-            // Console.WriteLine(grading.Register(email1, password));
-            // Console.WriteLine(grading.Logout(email1));
-            // Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
-            // Console.WriteLine(grading.Login(email1, password));
-            // Console.WriteLine(grading.AddBoard(email1, boardName));
-            // Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
-            // Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
-            // Console.WriteLine(grading.DeleteData());
-            // Console.WriteLine(grading.LoadData());
-            // Console.WriteLine(grading.DeleteData());
+            Console.WriteLine(grading.LoadData());
+            Console.WriteLine(grading.DeleteData());
+            Console.WriteLine(grading.Register(email1, password));
+            Console.WriteLine(grading.Logout(email1));
+            //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
+            Console.WriteLine(grading.Login(email1, password));
+            Console.WriteLine(grading.AddBoard(email1, boardName));
+            Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
+            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email1));
+            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
+            Console.WriteLine(grading.AddTask(email1, boardName, "", description, dueDate));
+            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 2, email1));
+            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
+            Console.WriteLine(grading.AddTask(email1, boardName, ",al;", description, dueDate));
+            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
+            Console.WriteLine(grading.GetColumn(email1, boardName, 1));
+            Console.WriteLine(grading.DeleteData());
+            Console.WriteLine(grading.LoadData());
+            Console.WriteLine(grading.DeleteData());
             userTests.DeleteData();
-            //grading.Register("ho@klks.com", "Abc123");
+            grading.Register("ho@klks.com", "Abc123");
             userTests.createUserTest();
             userTests.invalidUserLoginTest();
             userTests.invalidUserCreation();
@@ -77,6 +84,7 @@ namespace BackendTests.ServiceLayer
             userTests.invalidLogoutTest();
             userTests.validUserLoginTest();
             userTests.invalidUserCreation_3();
+            
             userService.CreateUser("j@Gmail.com", "Hash123");
             userService.CreateUser("j.ohndoe@Gmail.com", "Hash123");
             userService.CreateUser("j@Gmail.", "Hash123");
@@ -90,20 +98,27 @@ namespace BackendTests.ServiceLayer
 
             
             BoardTest boraTest = new BoardTest(boardService);
-            
-            // userTests.createUserTest();
-            // userTests.validUserLoginTest();
-            userService.CreateUser("johndoe@gmail.com", "Hash123");
+
+             
+             userTests.validUserLoginTest();
+            userService.CreateUser("johndoe3@gmail.com", "Hash123");
+            grading.Register("johndoe2@gmail.com", "Hash123");
             userService.CreateUser("sa@aa.co", "Kkk666");
-            //userTests.validUserLoginTest();
-            //userTests.invalidUserLoginTest();
+            userTests.validUserLoginTest();
+            userTests.invalidUserLoginTest();
+            
             userService.Login("johndoe@gmail.com", "Hash123");
             boardService.CreateBoard("To do list", "johndoe@gmail.com");
-            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
-            taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
-            taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
-            taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
+            grading.Login("johndoe2@gmail.com", "Hash123");
+            Console.WriteLine(grading.AddBoard("johndoe2@gmail.com","To do list"));
 
+            //boardService.AddTask("johndoe@gmail.com", "To do list2", "test", "ssa", dueDate);
+            grading.AddTask("johndoe2@gmail.com", "To do list", "test", "ssa", dueDate);
+            
+            Console.WriteLine(grading.UpdateTaskTitle("johndoe2@gmail.com", "To do list", 0,1, null));
+
+            //taskService.EditDescription("johndoe2@gmail.com", "To do list", 1, "Hello");
+            //taskService.EditDueDate("johndoe2@gmail.com", "To do list", 1, newDueDate);
             /* Lessons I've learned today -
              1) You can't call methods in the gradingService after 
             instantiating users\boards in the userService\boardService.
@@ -117,7 +132,7 @@ namespace BackendTests.ServiceLayer
             tests. Without them we miss some crucial sanity checks which consume
             a lot of time in debugging.
               */
-            boardService.LimitColumn("johndoe@gmail.com", "To do list", 1, 17);
+            //boardService.LimitColumn("johndoe2@gmail.com", "To do list", 1, 17);
 
             
 

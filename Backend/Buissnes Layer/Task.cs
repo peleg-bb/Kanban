@@ -44,6 +44,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private const int Done = 2;
         public Task (string title, DateTime dueDate, int boardId, string description = "", string assignee = "Unassinged")
         {
+
             this.Id = ID;
             this.CreationTime = DateTime.Today;
             this.Title = title;
@@ -58,7 +59,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             BoardId = boardId;
             this.taskDTOMapper = new TaskDTOMapper();
             // Do NOT Load Data!
-
         }
         /// <summary>
         /// This method edit the title of a task
@@ -69,7 +69,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         internal void EditTitle(string newTitle)
         {
 
-            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null || IsOnlySpaces(newTitle))
+
+            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle))
+
             {
                 log.Warn(ex.Message);
                 throw ex;
