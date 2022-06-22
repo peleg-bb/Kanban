@@ -16,8 +16,7 @@ namespace BackendUnitTests
         [Test]
         public void Test1()
         {
-            Assert.Pass();
-            Assert.AreEqual(0, 0, "Should be 0");
+            
         }
     }
 }
