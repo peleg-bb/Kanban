@@ -103,9 +103,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
-                //Response r = new Response(e.Message, false);
-                //return r.BadJson();
+                Response r = new Response(e.Message);
+                return ToJson.toJson(r);
             }
             
         }

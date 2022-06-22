@@ -375,8 +375,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
-            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
-            string connectionString = $"Data Source={path}; Version=3;";
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path }; 
+            //string connectionString = $"Data Source={path}; Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
