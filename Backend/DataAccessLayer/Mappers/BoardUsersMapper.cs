@@ -5,9 +5,12 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions.Impl;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
@@ -17,10 +20,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         const string boardColumnName = "Board_Id";
         const string userColumnName = "User_email";
         const string tableName = "Board_Users";
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         internal BoardUsersMapper()
         {
             this._boardUsersDTOs = new List<BoardUsersDTO>();
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
 
         /// <summary>
@@ -62,6 +69,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
                     _boardUsersDTOs.Add(boardUser);
+                    String msg = String.Format("CreateBoard Successfully in BoardUserDTOM!!");
+                    log.Info(msg);
 
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
@@ -73,6 +82,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     // log error
                 }
                 finally
@@ -117,7 +127,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
                     _boardUsersDTOs.Add(boardUser);
-
+                    String msg = String.Format("CreateBoard Successfully in BoardUserDTOM!!");
+                    log.Info(msg);
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
                     //return boardUser; // In case we want to return to return a boardUser object.
@@ -128,6 +139,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     // log error
                 }
                 finally
@@ -164,11 +176,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                     _boardUsersDTOs.RemoveAll(x => x.BoardID == boardID);
+                    String msg = String.Format("DeleteBoard Successfully in BoardUserDTOM!!");
+                    log.Info(msg);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     // log error
                 }
                 finally
@@ -209,7 +224,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         command.Prepare();
                         res = command.ExecuteNonQuery();
                         _boardUsersDTOs.RemoveAll(x => x.BoardID == boardID && x.userName == userEmail);
-
+                        String msg = String.Format("RemoveUser Successfully in BoardUserDTOM!!");
+                        log.Info(msg);
 
                         //BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
                         //_boardUsersDTOs.Add(boardUser);
@@ -222,6 +238,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     {
                         Console.WriteLine(command.CommandText);
                         Console.WriteLine(ex.Message);
+                        log.Warn(ex.Message);
                         // log error
                     }
                     finally
@@ -236,7 +253,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         public void DeleteAllData()
         {
             this._boardUsersDTOs.Clear();
-            
+            String msg = String.Format("DeleteAllData Successfully in BoardUserDTOM!!");
+            log.Info(msg);
         }
     }
 }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
@@ -30,6 +33,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         private const int inProgressMax = -1; //Default values
         private const int doneMax = -1; //Default values
         private Dictionary<int, string> columnNamesByOrdinal;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         internal BoardDTOMapper()
         {
@@ -40,11 +44,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             columnNamesByOrdinal[0] = backlogMaxColumn;
             columnNamesByOrdinal[1] = inProgressMaxColumn;
             columnNamesByOrdinal[2] = doneMaxColumn;
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
 
         internal void AddUserToBoard(int boardID, string email)
         {
             this.boardUsersMapper.AddUserToBoard(boardID, email);
+            String msg = String.Format("AddUserToBoard Successfully in BoardDTOM!!");
+            log.Info(msg);
         }
 
         /// <summary>
@@ -55,6 +64,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         internal void RemoveUserFromBoard(int boardID, string email)
         {
             this.boardUsersMapper.RemoveUser(boardID, email);
+            String msg = String.Format("RemoveUserFromBoard Successfully in BoardDTOM!!");
+            log.Info(msg);
         }
 
         /// <summary>
@@ -108,12 +119,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     boardDTOs.Add(board);
                     boardUsersMapper.CreateBoard(boardCount+1, ownerEmail);
                     boardCount++;
+                    String msg = String.Format("CreateBoard Successfully in BoardDTOM!!");
+                    log.Info(msg);
                     return board;
                 }
                 catch (SQLiteException ex)
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Create user failed because " + ex.Message);
                     // log error
                 }
@@ -171,11 +185,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         res = command.ExecuteNonQuery();
                         boardDTOs.RemoveAll(x => x.Owner == ownerEmail && x.Name == boardName && x.ID==boardID);
                         boardUsersMapper.DeleteBoard(boardID);
+                        String msg = String.Format("DeleteBoard Successfully in BoardDTOM!!");
+                        log.Info(msg);
 
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(command.CommandText);
+                        log.Warn(ex.Message);
                         Console.WriteLine(ex.Message);
                         // log error
                     }
@@ -220,12 +237,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(ownerParam);
                     command.Parameters.Add(boardIDParam);
                     res = command.ExecuteNonQuery();
-                    
+                    String msg = String.Format("ChangeOwnership Successfully in BoardDTOM!!");
+                    log.Info(msg);
+
+
                 }
                 catch (SQLiteException ex)
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Change owner failed because " + ex.Message);
                     // log error
                 }
@@ -274,12 +295,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(limitParam);
                     command.Parameters.Add(boardIDParam);
                     res = command.ExecuteNonQuery();
+                    String msg = String.Format("ChangeColumnLimit Successfully in BoardDTOM!!");
+                    log.Info(msg);
 
                 }
                 catch (SQLiteException ex)
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Change column limit failed because " + ex.Message);
                     // log error
                 }
@@ -337,6 +361,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         int nextBoardID = (int)Convert.ToInt64(reader["max(ID)"]);
                         this.boardCount = nextBoardID;
                     }
+                    String msg = String.Format("LoadBoards Successfully in BoardDTOM!!");
+                    log.Info(msg);
                     return boardDTOs;
 
                 }
@@ -351,6 +377,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     this.boardCount = 0;
                     command.Dispose();
                     connection.Close();
+                    log.Warn(ex.Message);
                     throw new DALException($"Load data failed because " + ex.Message);
                     // log error
                     // Maybe throw an exception? Probs not, might not reach finally
@@ -398,11 +425,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     }
                     boardDTOs.Clear();
                     Console.WriteLine($"SQL execution finished without errors. Result: {res} rows changed(deleted)");
+                     String msg = String.Format("DeleteAllData Successfully in BoardDTOM!!");
+                    log.Info(msg);
                 }
                 catch (SQLiteException ex)
                 {
                     Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Delete data failed because " + ex.Message);
                     // log error
                 }
