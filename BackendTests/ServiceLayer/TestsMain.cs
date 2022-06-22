@@ -99,6 +99,7 @@ namespace BackendTests.ServiceLayer
             //userService.CreateUser("sa@aa.co", "Kkk666");
             //userTests.validUserLoginTest();
             //userTests.invalidUserLoginTest();
+<<<<<<< HEAD
             //userService.Login("johndoe@gmail.com", "Hash123");
             //boardService.CreateBoard("To do list", "johndoe@gmail.com");
             grading.Login("johndoe@gmail.com", "Hash123");
@@ -108,6 +109,7 @@ namespace BackendTests.ServiceLayer
             grading.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
             Console.WriteLine("invalid input to edit title:");
             Console.WriteLine(grading.UpdateTaskTitle("johndoe@gmail.com", "To do list", 0,1, null));
+>>>>>>>>> Temporary merge branch 2
             taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
             taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
             /* Lessons I've learned today -
