@@ -59,42 +59,8 @@ namespace BackendTests.ServiceLayer
             userService.DeleteAllData();
             boardService.DeleteAllData();
             
-            Console.WriteLine(grading.DeleteData());
-            Console.WriteLine(grading.Register(email1, password));
-            Console.WriteLine(grading.Logout(email1));
-            //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
-            Console.WriteLine(grading.LoadData());
-            Console.WriteLine(grading.Login(email1, password));
-            Console.WriteLine(grading.Register(email1, password));
-            Console.WriteLine(grading.Logout(email1));
-            //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
-            Console.WriteLine(grading.Login(email1, password));
-            Console.WriteLine(grading.AddBoard(email1, boardName));
-            Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
-            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 0, email1));
-            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 0));
-            // Should fail
-            Console.WriteLine(grading.AddTask(email1, boardName, "", description, dueDate));
-            // New user
-            Console.WriteLine(grading.Register(email2, password2));
-            Console.WriteLine(grading.Login(email2, password2));
-            Console.WriteLine(grading.JoinBoard(email2, 0));
-            Console.WriteLine(grading.AddTask(email2, boardName, ",al;", description, dueDate));
-            Console.WriteLine("Should fail");
-            Console.WriteLine(grading.UpdateTaskTitle(email1, boardName, 0, 1, ""));
-            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email2));
-            Console.WriteLine(grading.AdvanceTask(email2, boardName, 0, 1));
-            Console.WriteLine(grading.GetColumn(email2, boardName, 1));
-            Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 1, DateTime.MaxValue));
-            // New user
-            Console.WriteLine(grading.Register(email3, password3));
-            Console.WriteLine(grading.JoinBoard(email3, 0));
-            Console.WriteLine();
-            Console.WriteLine(grading.DeleteData());
-            // Console.WriteLine(grading.LoadData());
-            // Console.WriteLine(grading.DeleteData());
+           
             userTests.DeleteData();
-            grading.Register("ho@klks.com", "Abc123");
             userTests.createUserTest();
             userTests.invalidUserLoginTest();
             userTests.invalidUserCreation();
@@ -109,7 +75,7 @@ namespace BackendTests.ServiceLayer
             userService.CreateUser("j.ohndoe@Gmail.com", "Hash123");
             userService.CreateUser("j@Gmail.", "Hash123");
             userService.CreateUser("johndoe@", "Hash123");
-            userService.CreateUser("johndoe@gmailcom", "Hash123");
+            userService.CreateUser("johndoegmailcom", "Hash123");
             userService.CreateUser("johndoe@gmail.com", "ash123");
             userService.CreateUser("johndoe@gmail.com", "hasher");
 
@@ -120,9 +86,8 @@ namespace BackendTests.ServiceLayer
             BoardTest boraTest = new BoardTest(boardService);
 
              
-             userTests.validUserLoginTest();
+            userTests.validUserLoginTest();
             userService.CreateUser("johndoe3@gmail.com", "Hash123");
-            grading.Register("johndoe2@gmail.com", "Hash123");
             userService.CreateUser("sa@aa.co", "Kkk666");
             userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
@@ -166,7 +131,7 @@ namespace BackendTests.ServiceLayer
             // boraTest.ValidLimitColumn2();
             boardService.CreateBoard("To do list", "tamar@gmail.com");
             // boraTest.JoinBoardSuccessfully();// checks if  the user can join to board has the same name as a board he got.
-            boraTest.JoinBoardUnsuccessfully_2();
+            //boraTest.JoinBoardUnsuccessfully_2();
             // boraTest.JoinBoardUnsuccessfully();
             // boraTest.ChangeOwnerSuccessfully();
             // boraTest.LeaveBoardSuccessfully();
@@ -233,10 +198,42 @@ namespace BackendTests.ServiceLayer
             // boraTest.InvalidLimitColumn();
             // boraTest.ValidDeleteBoardTest();
             // boraTest.InvalidDeleteBoardTest();
-            
-            grading.AddTask(email1, boardName, title, description, dueDate);
+            //
+            // Console.WriteLine(grading.DeleteData());
+            // Console.WriteLine(grading.Register(email1, password));
+            // Console.WriteLine(grading.Logout(email1));
+            // //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
+            // Console.WriteLine(grading.LoadData());
+            // Console.WriteLine(grading.Login(email1, password));
+            // Console.WriteLine(grading.Register(email1, password));
+            // Console.WriteLine(grading.Logout(email1));
+            // //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
+            // Console.WriteLine(grading.Login(email1, password));
+            // Console.WriteLine(grading.AddBoard(email1, boardName));
+            // Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
+            // Console.WriteLine(grading.AssignTask(email1, boardName, 0, 0, email1));
+            // Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 0));
+            // // Should fail
+            // Console.WriteLine(grading.AddTask(email1, boardName, "", description, dueDate));
+            // // New user
+            // Console.WriteLine(grading.Register(email2, password2));
+            // Console.WriteLine(grading.Login(email2, password2));
+            // Console.WriteLine(grading.JoinBoard(email2, 0));
+            // Console.WriteLine(grading.AddTask(email2, boardName, ",al;", description, dueDate));
+            // Console.WriteLine("Should fail");
+            // Console.WriteLine(grading.UpdateTaskTitle(email1, boardName, 0, 1, ""));
+            // Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email2));
+            // Console.WriteLine(grading.AdvanceTask(email2, boardName, 0, 1));
+            // Console.WriteLine(grading.GetColumn(email2, boardName, 1));
+            // Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 1, DateTime.MaxValue));
+            // // New user
+            // Console.WriteLine(grading.Register(email3, password3));
+            // Console.WriteLine(grading.JoinBoard(email3, 0));
+            // Console.WriteLine();
+            // Console.WriteLine(grading.DeleteData());
+            // grading.AddTask(email1, boardName, title, description, dueDate);
             TaskTests tests = new TaskTests(taskService, userService, boardService, grading);
-
+            
 
             
 
