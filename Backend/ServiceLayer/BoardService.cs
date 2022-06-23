@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 boardController.joinBoard(boardId, userEmail);
                 Response r = new Response(null);
-                String msg = String.Format("joined Board! userEmailOwner = {0} ", userEmail);
+                String msg = String.Format("joined Board! userEmailJJoiner = {0} ", userEmail);
                 log.Info(msg);
                 return ToJson.toJson(r);
             }
