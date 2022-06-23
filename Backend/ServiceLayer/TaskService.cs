@@ -77,7 +77,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     //Console.WriteLine(ex.Message);
                     log.Warn(ex.Message);
                     Response response = new Response(ex.Message, task);
-                    return response.BadJson();
+                    return ToJson.toJson(response);
                 }
             }
             catch (Exception ex)
@@ -85,7 +85,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
                 Response response = new Response(ex.Message);
-                return response.BadJson();
+                return ToJson.toJson(response);
             }
         }
 
@@ -115,8 +115,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     Console.WriteLine(ex.Message);
                     log.Warn(ex.Message);
-                    Response response = new Response(ex.Message, task);
-                    return response.BadJson();
+                    Response response = new Response(ex.Message);
+                    return ToJson.toJson(response);
                 }
             }
             catch (Exception ex)
@@ -124,7 +124,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
                 Response response = new Response(ex.Message);
-                return response.BadJson();
+                return ToJson.toJson(response);
             }
         }
 
