@@ -59,7 +59,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private BoardService boardService;
         public UserService userService;
         private TaskService taskService;
-
+        private const int BacklogState = 0;
+        private const int InProgressState = 1;
+        private const int Done = 2;
         public GradingService()
         {
             this.userController = new UserController();

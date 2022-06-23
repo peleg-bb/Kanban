@@ -69,11 +69,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newTitle">The new Title of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        internal void EditTitle(string newTitle)
+        internal void EditTitle(string newTitle, string email)
         {
 
 
-            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle))
+            if (String.IsNullOrEmpty(newTitle) || this.State == Done || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle) || email!=this.Assignee)
 
             {
                 log.Warn(ex.Message);
@@ -128,9 +128,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newDescription">The description of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        internal void EditDescription(string newDescription)
+        internal void EditDescription(string newDescription, string email)
         {
-            if (newDescription==null || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription))
+            if (newDescription==null || this.State==Done || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription) || email!=this.Assignee)
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -149,9 +149,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newDueDate">The new due date of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        internal void EditDueDate(DateTime newDueDate)
+        internal void EditDueDate(DateTime newDueDate, string email)
         {
-            if (newDueDate<=this.CreationTime)
+            if (newDueDate<=this.CreationTime || email!=this.Assignee || this.State == Done)
             {
                 log.Warn(ex.Message);
                 throw ex;
