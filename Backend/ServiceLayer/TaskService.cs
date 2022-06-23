@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     //Console.WriteLine(ex.Message);
                     log.Warn(ex.Message);
-                    Response response = new Response(ex.Message, task);
+                    Response response = new Response(ex.Message);
                     return ToJson.toJson(response);
                 }
             }
