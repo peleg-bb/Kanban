@@ -157,13 +157,12 @@ namespace BackendTests.ServiceLayer
             userService.CreateUser("tamar@gmail.com", "Hash123");
             userService.Login("tamar@gmail.com", "Hash123");
             // boraTest.InvalidDeleteBoard();
-            boraTest.JoinBoardSuccessfully();
-            boraTest.AddValidTaskTest();
-            boraTest.ValidLimitColumn2();
-            // boardService.CreateBoard("To do list", "tamar@gmail.com");
+            // boraTest.JoinBoardSuccessfully();
+            // boraTest.AddValidTaskTest();
+            // boraTest.ValidLimitColumn2();
+            boardService.CreateBoard("To do list", "tamar@gmail.com");
             // boraTest.JoinBoardSuccessfully();// checks if  the user can join to board has the same name as a board he got.
-
-            // boraTest.JoinBoardUnsuccessfully_2();
+            boraTest.JoinBoardUnsuccessfully_2();
             // boraTest.JoinBoardUnsuccessfully();
             // boraTest.ChangeOwnerSuccessfully();
             // boraTest.LeaveBoardSuccessfully();

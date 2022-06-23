@@ -105,9 +105,23 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public Board GetBoardById( int boardID)
         {
-            return this.boardById[boardID];
+            if (boardById.ContainsKey(boardID))
+            {
+                String msg = String.Format("GetBoardById Successfully in BuissnesLayer! the Board {0}", boardID);
+                log.Info(msg);
+                return this.boardById[boardID];
+            }
+            else
+            {
+                log.Warn("THIS BOARD DOES NOT EXSIT");
+                throw new Exception("THIS BOARD DOES NOT EXSIT");
+            }
         }
-
+        /// <summary>
+        /// This method Gets User Board ID List to a specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <returns>List of Board ID List, unless an error occurs </returns>
         public List<int> GetUserBList(string userEmail)
         {
             if (userController.IsLoggedIn(userEmail))
@@ -230,18 +244,27 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 try
                 {
-                    if (UserHasThisBoard(email,boardName))
+                    if (UserHasAnyBoard(email))
                     {
-                        Board b = GetBoard(email, boardName);
-                        b.AddTask(title, description, dueDate, email);
-                        String msg = String.Format("task added Successfully! to board :{0}", boardName);
-                        log.Info(msg);
+                        if (UserHasThisBoard(email, boardName))
+                        {
+                            Board b = GetBoard(email, boardName);
+                            b.AddTask(title, description, dueDate, email);
+                            String msg = String.Format("task added Successfully! to board :{0}", boardName);
+                            log.Info(msg);
+                        }
+                        else
+                        {
+                            log.Warn("USER DON'T HAVE THIS BOARD!");
+                            throw new Exception("USER DON'T HAVE THIS BOARD!");
+                        }
                     }
                     else
                     {
-                        log.Warn("USER DON'T HAVE THIS BOARD!");
-                        throw new Exception("USER DON'T HAVE THIS BOARD!");
+                        log.Warn("USER DON'T HAVE ANY BOARD!");
+                        throw new Exception("USER DON'T HAVE ANY BOARD!");
                     }
+                   
                     
                     // try
                     // {
@@ -436,7 +459,6 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
                         log.Info(msg);
                     }
-                   
                 }
                 else
                 {
