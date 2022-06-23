@@ -52,8 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         internal void AddUserToBoard(int boardID, string email)
         {
             this.boardUsersMapper.AddUserToBoard(boardID, email);
-            String msg = String.Format("AddUserToBoard Successfully in BoardDTO!!");
-            log.Info(msg);
+            
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     SQLiteParameter ownerParam = new SQLiteParameter(@"email_val", ownerEmail);
                     SQLiteParameter nameParam = new SQLiteParameter(@"name_val", boardName);
-                    SQLiteParameter idParam = new SQLiteParameter(@"id_val", boardCount + 1);
+                    SQLiteParameter idParam = new SQLiteParameter(@"id_val", boardCount);
                     SQLiteParameter backlogParam = new SQLiteParameter(@"backlog_val", backlogMax);
                     SQLiteParameter inProgressParam = new SQLiteParameter(@"inProgress_val", inProgressMax);
                     SQLiteParameter doneParam = new SQLiteParameter(@"done_val", doneMax);
@@ -114,10 +113,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
 
                     BoardDTO board = new BoardDTO(owner: ownerEmail,
-                        name: boardName, iD: boardCount+1, backlogMax: backlogMax,
+                        name: boardName, iD: boardCount, backlogMax: backlogMax,
                         inProgressMax: inProgressMax, doneMax: doneMax);
                     boardDTOs.Add(board);
-                    boardUsersMapper.CreateBoard(boardCount+1, ownerEmail); //bug? Are we not trying to access the DB while it's open?
+                    boardUsersMapper.CreateBoard(boardCount, ownerEmail); //bug? Are we not trying to access the DB while it's open?
                     boardCount++;
                     String msg = String.Format("CreateBoard Successfully in BoardDTOM!!");
                     log.Info(msg);

@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private int State;
         [JsonIgnore]
-        private static int ID = 1;
+        private static int ID = 0;
         public int BoardId;
         private TaskDTOMapper taskDTOMapper;
 

@@ -235,9 +235,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return false;
         }
 
-        public void Login(string Email, string password)
+        public void Login(string email, string password)
         {
-            string email = Email.ToLower();
+            string Email = email.ToLower();
             if (!UserExists(Email))
             {
                 throw new ArgumentException("User does not exist");
