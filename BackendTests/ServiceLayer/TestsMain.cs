@@ -83,9 +83,9 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.GetColumn(email1, boardName, 1));
             Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 2, DateTime.MaxValue));
             Console.WriteLine(grading.Register(email2, password2));
-            Console.WriteLine(grading.JoinBoard(email2, 1));
+            Console.WriteLine(grading.JoinBoard(email2, 0));
             Console.WriteLine(grading.Register(email3, password3));
-            Console.WriteLine(grading.JoinBoard(email3, 1));
+            Console.WriteLine(grading.JoinBoard(email3, 0));
             Console.WriteLine(grading.DeleteData());
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());

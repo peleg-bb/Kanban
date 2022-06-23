@@ -127,7 +127,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     BoardUsersDTO boardUser = new BoardUsersDTO(boardID, userEmail);
                     _boardUsersDTOs.Add(boardUser);
-                    String msg = String.Format("CreateBoard Successfully in BoardUserDTOM!!");
+                    String msg = String.Format("User added to BoardUsers table in DB");
                     log.Info(msg);
                     // Console.WriteLine(res);
                     // Console.WriteLine("success!");
