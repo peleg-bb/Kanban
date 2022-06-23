@@ -416,7 +416,7 @@ namespace BackendTests.ServiceLayer
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.boardController.GetBoardById(1), _boardService.boardController.GetBoard(email,boardName));
+            Assert.AreEqual(_boardService.boardController.GetBoardById(0), _boardService.boardController.GetBoard(email,boardName));
         }
         /// <summary>
         /// Tests if a board has an owner
@@ -480,7 +480,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void JoinBoardUnsuccessfully_2()
         {
-            Assert.AreEqual(_boardService.JoinBoard(2, "tamar@gmail.com"), "user already joined that board");
+            Assert.AreEqual(_boardService.JoinBoard(1, "tamar@gmail.com"), "user already joined that board");
         }
 
         /// <summary>
