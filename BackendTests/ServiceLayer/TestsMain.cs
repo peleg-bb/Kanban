@@ -80,6 +80,8 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.Login(email2, password2));
             Console.WriteLine(grading.JoinBoard(email2, 0));
             Console.WriteLine(grading.AddTask(email2, boardName, ",al;", description, dueDate));
+            Console.WriteLine("Should fail");
+            Console.WriteLine(grading.UpdateTaskTitle(email1, boardName, 0, 1, ""));
             Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email2));
             Console.WriteLine(grading.AdvanceTask(email2, boardName, 0, 1));
             Console.WriteLine(grading.GetColumn(email2, boardName, 1));

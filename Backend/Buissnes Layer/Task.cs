@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
 
 
-            if (String.IsNullOrEmpty(newTitle) || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle) || email!=this.Assignee)
+            if (String.IsNullOrEmpty(newTitle) || this.State == Done || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle) || email!=this.Assignee)
 
             {
                 log.Warn(ex.Message);
@@ -130,7 +130,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDescription(string newDescription, string email)
         {
-            if (newDescription==null || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription) || email!=this.Assignee)
+            if (newDescription==null || this.State==Done || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription) || email!=this.Assignee)
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -151,7 +151,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         internal void EditDueDate(DateTime newDueDate, string email)
         {
-            if (newDueDate<=this.CreationTime || email!=this.Assignee)
+            if (newDueDate<=this.CreationTime || email!=this.Assignee || this.State == Done)
             {
                 log.Warn(ex.Message);
                 throw ex;

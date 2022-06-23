@@ -229,7 +229,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                    columnOrdinal&&columnOrdinal!=Done)
+                    columnOrdinal)
                 {
                     return taskService.EditDueDate(email, boardName, taskId, dueDate);
                 }
@@ -264,7 +264,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                    columnOrdinal && columnOrdinal != Done)
+                    columnOrdinal)
                 {
                     try
                     {
@@ -308,7 +308,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 if (boardService.boardController.GetTask(email, boardName, taskId, columnOrdinal).GetState() ==
-                    columnOrdinal && columnOrdinal != Done)
+                    columnOrdinal)
                 {
                     try
                     {
