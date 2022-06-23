@@ -71,21 +71,25 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.Login(email1, password));
             Console.WriteLine(grading.AddBoard(email1, boardName));
             Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
-            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email1));
-            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 1));
-            Console.WriteLine("should failed");
+            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 0, email1));
+            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 0));
+            // Should fail
             Console.WriteLine(grading.AddTask(email1, boardName, "", description, dueDate));
-            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 2, email1));
-            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
-            Console.WriteLine("should failed");
-            Console.WriteLine(grading.AddTask(email1, boardName, ",al;", description, dueDate));
-            Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 2));
-            Console.WriteLine(grading.GetColumn(email1, boardName, 1));
-            Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 2, DateTime.MaxValue));
+            // New user
             Console.WriteLine(grading.Register(email2, password2));
+            Console.WriteLine(grading.Login(email2, password2));
+            Console.WriteLine(grading.JoinBoard(email2, 0));
+            Console.WriteLine(grading.AddTask(email2, boardName, ",al;", description, dueDate));
+            Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email2));
+            Console.WriteLine(grading.AdvanceTask(email2, boardName, 0, 1));
+            Console.WriteLine(grading.GetColumn(email2, boardName, 1));
+            Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 1, DateTime.MaxValue));
+            Console.WriteLine(grading.Register(email2, password2));
+            Console.WriteLine(grading.Login(email2, password2));
             Console.WriteLine(grading.JoinBoard(email2, 0));
             Console.WriteLine(grading.Register(email3, password3));
             Console.WriteLine(grading.JoinBoard(email3, 0));
+            Console.WriteLine();
             Console.WriteLine(grading.DeleteData());
             // Console.WriteLine(grading.LoadData());
             // Console.WriteLine(grading.DeleteData());
