@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
 
 
-            if (newTitle == null || newTitle.Length==0 || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle) || email!=this.Assignee)
+            if (String.IsNullOrEmpty(newTitle) || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle) || email!=this.Assignee)
 
             {
                 log.Warn(ex.Message);
