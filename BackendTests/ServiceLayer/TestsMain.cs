@@ -47,7 +47,7 @@ namespace BackendTests.ServiceLayer
             TaskTests taskTests = new TaskTests(taskService, userService, boardService, grading);
             string email1 = "johndoe@gmail.com";
             string password = "Hash123";
-            string email2 = "johndoe2@gmail.com";
+            string email2 = "johnDOe2@gmail.com";
             string password2 = "Bad_Password!#!@6";
             string email3 = "johndoe3@gmail.com";
             string password3 = "Bad_Password78@@;";
@@ -84,9 +84,7 @@ namespace BackendTests.ServiceLayer
             Console.WriteLine(grading.AdvanceTask(email2, boardName, 0, 1));
             Console.WriteLine(grading.GetColumn(email2, boardName, 1));
             Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 1, DateTime.MaxValue));
-            Console.WriteLine(grading.Register(email2, password2));
-            Console.WriteLine(grading.Login(email2, password2));
-            Console.WriteLine(grading.JoinBoard(email2, 0));
+            // New user
             Console.WriteLine(grading.Register(email3, password3));
             Console.WriteLine(grading.JoinBoard(email3, 0));
             Console.WriteLine();

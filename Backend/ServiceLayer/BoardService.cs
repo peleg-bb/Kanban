@@ -120,9 +120,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.joinBoard(boardId, userEmail);
-                Response r = new Response(null);
-                String msg = String.Format("joined Board! userEmailJJoiner = {0} ", userEmail);
-                log.Info(msg);
+                Response r = new Response(null, null);
+                // String msg = String.Format("joined Board! userEmailJJoiner = {0} ", userEmail);
+                // log.Info(msg);
                 return ToJson.toJson(r);
             }
             catch (Exception e) 
