@@ -27,6 +27,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
         }
+        /// <summary>
+        /// Creates a user in the database and instantiates a user DTO.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
         public UserDTO CreateUser(string email, string password)
         {
 
@@ -86,7 +93,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             }
             return null; // If failed to create user
         }
-
+        /// <summary>
+        /// Loads all users and creates UserDTO objects
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
         internal List<UserDTO> LoadUsers()
         {
             string path = Path.GetFullPath(Path.Combine(
@@ -136,7 +147,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
             return ifFailed;
         }
 
-
+        /// <summary>
+        /// Deletes all database data from Users and Board_Users.
+        /// </summary>
         public void DeleteAllData()
         {
             string path = Path.GetFullPath(Path.Combine(
