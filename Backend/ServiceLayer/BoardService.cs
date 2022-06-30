@@ -5,6 +5,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -29,6 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
         }
+
         /// <summary>
         /// This method creates a new board.
         /// </summary>
@@ -67,10 +69,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardController.AddTaskB(email,boardName,title,description,dueDate);
+                boardController.AddTaskB(email, boardName, title, description, dueDate);
                 String msg = String.Format("task added Successfully! to board :{0}", boardName);
                 log.Info(msg);
-                Response r = new Response(null,email);
+                Response r = new Response(null, email);
                 return ToJson.toJson(r);
             }
             catch (Exception e)
@@ -78,8 +80,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Warn(e.Message);
                 throw new Exception(e.Message);
             }
-           
-           
+
+
         }
 
         /// <summary>
@@ -93,8 +95,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardController.NextStateB(email, boardName,columnOrdinal, taskId);
-                String msg = String.Format($"task changed state Successfully in BuissnesLayer! to state {columnOrdinal}");
+                boardController.NextStateB(email, boardName, columnOrdinal, taskId);
+                String msg =
+                    String.Format($"task changed state Successfully in BuissnesLayer! to state {columnOrdinal}");
                 log.Info(msg);
                 Response r = new Response(null);
                 return ToJson.toJson(r);
@@ -106,8 +109,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r = new Response(e.Message);
                 return ToJson.toJson(r);
             }
-            
+
         }
+
         /// <summary>
         /// This method add a new member to a board.
         /// </summary>
@@ -125,13 +129,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 // log.Info(msg);
                 return ToJson.toJson(r);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Response response = new Response(e.Message);
                 return ToJson.toJson(response);
             }
-        
+
         }
+
         /// <summary>
         /// This method remove a member from a board.
         /// </summary>
@@ -168,12 +173,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="userEmailAssigning">Email of the user assigning other user assign to a task.Must be logged in.</param> 
         /// <param name="taskId">The taskId of the task the userEmailAssigning will assigne </param>
         /// <returns>jason, unless an error occurs .</returns>
-        public string AssignTask(string userEmailToAssign, string boardName,int columnOrdinal, string userEmailAssigning, int taskId)
+        public string AssignTask(string userEmailToAssign, string boardName, int columnOrdinal,
+            string userEmailAssigning, int taskId)
         {
             try
             {
                 boardController.assignAssignee(userEmailToAssign, boardName, columnOrdinal, userEmailAssigning, taskId);
-                String msg = String.Format("task assignee assigned Successfully ! The assignee :{0}", userEmailToAssign);
+                String msg = String.Format("task assignee assigned Successfully ! The assignee :{0}",
+                    userEmailToAssign);
                 log.Info(msg);
                 Response r = new Response(null, userEmailToAssign);
                 return ToJson.toJson(r);
@@ -186,6 +193,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
         }
+
         /// <summary>
         /// This method transfers a board ownership.
         /// </summary>
@@ -198,9 +206,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 //NEED TO USE CHANGEsTATE
-                boardController.switchOwnership(currentOwnerEmail, boardName , newOwnerEmail);
+                boardController.switchOwnership(currentOwnerEmail, boardName, newOwnerEmail);
                 Response r = new Response(null);
-                String msg = String.Format("Transfer the Ownership!  new Owner userEmail = {0} of board :{1}", newOwnerEmail, boardName);
+                String msg = String.Format("Transfer the Ownership!  new Owner userEmail = {0} of board :{1}",
+                    newOwnerEmail, boardName);
                 log.Info(msg);
 
                 return ToJson.toJson(r);
@@ -215,6 +224,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //throw new ArgumentException(e.Message);
             }
         }
+
         /// <summary>
         /// This method delete a board.
         /// </summary>
@@ -227,7 +237,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 boardController.DeleteBoard(userEmail, boardName);
                 Response r = new Response(null);
-                String msg = String.Format("BoardService deleted! userEmail = {0} deleted board :{1}", userEmail, boardName);
+                String msg = String.Format("BoardService deleted! userEmail = {0} deleted board :{1}", userEmail,
+                    boardName);
                 log.Info(msg);
 
                 return ToJson.toJson(r);
@@ -239,6 +250,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 throw new ArgumentException(e.Message);
             }
         }
+
         /// <summary>
         /// This method returns all the In progress tasks of the user.
         /// </summary>
@@ -275,7 +287,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                List<Buissnes_Layer.Task> allCol = boardController.GetColum(email, boardName,columnOrdinal);
+                List<Buissnes_Layer.Task> allCol = boardController.GetColum(email, boardName, columnOrdinal);
                 Response r = new Response(allCol);
                 String msg = String.Format("Got the Column! columnOrdinal = {0} ", columnOrdinal);
                 log.Info(msg);
@@ -288,6 +300,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
 
         }
+
         /// <summary>
         /// This method limits the number of tasks in a specific column.
         /// </summary>
@@ -301,11 +314,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardController.LimitColumn(email, boardName, columnOrdinal, limit);
-                Response r = new Response(null); 
-                String msg = String.Format("Limit Column has been set! limit = {0}  at columnOrdinal :{1}", limit, columnOrdinal);
+                Response r = new Response(null);
+                String msg = String.Format("Limit Column has been set! limit = {0}  at columnOrdinal :{1}", limit,
+                    columnOrdinal);
                 log.Info(msg);
                 return ToJson.toJson(r);
-                
+
             }
             catch (Exception e)
             {
@@ -315,6 +329,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 throw new ArgumentException(e.Message);
             }
         }
+
         /// <summary>
         /// This method gets the name of a specific column
         /// </summary>
@@ -326,7 +341,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                string colVal = boardController.GetColumnName(email, boardName,columnOrdinal);
+                string colVal = boardController.GetColumnName(email, boardName, columnOrdinal);
                 Response r = new Response(null, colVal);
                 String msg = String.Format("Got the Column Name! columnOrdinal{0}", columnOrdinal);
                 log.Info(msg);
@@ -338,6 +353,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 throw new ArgumentException(e.Message);
             }
         }
+
         /// <summary>
         /// This method gets the limit of a specific column.
         /// </summary>
@@ -349,7 +365,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                int colVal = boardController.GetColumnLim(email, boardName,columnOrdinal);
+                int colVal = boardController.GetColumnLim(email, boardName, columnOrdinal);
                 Response r = new Response(null, colVal);
                 String msg = String.Format("Got  the Column Limit! columnOrdinal = {0} ", columnOrdinal);
                 log.Info(msg);
@@ -371,11 +387,32 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.boardController.LoadData();
         }
+
         public void DeleteAllData()
         {
             this.boardController.DeleteAllData();
         }
 
+
+
+        public string GetUserBoards(string email)
+        {
+            try
+            {
+                List<int> boardIDs = boardController.GetUserBList(email);
+                List<string> boardNames = new List<string>();
+                foreach (int i in boardIDs)
+                {
+                    boardNames.Add(boardController.GetBoardById(i).name);
+                }
+                Response r = new Response(null, boardNames);
+                return ToJson.toJson(r);
+            }
+            catch (Exception e)
+            {
+                Response response = new Response(e.Message, null);
+                return ToJson.toJson(response);
+            }
+        }
     }
-  
 }

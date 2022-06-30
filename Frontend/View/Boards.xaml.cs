@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Frontend.ModelView;
 
 namespace Frontend.View
 {
@@ -20,9 +21,11 @@ namespace Frontend.View
     /// </summary>
     public partial class Boards : Page
     {
+        private BoardsVM _boardsVM;
         public Boards()
         {
             InitializeComponent();
+            _boardsVM = new BoardsVM();
         }
     }
 }
