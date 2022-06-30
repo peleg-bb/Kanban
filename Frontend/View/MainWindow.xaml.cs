@@ -20,11 +20,11 @@ namespace Frontend.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private UserVM UserVM;
+        private UserVM userVM;
         public MainWindow()
         {
             InitializeComponent();
-            UserVM = new UserVM();
+            userVM = new UserVM();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -34,7 +34,26 @@ namespace Frontend.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                userVM.Register(email.ToString(), password.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                userVM.Login(email.ToString(), password.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
