@@ -13,9 +13,9 @@
         <Border BorderThickness="1" Background="White" Margin="249,125,269,157" BorderBrush="#FF9B744E"/>
         <Label x:Name="UserEmail" Content="Email:" HorizontalAlignment="Left" Margin="271,131,0,0" VerticalAlignment="Top" Height="25" Width="41"/>
         <Label Content="Password:" Margin="270,162,465,244"/>
-        <PasswordBox HorizontalAlignment="Left" Margin="351,168,0,0" VerticalAlignment="Top" Width="120" Height="16" BorderBrush="#FF38393C"/>
-        <TextBox HorizontalAlignment="Left" Margin="351,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="UserEmail_TextChanged" BorderBrush="#FF38393C"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="420,248,0,0" VerticalAlignment="Top" Click="Login_Click" Width="40" Background="#FFED8629" BorderBrush="#FF0A0909"/>
+        <PasswordBox x:Name="password" HorizontalAlignment="Left" Margin="351,168,0,0" VerticalAlignment="Top" Width="120" Height="16" BorderBrush="#FF38393C"/>
+        <TextBox x:Name="email" HorizontalAlignment="Left" Margin="351,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="UserEmail_TextChanged" BorderBrush="#FF38393C"/>
+        <Button Content="Login" HorizontalAlignment="Left" Margin="420,248,0,0" VerticalAlignment="Top" Click="Login_Click" Width="40" Background="#FFED8629" BorderBrush="#FF0A0909" Foreground="Black"/>
         <Button Content="Register" HorizontalAlignment="Left" Margin="330,248,0,0" VerticalAlignment="Top" Click="Register_Click" Width="52" BorderBrush="#FF0C0B0B" Background="#FFF8892D"/>
         <CheckBox Content="I agree to the terms and conditions" HorizontalAlignment="Left" Margin="283,213,0,0" VerticalAlignment="Top" Width="211"/>
         <Label x:Name="ProjectName" Content="Kanban" HorizontalAlignment="Left" Margin="210,9,0,0" VerticalAlignment="Top" IsEnabled="False" HorizontalContentAlignment="Center" Foreground="#FFF8892D" FontFamily="Times New Roman" FontSize="100" FontStyle="Normal" FontWeight="Bold" VerticalContentAlignment="Top" BorderThickness="6,6,6,6" Visibility="Visible" Cursor="AppStarting" RenderTransformOrigin="0.5,0.5" Width="355">
@@ -34,7 +34,6 @@
                 <DropShadowEffect/>
             </Label.Effect>
         </Label>
-
     </Grid>
-    
+
 </Window>
