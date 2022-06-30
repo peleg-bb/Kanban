@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Frontend.ModelView;
 
 namespace Frontend.View
 {
@@ -19,9 +20,11 @@ namespace Frontend.View
     /// </summary>
     public partial class MainWindow : Window
     {
+        private UserVM UserVM;
         public MainWindow()
         {
             InitializeComponent();
+            UserVM = new UserVM();
         }
     }
 }

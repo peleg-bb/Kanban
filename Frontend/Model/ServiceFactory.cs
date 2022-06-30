@@ -10,7 +10,10 @@ public class ServiceFactory
     private UserController userController;
     private static ServiceFactory instance;
 
-    private ServiceFactory()
+    /// <summary>
+    /// Service factory, singleton pattern
+    /// </summary>
+    private ServiceFactory() 
     {
         this.userController = new UserController();
         userService = new UserService(userController);
