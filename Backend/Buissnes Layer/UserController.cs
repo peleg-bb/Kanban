@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,6 +23,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private List<string> loggedIn;
         private UserDTOMapper userDtoMapper;
         private const int MinPasswordLength = 6;
+        private const int MaxPasswordLength = 20;
         /// <summary>
         /// Constructor for the class. Instantiates its private fields.
         /// The class must be instantiated in order to call its methods and functionality.
@@ -62,16 +64,25 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <summary>
         /// Checks whether the an email address is valid using a regex.
         /// </summary>
-        private bool IsValidEmail(string email)
-        {
+        private bool IsValidEmail(string email){ 
             Regex regex = new Regex(
                 @"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
-            return regex.IsMatch(email);
+            
+        Regex regex1 = new Regex(@"^(\w.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        Regex regex2 = new Regex(@"^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$");
+        var emailValidation = new EmailAddressAttribute();
+        Match emailMatch = regex.Match(email);
+        Match emailMatch1 = regex1.Match(email);
+        Match emailMatch2 = regex2.Match(email);
+        bool emailMatch3 = emailValidation.Match(email);
+            return emailMatch1.Success || emailMatch2.Success || emailMatch3 || emailMatch.Success;
+
+
         }
-        /// <summary>
-        /// Checks whether the an email address is valid using a regex.
-        /// </summary>
-        bool IsValidEmail2(string email)
+    /// <summary>
+    /// Checks whether the an email address is valid using a regex.
+    /// </summary>
+    bool IsValidEmail2(string email)
         {
             var trimmedEmail = email.Trim();
 
@@ -94,13 +105,14 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         public void CreateUser(string email, string password)
         {
+            string Email = email.ToLower();
             if (this.users != null)
             {
-                if (UserExists(email))
+                if (UserExists(Email))
                 {
                     throw new ArgumentException("User already exists");
                 }
-                if (!IsValidEmail(email) || IsHebrew(email)||!IsValidEmail2(email))
+                if (!IsValidEmail(Email)||!IsValidEmail2(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -112,15 +124,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    UserDTO userDto = userDtoMapper.CreateUser(email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(Email, password);
                     User u = new User(userDto);
-                    users.Add(email, u);
+                    // User u = new User(Email, password);
+                    users.Add(Email, u);
                 }
             }
             else
             {
-               
-                if (!IsValidEmail(email) || IsHebrew(email)||!IsValidEmail2(email))
+                if (!IsValidEmail(Email))
                 {
                     throw new ArgumentException("Not a valid email address");
                 }
@@ -131,9 +143,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 }
                 else
                 {
-                    UserDTO userDto = userDtoMapper.CreateUser(email, password);
+                    UserDTO userDto = userDtoMapper.CreateUser(Email, password);
                     User u = new User(userDto);
-                    users.Add(email, u);
+                    users.Add(Email, u);
+                    // User u = new User(Email, password);
+                    users.Add(Email, u);
                 }
                 
             }
@@ -141,12 +155,15 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         /// <summary>
         /// Deletes a user from the system.
+        /// NOT implemented in DAL.
         /// </summary>
         public void DeleteUser(string email)
         {
+
             try
             {
-                users.Remove(email);
+                string Email = email.ToLower();
+                users.Remove(Email);
             }
             catch (Exception){
                 throw new ArgumentException("User does not exist");
@@ -158,7 +175,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         private bool UserExists(string email)
         {
-            return users.ContainsKey(email);
+            string Email = email.ToLower();
+            return users.ContainsKey(Email);
         }
 
         /// <summary>
@@ -166,9 +184,10 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </summary>
         public User GetUser(string username)
         {
-            if (users.ContainsKey(username))
+            string Email = username.ToLower();
+            if (users.ContainsKey(Email))
             {
-                return users[username];
+                return users[Email];
             }
             else
             {
@@ -187,7 +206,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 return false;
             }
-            if (password.Length > 20 )
+            if (password.Length > MaxPasswordLength )
             {
                 return false;
             }
@@ -208,39 +227,42 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         
         private bool ValidatePassword(string email, string password)
         {
-            if (users.ContainsKey(email))
+            string Email = email.ToLower();
+            if (users.ContainsKey(Email))
             {
-                return users[email].ValidatePassword(password);
+                return users[Email].ValidatePassword(password);
             }
             return false;
         }
 
         public void Login(string email, string password)
         {
-            if (!UserExists(email))
+            string Email = email.ToLower();
+            if (!UserExists(Email))
             {
                 throw new ArgumentException("User does not exist");
             }
 
-            else if (!ValidatePassword(email, password))
+            else if (!ValidatePassword(Email, password))
             {
                 throw new ArgumentException("Wrong password");
             }
 
-            else if (loggedIn.Contains(email))
-
-            {
-                throw new ArgumentException("User is already logged in");
-            }
+            // else if (loggedIn.Contains(Email))
+            //
+            // {
+            //     throw new ArgumentException("User is already logged in");
+            // }
 
             else
             {
-                loggedIn.Add(email);
+                loggedIn.Add(Email);
             }
         }
 
-        public void Logout(string email)
+        public void Logout(string Email)
         {
+            string email = Email.ToLower();
             if (!UserExists(email))
             {
                 throw new ArgumentException("User does not exist");
@@ -259,12 +281,13 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         }
 
-        public bool IsLoggedIn(string email)
+        public bool IsLoggedIn(string Email)
         {
-            if (!UserExists(email))
-            {
-                throw new ArgumentException("User does not exist");
-            }
+            string email = Email.ToLower();
+            // if (!UserExists(email))
+            // {
+            //     throw new ArgumentException("User does not exist");
+            // }
             return loggedIn.Contains(email);
         }
 

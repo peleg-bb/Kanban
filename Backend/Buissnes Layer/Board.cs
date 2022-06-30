@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.ServiceLayer;
@@ -57,6 +58,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// </param>
         internal Board(BoardDTO boardDto)
         {
+            this.name=boardDto.Name;
             this.boardDTO = boardDto;
             this.BoardId = boardDto.ID;
             this.Owner = boardDto.Owner;
@@ -167,11 +169,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 else
                 {
 
-                    for (int i = 0; i < this.tasks.Count; i++)
+                    foreach (var item in this.tasks.Values)
                     {
-                        if (this.tasks[i].GetState() == columnO)
+                        if (item.GetState() == columnO)
                         {
-                            taskListO.Add(this.tasks[i]);// get all the func that the user has at that column.
+                            taskListO.Add(item);// get all the func that the user has at that column.
                         }
                     }
 
@@ -235,13 +237,29 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
             return taskInProgList;
         }
+        private Boolean IsValidDescription(string description)
+        {
+            return (description.Length < 300 || !IsOnlySpaces(description));
+        }
+
+        private Boolean IsValidTitle(string title)
+        {
+            return (title.Length <= 50 || !IsOnlySpaces(title));
+        }
         public Dictionary<int, Task> GetTasks()   // property
         {
             return this.tasks;
         }
         public Task GetTask(int taskId)   // property
         {
-            return this.tasks[taskId];
+            if (this.tasks.ContainsKey(taskId))
+            {
+                return this.tasks[taskId];
+            }
+            else
+            {
+                throw new ArgumentException("task does not exist");
+            }
         }
         private void SetTasks(Task newTask)   // property
         {
@@ -263,7 +281,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public void leaveTasks(string userEmail)
         {
             List<Task> p= GetInProgressByAssignee(userEmail);
-            List<Task> e = this.GEtColList(0);
+            List<Task> e = this.GEtColList(BacklogState);
             e.AddRange(p);
             foreach (var taski in e)
             {
@@ -284,27 +302,36 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>void, unless an error occurs </returns>
         public void AddTask(string title, string description, DateTime dueDate ,string userEmail)
         {
-            Task newTask = new Task(title, dueDate,this.BoardId, description);
-            if (this.IsInListOfJoiners(userEmail))
+            try
             {
-                try
+                if (this.IsInListOfJoiners(userEmail)&&!String.IsNullOrEmpty(title)&&IsValidDescription(description)&& IsValidTitle(title))
                 {
-                    SetTasks(newTask);
-                    String msg = String.Format("set new task Successfully in BuissnesLayer! ");
-                    log.Info(msg);
-                    boardDTO.AddTask(newTask.Id, newTask.BoardId, newTask.Assignee, newTask.GetStatus(), newTask.GetTitle(), newTask.GetDescription(), newTask.GetDueDate(), newTask.CreationTime.ToString());
+                    try
+                    {
+                        Task newTask = new Task(title, dueDate, this.BoardId, description);
+                        SetTasks(newTask);
+                        String msg = String.Format("set new task Successfully in BuissnesLayer! ");
+                        log.Info(msg);
+                        boardDTO.AddTask(newTask.Id, newTask.BoardId, newTask.Assignee, newTask.GetStatus(), newTask.GetTitle(), newTask.GetDescription(), newTask.GetDueDate(), newTask.CreationTime.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        log.Warn(e.Message);
+                        throw new ArgumentException(e.Message);
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    log.Warn(e.Message);
-                    throw new ArgumentException(e.Message);
+                    log.Warn("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
+                    throw new Exception("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
                 }
             }
-            else
+            catch (Exception e)
             {
-                log.Warn("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
-                throw new Exception("USER IS NOT A MEMBER !! ONLY A MEMBER OF THIS BOARD CAN ADD TASK TO IT!");
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
             }
+          
         }
         /// <summary>
         /// This method updates the state of the  task.
@@ -363,6 +390,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             
 
         }
-
+        private Boolean IsOnlySpaces(string str)
+        {
+            Regex reg = new Regex(@"^\s*$");
+            Match strMatch = reg.Match(str);
+            return strMatch.Success;
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace BackendTests.ServiceLayer
             this.user = us;
             this.boardService = bs;
             this.grading = gs;
+
         }
 
         /// <summary>
@@ -111,21 +112,21 @@ namespace BackendTests.ServiceLayer
         /// for requirement 17 and requirement 14,15
         /// </summary>
 
-        //public void InvalidEditTitleTest()
-        //{
-        //    string email = "tamar@gmail.com";
-        //    string boardName = "testName";
-        //    int taskId = 0;
-        //    string newTitle = null;
-        //    string description = "Does it change?";
-        //    act
-        //    Response response = new Response("Value cannot be null.", new Task(newTitle, new DateTime(2025, 8, 14), description));
+        public void InvalidEditTitleTest()
+        {
+            string email = "tamar@gmail.com";
+            string boardName = "testName";
+            int taskId = 0;
+            string newTitle = null;
+            string description = "Does it change?";
+            //act
+            Response response = new Response("Value cannot be null.", this.boardService.boardController.GetBoard(email, boardName).GetTask(taskId));
 
-        //    string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
-        //    Assert.AreEqual(jsonup,
-        //        response.BadJson()
-        //    );
-        //}
+            string jsonup = this.taskService.EditTitle(email, boardName, taskId, newTitle);
+            Assert.AreEqual(jsonup,
+                response.BadJson()
+            );
+        }
 
         /// <summary>
         /// This method test if we can edit the description of task and we get it in the JSON format
@@ -184,7 +185,7 @@ namespace BackendTests.ServiceLayer
 
             string jsonup = this.taskService.EditDueDate(email, boardName, taskId, newDueDate);
             Assert.AreEqual(jsonup,
-                response.OKJson()
+                ToJson.toJson(response)
             );
         }
 
@@ -211,9 +212,10 @@ namespace BackendTests.ServiceLayer
         /// <summary>
         /// This methods checks that a task indeed has a user assigned to it.
         /// </summary>
-        public void GetAssignee()
+        public void IsAssigneeTest(string email, string boardName)
         {
-
+            string assignee = boardService.boardController.GetBoard(email, boardName).GetTask(1).Assignee;
+            Assert.AreEqual(email, assignee);
         }
 
         /// <summary>

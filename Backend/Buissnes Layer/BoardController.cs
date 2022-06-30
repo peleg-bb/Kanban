@@ -20,6 +20,8 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private Dictionary<string, Dictionary<string,Board>> BoardsOfUsers = new Dictionary<string, Dictionary<string, Board>>();
         private Dictionary<string,List<string>> ownerBoards = new Dictionary<string, List<string>>();
         public UserController userController;
+        private const int BacklogState = 0;
+        private const int inProgressState = 1;
         private const int Done = 2;
         public int BID
         {
@@ -44,8 +46,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         { 
             this.userController = UC;
             this.boardDTOMapper = new BoardDTOMapper();
-            // this.boardDTOMapper.LoadData(); Do NOT activate! Ask Peleg why (constructors must not load data - if they throw an exception the entire program fails)
-            this.BID = boardDTOMapper.GetCount();
+            // this.boardDTOMapper.LoadData(); Do NOT activate! Ask Peleg why
+            // (constructors must not load data - if they throw an exception the entire program fails)
+            this.BID = boardDTOMapper.BoardCount;
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
@@ -102,19 +105,47 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
 
         public Board GetBoardById( int boardID)
         {
-            return this.boardById[boardID];
+            if (boardById.ContainsKey(boardID))
+            {
+                String msg = String.Format("GetBoardById Successfully in BuissnesLayer! the Board {0}", boardID);
+                log.Info(msg);
+                return this.boardById[boardID];
+            }
+            else
+            {
+                log.Warn("THIS BOARD DOES NOT EXSIT");
+                throw new Exception("THIS BOARD DOES NOT EXSIT");
+            }
         }
-
+        /// <summary>
+        /// This method Gets User Board ID List to a specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <returns>List of Board ID List, unless an error occurs </returns>
         public List<int> GetUserBList(string userEmail)
         {
             if (userController.IsLoggedIn(userEmail))
             {
-                List<int> listOfUserBoard = new List<int>();
-                foreach (var i in this.BoardsOfUsers[userEmail])
+                if (UserHasAnyBoard(userEmail))
                 {
-                    listOfUserBoard.Add(i.Value.BoardID);
+                    List<int> listOfUserBoard = new List<int>();
+                    foreach (var i in this.BoardsOfUsers[userEmail])
+                    {
+                        listOfUserBoard.Add(i.Value.BoardID);
+                    }
+                    String msg = String.Format("Got User BList Successfully in BuissnesLayer! Board of {0}", userEmail);
+                    log.Info(msg);
+                    return listOfUserBoard;
                 }
-                return listOfUserBoard;
+                else
+                {
+                    List<int> listOfUserBoard = new List<int>();
+                    String msg = String.Format("Got User BList Successfully in BuissnesLayer!{0} has None boards", userEmail);
+                    log.Info(msg);
+                    return listOfUserBoard;
+
+                }
+               
             }
             else
             {
@@ -213,19 +244,37 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 try
                 {
-                    Board b = GetBoard(email, boardName);
-                    try
+                    if (UserHasAnyBoard(email))
                     {
-                        b.AddTask(title, description, dueDate , email);
-                        String msg = String.Format("task added Successfully! to board :{0}", boardName);
-                        log.Info(msg);
-
+                        if (UserHasThisBoard(email, boardName))
+                        {
+                            Board b = GetBoard(email, boardName);
+                            b.AddTask(title, description, dueDate, email);
+                            String msg = String.Format("task added Successfully! to board :{0}", boardName);
+                            log.Info(msg);
+                        }
+                        else
+                        {
+                            log.Warn("USER DON'T HAVE THIS BOARD!");
+                            throw new Exception("USER DON'T HAVE THIS BOARD!");
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        log.Warn(e.Message);
-                        throw new Exception(e.Message);
+                        log.Warn("USER DON'T HAVE ANY BOARD!");
+                        throw new Exception("USER DON'T HAVE ANY BOARD!");
                     }
+                   
+                    
+                    // try
+                    // {
+                    
+                    // }
+                    // catch (Exception e)
+                    // {
+                    //     log.Warn(e.Message);
+                    //     throw new Exception(e.Message);
+                    // }
 
                 }
                 catch (Exception e)
@@ -250,76 +299,67 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <returns>Response with a command to move the task state, unless doesn't exists a task with the same name.</returns>
+        /// <returns>VOID.</returns>
         public void NextStateB(string email, string boardName, int columnOrdinal, int taskId)
         {
-            try
+            if (userController.IsLoggedIn(email))
             {
-                if (userController.IsLoggedIn(email))
+                try
                 {
-                    try
+                    if (UserHasThisBoard(email,boardName) && taskId != null)
                     {
-                        if (columnOrdinal != null && taskId != null)
+                        if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
                         {
-
-                            if (GetBoard(email, boardName).GetTask(taskId).GetState() == columnOrdinal)
+                            Board b = GetBoard(email, boardName);
+                            if (b.GetTask(taskId).Assignee == email)
                             {
-                                Board b = GetBoard(email, boardName);
-                                if (b.GetTask(taskId).Assignee == email)
+                                try
                                 {
-                                    try
-                                    {
-                                        b.ChangeState(taskId, email);
-                                        String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}", b.GetTask(taskId).GetState());
-                                        log.Info(msg);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        log.Warn(e.Message);
-                                        throw new Exception(e.Message);
-                                    }
+                                    b.ChangeState(taskId, email);
+                                    String msg = String.Format("task changed state Successfully in BuissnesLayer! to state :{0}", b.GetTask(taskId).GetState());
+                                    log.Info(msg);
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    log.Warn("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
-                                    throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
+                                    log.Warn(e.Message);
+                                    throw new Exception(e.Message);
                                 }
                             }
                             else
                             {
-                                log.Warn("task does not at columnOrdinal given");
-                                throw new ArgumentException("task does not at columnOrdinal given");
-
+                                log.Warn("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
+                                throw new ArgumentException("ONLY ASSIGNEE OF THE TASK CAN CHANGE ITS STATE");
                             }
                         }
                         else
                         {
-                            log.Warn("value can not be null!!");
-                            throw new ArgumentException("value can not be null!!");
-                        }
-                       
+                            log.Warn("task does not at columnOrdinal given");
+                            throw new ArgumentException("task does not at columnOrdinal given");
 
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        log.Warn(e.Message);
-                        throw new ArgumentException(e.Message);
-                        //Response r = new Response(e.Message, false);
-                        //return r.BadJson();
+                        log.Warn("value can not be null!!");
+                        throw new ArgumentException("value can not be null!!");
                     }
+
+
                 }
-                else
+                catch (Exception e)
                 {
-                    log.Warn("user not logged in");
-                    throw new ArgumentException("user not logged in");
+                    log.Warn(e.Message);
+                    throw new ArgumentException(e.Message);
+                    //Response r = new Response(e.Message, false);
+                    //return r.BadJson();
                 }
             }
-            catch (Exception e)
+            else
             {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
-            
+
         }
         /// <summary>
         /// This method assign a user from the board to a task.
@@ -331,41 +371,50 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>void, unless an error occurs .</returns>
         public void assignAssignee(string userEmailToAssign , string boardName ,int columnOrdinal, string userEmailAssigning ,int taskId )
         {
-            try
+            if ((userController.IsLoggedIn(userEmailAssigning)))
             {
-                if ((userController.IsLoggedIn(userEmailAssigning)))
+                try
                 {
                     Board b = GetBoard(userEmailAssigning, boardName);
-                    if (columnOrdinal != Done && columnOrdinal != null)
+                    if (columnOrdinal == b.GetTask(taskId).GetState())//?????
                     {
-                        if (b.IsInListOfJoiners(userEmailAssigning))
+                        if (columnOrdinal != Done && columnOrdinal != null)
                         {
-                            b.GetTask(taskId).EditAssignee(userEmailToAssign);
-                            String msg = String.Format("task assignee assigned Successfully in BuissnesLayer! The assignee :{0}", userEmailToAssign);
-                            log.Info(msg);
+                            if (b.IsInListOfJoiners(userEmailAssigning))
+                            {
+                                b.GetTask(taskId).EditAssignee(userEmailToAssign);
+                                String msg = String.Format("task assignee assigned Successfully in BuissnesLayer! The assignee :{0}", userEmailToAssign);
+                                log.Info(msg);
+                            }
+                            else
+                            {
+                                log.Warn("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                                throw new Exception("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                            }
                         }
                         else
                         {
-                            log.Warn("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
-                            throw new Exception("USER WHO IS NOT A MEMBER OF THE BOARD CAN NOT BE ASSIGNED TO TASK !");
+                            log.Warn("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
+                            throw new Exception("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
                         }
                     }
                     else
                     {
-                        log.Warn("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
-                        throw new Exception("NOT IN A COLUMN THAT THE USER CAN BE ASSIGN AT !");
+                        log.Warn("task does not exist at this ordinal");
+                        throw new ArgumentException("task does not exist at this ordinal");
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    log.Warn("user not logged in");
-                    throw new ArgumentException("user not logged in");
+                    log.Warn(e.Message);
+                    throw new ArgumentException(e.Message);
                 }
+
             }
-            catch (Exception e)
+            else
             {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
 
 
@@ -384,24 +433,39 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 string boardName = GetBoardById(boardId).name;
                 if ((userController.IsLoggedIn(userEmailJoiner)))
                 {
-                    if (!UserHasThisBoard(userEmailJoiner, boardName))
+                    if (UserHasAnyBoard(userEmailJoiner))
+                    {
+                        if (!UserHasThisBoard(userEmailJoiner, boardName))
+                        {
+                            BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
+                            BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                            boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
+                            String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
+                            log.Info(msg);
+                        }
+                        else
+                        {
+                            log.Warn("user rejoins a board they're already in");
+                            throw new ArgumentException("user rejoins a board they're already in");
+                        }
+                    }
+                    else
                     {
                         BoardsOfUsers[userEmailOwner][boardName].AddToJoinList(userEmailJoiner);
-                        BoardsOfUsers[userEmailJoiner].Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                        Dictionary<string, Board> b = new Dictionary<string, Board>();
+                        b.Add(boardName, BoardsOfUsers[userEmailOwner][boardName]);
+                        BoardsOfUsers[userEmailJoiner] = b;
                         boardDTOMapper.AddUserToBoard(BoardsOfUsers[userEmailOwner][boardName].BoardID, userEmailJoiner);
                         String msg = String.Format("joined Board Successfully in BuissnesLayer! userEmailOwner = {0} the board :{1}", userEmailOwner, boardName);
                         log.Info(msg);
                     }
-                    else
-                    {
-                        log.Warn("user already joined that board");
-                        throw new ArgumentException("user already joined that board");
-                    }
                 }
-                else {
+                else
+                {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");
                 }
+
             }
             catch (Exception e)
             {
@@ -427,7 +491,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 {
                     if (UserHasThisBoard(userEmailLeaving, boardName))
                     {
-                        if (!ownerBoards[userEmailLeaving].Contains(boardName))
+                        if (userEmailLeaving!=userEmailOwner)
                         {
                             BoardsOfUsers[userEmailOwner][boardName].leaveTasks(userEmailLeaving); // all joiner take become unAssigned
                             BoardsOfUsers[userEmailOwner][boardName].DeleteFromJoinList(userEmailLeaving);
@@ -449,6 +513,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                         throw new ArgumentException("user doesn't have that board");
                     }
                 }
+                else
                 {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");
@@ -474,30 +539,77 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if ((userController.IsLoggedIn(userEmailOwner)))
                 {
-                    if (ownerBoards[userEmailOwner].Contains(boardName) && BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
+                    if (isOwnerOfAnyBoard(userEmailOwner))
                     {
-                        BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
-                        if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
+                        if (ownerBoards[userEmailOwner].Contains(boardName))
                         {
-                            ownerBoards[userEmailFutureOwner].Add(boardName);
-                            ownerBoards[userEmailOwner].Remove(boardName);
+                            if (BoardsOfUsers[userEmailOwner][boardName].IsInListOfJoiners(userEmailFutureOwner))
+                            {
+                                if (isOwnerOfAnyBoard(userEmailFutureOwner))// checks if userEmailFutureOwner is owner of other board
+                                {
+                                    if (!ownerBoards[userEmailFutureOwner].Contains(boardName))
+                                    {
+                                        boardDTOMapper.ChangeOwnership(userEmailFutureOwner, GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                        BoardsOfUsers[userEmailOwner][boardName].SetOwner(userEmailFutureOwner);
+                                        ownerBoards[userEmailFutureOwner].Add(boardName);
+                                        ownerBoards[userEmailOwner].Remove(boardName);
+                                        // if (isOwnerOfAnyBoard(userEmailFutureOwner)) // checks if userEmailFutureOwner is owner of other board
+                                        // {
+                                        //     ownerBoards[userEmailFutureOwner].Add(boardName);
+                                        //     ownerBoards[userEmailOwner].Remove(boardName);
+                                        // }
+                                        // else
+                                        // {
+                                        //     List<string> listBoard = new List<string>();
+                                        //     listBoard.Add(boardName);
+                                        //     ownerBoards.Add(userEmailFutureOwner, listBoard);
+                                        //     ownerBoards[userEmailOwner].Remove(boardName);
+                                        // }
+
+                                    }
+                                    else
+                                    {
+                                        log.Warn("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                                        throw new ArgumentException("USER CANT HAVE TWO BOARDS WITH THE SAME NAME");
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    boardDTOMapper.ChangeOwnership(userEmailFutureOwner,
+                                        GetBoard(userEmailOwner, boardName).BoardID); // Needs to happen before because we're using GetBoard
+                                    List<string> listBoard = new List<string>();
+                                    listBoard.Add(boardName);
+                                    ownerBoards.Add(userEmailFutureOwner, listBoard);
+                                    ownerBoards[userEmailOwner].Remove(boardName);
+
+                                }
+                                String msg = String.Format("Transfer the Ownership Successfully in BuissnesLayer!  new Owner userEmail = {0} of board :{1}", userEmailFutureOwner, boardName);
+                                log.Info(msg);
+
+                            }
+                            else
+                            {
+                                log.Warn("USER DOES NOT A MEMBER OF THIS BOARD");
+                                throw new ArgumentException("USER DOES NOT A MEMBER OF THIS BOARD");
+                            }
+
                         }
                         else
                         {
-                            List<string> listBoard = new List<string>();
-                            listBoard.Add(boardName);
-                            ownerBoards.Add(userEmailFutureOwner, listBoard);
-                            ownerBoards[userEmailOwner].Remove(boardName);
+                            log.Warn("not the owner of this board!");
+                            throw new ArgumentException("not the owner of this board!");
                         }
-                        String msg = String.Format("Transfer the Ownership Successfully in BuissnesLayer!  new Owner userEmail = {0} of board :{1}", userEmailFutureOwner, boardName);
-                        log.Info(msg);
                     }
                     else
                     {
-                        log.Warn("not the owner of this board!");
-                        throw new ArgumentException("not the owner of this board!");
+                        log.Warn("not owner of any board");
+                        throw new ArgumentException("not owner of any board");
                     }
+                    
                 }
+                else
                 {
                     log.Warn("user not logged in");
                     throw new ArgumentException("user not logged in");
@@ -646,35 +758,27 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         /// <returns>Board, unless an error occurs .</returns>
         public Board GetBoard(string userEmail, string boardName)
         {
-            try
+            if (userController.IsLoggedIn(userEmail))
             {
-                if (userController.IsLoggedIn(userEmail))
+                if (UserHasThisBoard(userEmail, boardName))
                 {
-                    if (UserHasThisBoard(userEmail, boardName))
-                    {
-                        return this.BoardsOfUsers[userEmail][boardName];
-                        String msg = String.Format("Got board Successfully in BuissnesLayer! userEmail = {0}  board ={1}", userEmail, boardName);
-                        log.Info(msg);
-                    }
-                    else
-                    {
-                        log.Warn("BOARD IS NOT EXIST AT THIS USER ! ");
-                        throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
-                    }
-                    
+                    return this.BoardsOfUsers[userEmail][boardName];
+                    String msg = String.Format("Got board Successfully in BuissnesLayer! userEmail = {0}  board ={1}", userEmail, boardName);
+                    log.Info(msg);
                 }
                 else
                 {
-                    log.Warn("user not logged in");
-                    throw new ArgumentException("user not logged in");
+                    log.Warn("BOARD IS NOT EXIST AT THIS USER ! ");
+                    throw new ArgumentException("BOARD IS NOT EXIST AT THIS USER ! ");
                 }
+
             }
-            catch (Exception e)
+            else
             {
-                log.Warn(e.Message);
-                throw new ArgumentException(e.Message);
+                log.Warn("user not logged in");
+                throw new ArgumentException("user not logged in");
             }
-          
+
         }
 
         /// <summary>
@@ -688,7 +792,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                return GetBoard(email, boardName).GEtColList(columnOrdinal);
+                return GetBoard(email, boardName).GEtColList(columnOrdinal, email); // Very important to send with the email.
                 String msg = String.Format("GetColum Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
                 log.Info(msg);
             }
@@ -711,6 +815,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             try
             {
                 GetBoard(email, boardName).SetMaxTask(limit, columnOrdinal);
+                boardDTOMapper.ChangeColumnLimit(GetBoard(email, boardName).BoardID, columnOrdinal, limit);
                 String msg = String.Format("set LimitColumn Successfully in BuissnesLayer! columnOrdinal = {0}  board ={1}", columnOrdinal, boardName);
                 log.Info(msg);
             }
@@ -775,9 +880,40 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         {
             try
             {
-                return GetBoard(email, boardName).GetTask(taskId);
-                String msg = String.Format("Got Task Successfully in BuissnesLayer!");
-                log.Info(msg);
+                String msg = String.Format("Got Task Successfully in boardcontroller BuissnesLayer!");
+                    log.Info(msg);
+                    return GetBoard(email, boardName).GetTask(taskId);
+                
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+            }
+        }
+        /// <summary>
+        /// This method get a specific Task to the specific user.
+        /// </summary>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <param name="taskId">The id of new task</param>
+        /// <returns>Task, unless an error occurs .</returns>
+        public Task GetTask(string email, string boardName, int taskId, int columnOrdinal)
+        {
+            try
+            {
+                if(columnOrdinal != BacklogState && columnOrdinal != inProgressState && columnOrdinal != Done)
+                {
+                    log.Warn("got column ordinal different the allowed parameters!");
+                    throw new ArgumentException("got column ordinal different the allowed parameters!");
+
+                }
+                else
+                {
+                    String msg = String.Format("Got Task Successfully in BuissnesLayer!");
+                    log.Info(msg);
+                    return GetBoard(email, boardName).GetTask(taskId);
+                }
             }
             catch (Exception e)
             {
@@ -811,6 +947,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.boardDTOMapper.DeleteAllData();
             this.BoardsOfUsers.Clear();
             this.ownerBoards.Clear();
+            this.boardById.Clear();
             String msg = String.Format(" DeleteAllData Successfully in BuissnesLayer!");
             log.Info(msg);
         }

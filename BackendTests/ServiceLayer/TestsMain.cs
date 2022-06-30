@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-using IntroSE.Kanban.Backend.ServiceLayer;
+﻿//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntroSE.Kanban.Backend.Buissnes_Layer;
-using Microsoft.VisualBasic;
+using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace BackendTests.ServiceLayer
 {
@@ -39,49 +34,129 @@ namespace BackendTests.ServiceLayer
         // [TestMethod()]
         static void Main(string[] args)
         {
+            ConsoleColor c = ConsoleColor.Black;
+            Console.BackgroundColor = c;
+            Console.ForegroundColor = ConsoleColor.White;
             // Display the number of command line arguments.
             UserController userController = new UserController();
             UserService userService = new UserService(userController);
             BoardService boardService = new BoardService(userController);
             TaskService taskService = new TaskService(boardService.boardController);
-            UserTests userTests = new UserTests(userController, userService);
+            UserTests userTests = new UserTests(userController, userService); 
             GradingService grading = new GradingService();
+            TaskTests taskTests = new TaskTests(taskService, userService, boardService, grading);
             string email1 = "johndoe@gmail.com";
             string password = "Hash123";
+            string email2 = "johnDOe2@gmail.com";
+            string password2 = "Bad_Password!#!@6";
+            string email3 = "johndoe3@gmail.com";
+            string password3 = "Bad_Password78@@;";
             string boardName = "testName";
             string title = "HW";
             string description = "EX3";
             DateTime dueDate = new DateTime(2025, 6, 15);
             DateTime newDueDate = new DateTime(2026, 8, 14);
-
-
-            userService.DeleteAllData();
-            boardService.DeleteAllData(); // If these calls take a lot of time - the DB might be locked
-
-            ConsoleColor c = ConsoleColor.Green;
-            Console.BackgroundColor = c;
-            Console.ForegroundColor = ConsoleColor.Yellow;
             userService.DeleteAllData();
             boardService.DeleteAllData();
-
+            
+           
+            userTests.DeleteData();
             userTests.createUserTest();
-            userTests.validUserLoginTest();
-            userService.CreateUser("johndoe@gmail.com", "Hash123");
-            //userTests.validUserLoginTest();
             userTests.invalidUserLoginTest();
+            userTests.invalidUserCreation();
+            userTests.invalidLoginTest_2();
+            userTests.invalidUserCreation_2();
+            userTests.logoutTest();
+            userTests.invalidLogoutTest();
+            userTests.validUserLoginTest();
+            userTests.invalidUserCreation_3();
+            
+            userService.CreateUser("j@Gmail.com", "Hash123");
+            userService.CreateUser("j.ohndoe@Gmail.com", "Hash123");
+            userService.CreateUser("j@Gmail.", "Hash123");
+            userService.CreateUser("johndoe@", "Hash123");
+            userService.CreateUser("johndoegmailcom", "Hash123");
+            userService.CreateUser("johndoe@gmail.com", "ash123");
+            userService.CreateUser("johndoe@gmail.com", "hasher");
 
-            boardService.CreateBoard("To do list", "johndoe@gmail.com");
-            boardService.AddTask("johndoe@gmail.com", "To do list", "test", "ssa", dueDate);
-            taskService.EditTitle("johndoe@gmail.com", "To do list", 1, "Hello");
-            taskService.EditDescription("johndoe@gmail.com", "To do list", 1, "Hello");
-            taskService.EditDueDate("johndoe@gmail.com", "To do list", 1, newDueDate);
+
+
+
+            
             BoardTest boraTest = new BoardTest(boardService);
+
+             
+            userTests.validUserLoginTest();
+            userService.CreateUser("johndoe3@gmail.com", "Hash123");
+            userService.CreateUser("sa@aa.co", "Kkk666");
+            userTests.validUserLoginTest();
+            userTests.invalidUserLoginTest();
+            
+            userService.Login("johndoe@gmail.com", "Hash123");
+            boardService.CreateBoard("To do list", "johndoe@gmail.com");
+            grading.Login("johndoe2@gmail.com", "Hash123");
+            Console.WriteLine(grading.AddBoard("johndoe2@gmail.com","To do list"));
+
+            //boardService.AddTask("johndoe@gmail.com", "To do list2", "test", "ssa", dueDate);
+            grading.AddTask("johndoe2@gmail.com", "To do list", "test", "ssa", dueDate);
+            
+            Console.WriteLine(grading.UpdateTaskTitle("johndoe2@gmail.com", "To do list", 0,1, null));
+
+            //taskService.EditDescription("johndoe2@gmail.com", "To do list", 1, "Hello");
+            //taskService.EditDueDate("johndoe2@gmail.com", "To do list", 1, newDueDate);
+            /* Lessons I've learned today -
+             1) You can't call methods in the gradingService after 
+            instantiating users\boards in the userService\boardService.
+            These are like 2 different environments. This may cause bugs in the future 
+            and perhaps even creates bugs rn.
+            Perhaps we do need to implement a ServiceFactory after all :(.
+            2) For some reason it seems as though you can't use column names as parameters 
+            when in command.Parameters - take note of that and insert column\table names 
+            as variables instead of parameters. - Needs confirmation.
+            3) We do need to start calling methods in the TestsMain using actual
+            tests. Without them we miss some crucial sanity checks which consume
+            a lot of time in debugging.
+              */
+            //boardService.LimitColumn("johndoe2@gmail.com", "To do list", 1, 17);
+
+            
+
             boraTest.ValidGetBoardById();
             boraTest.GetOwner();
-            boraTest.ValidDeleteBoard();
             userService.CreateUser("tamar@gmail.com", "Hash123");
-            userController.Login("tamar@gmail.com", "Hash123");
-            boraTest.InvalidDeleteBoard();
+            userService.Login("tamar@gmail.com", "Hash123");
+            // boraTest.InvalidDeleteBoard();
+            // boraTest.JoinBoardSuccessfully();
+            // boraTest.AddValidTaskTest();
+            // boraTest.ValidLimitColumn2();
+            boardService.CreateBoard("To do list", "tamar@gmail.com");
+            // boraTest.JoinBoardSuccessfully();// checks if  the user can join to board has the same name as a board he got.
+            //boraTest.JoinBoardUnsuccessfully_2();
+            // boraTest.JoinBoardUnsuccessfully();
+            // boraTest.ChangeOwnerSuccessfully();
+            // boraTest.LeaveBoardSuccessfully();
+            userController.CreateUser("itay@gmail.com", "Hash123");
+            userController.Login("itay@gmail.com", "Hash123");
+            boardService.boardController.joinBoard(1, "itay@gmail.com");
+            // The following throws exceptions:
+            // boraTest.AssignTaskSuccessfully("itay@gmail.com", "To do list");
+            // taskTests.IsAssigneeTest("itay@gmail.com", "To do list");
+            // boraTest.ChangeOwnerSuccessfully();
+
+            
+            // boraTest.ChangeOwnerSuccessfully(); \\ owner loged in and user is a member -> successfully
+            // boraTest.LeaveBoardSuccessfully();//tamar leave the board
+            // boraTest.ChangeOwnerUnsuccessfully(); //tamar is not a nenber of this board
+            // userService.logout("johndoe@gmail.com");// the owner of to do board loged out
+            // boraTest.ChangeOwnerUnsuccessfully_2();// the member of the board try to "steal" the ownership
+            // boraTest.LeaveBoardUnsuccessfully();
+            // boraTest.ChangeOwnerUnsuccessfully_3();
+            // boraTest.ChangeOwnerUnsuccessfully_4();
+            // boraTest.LeaveBoardUnsuccessfully_2();
+            // boraTest.InvalidDeleteBoard_2();
+            // boraTest.LeaveBoardUnsuccessfully_3();
+
+            boraTest.ValidDeleteBoard();
             userService.DeleteAllData();
             boardService.DeleteAllData();
 
@@ -123,22 +198,45 @@ namespace BackendTests.ServiceLayer
             // boraTest.InvalidLimitColumn();
             // boraTest.ValidDeleteBoardTest();
             // boraTest.InvalidDeleteBoardTest();
-
-            grading.AddTask(email1, boardName, title, description, dueDate);
+            //
+            // Console.WriteLine(grading.DeleteData());
+            // Console.WriteLine(grading.Register(email1, password));
+            // Console.WriteLine(grading.Logout(email1));
+            // //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
+            // Console.WriteLine(grading.LoadData());
+            // Console.WriteLine(grading.Login(email1, password));
+            // Console.WriteLine(grading.Register(email1, password));
+            // Console.WriteLine(grading.Logout(email1));
+            // //Console.WriteLine(grading.Login("JOHNDOE@gmail.com", password));
+            // Console.WriteLine(grading.Login(email1, password));
+            // Console.WriteLine(grading.AddBoard(email1, boardName));
+            // Console.WriteLine(grading.AddTask(email1, boardName, title, description, dueDate));
+            // Console.WriteLine(grading.AssignTask(email1, boardName, 0, 0, email1));
+            // Console.WriteLine(grading.AdvanceTask(email1, boardName, 0, 0));
+            // // Should fail
+            // Console.WriteLine(grading.AddTask(email1, boardName, "", description, dueDate));
+            // // New user
+            // Console.WriteLine(grading.Register(email2, password2));
+            // Console.WriteLine(grading.Login(email2, password2));
+            // Console.WriteLine(grading.JoinBoard(email2, 0));
+            // Console.WriteLine(grading.AddTask(email2, boardName, ",al;", description, dueDate));
+            // Console.WriteLine("Should fail");
+            // Console.WriteLine(grading.UpdateTaskTitle(email1, boardName, 0, 1, ""));
+            // Console.WriteLine(grading.AssignTask(email1, boardName, 0, 1, email2));
+            // Console.WriteLine(grading.AdvanceTask(email2, boardName, 0, 1));
+            // Console.WriteLine(grading.GetColumn(email2, boardName, 1));
+            // Console.WriteLine(grading.UpdateTaskDueDate(email1, boardName, 1, 1, DateTime.MaxValue));
+            // // New user
+            // Console.WriteLine(grading.Register(email3, password3));
+            // Console.WriteLine(grading.JoinBoard(email3, 0));
+            // Console.WriteLine();
+            // Console.WriteLine(grading.DeleteData());
+            // grading.AddTask(email1, boardName, title, description, dueDate);
             TaskTests tests = new TaskTests(taskService, userService, boardService, grading);
-
-
-            userTests.createUserTest();
-            userTests.validUserLoginTest();
-            userTests.invalidUserLoginTest();
-            userTests.invalidUserCreation();
-            userTests.invalidLoginTest_2();
-            userTests.invalidUserCreation_2();
-            userTests.logoutTest();
-            userTests.invalidLogoutTest();
-            userTests.invalidUserCreation_3();
+            
 
             
+
 
 
 

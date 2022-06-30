@@ -67,13 +67,15 @@ namespace BackendTests.ServiceLayer
         {
             
             string email = "tamar@gmail.com";
-            string boardName = "testName";
+            string boardName = "To do list";
             string title = "HW";
             string description = "EX3";
-            DateTime dueDate = new DateTime(14 / 07 / 2025);
+            DateTime dueDate = new DateTime(2025,05,10);
             Response r = new Response(null, email);
-            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), r.OKJson());
-
+            Assert.AreEqual(_boardService.AddTask(email, boardName, title, description, dueDate), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo added task succsusfully");
+            Assert.AreEqual(_boardService.AddTask(email, boardName, "ss", description, new DateTime(2025, 05, 22)), ToJson.toJson(r));
+            Console.WriteLine("wwoohooo added task2 succsusfully");
         }
         
         /// <summary>
@@ -218,7 +220,8 @@ namespace BackendTests.ServiceLayer
         public void ValidInProgress()
         {
             string email = "tamar@gmail.com";
-            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(_boardService.boardController.GetAllInPrograss(email)));
+            Response r = new Response(_boardService.boardController.GetAllInPrograss(email));
+            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(r));
 
         }
 
@@ -230,7 +233,8 @@ namespace BackendTests.ServiceLayer
         public void ValidInProgress_2()
         {
             string email = "tamar@gmail.com";
-            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(_boardService.boardController.GetAllInPrograss(email)));
+            Response r = new Response(_boardService.boardController.GetAllInPrograss(email));
+            Assert.AreEqual(_boardService.InProgress(email), ToJson.toJson(r));
 
         }
 
@@ -298,9 +302,22 @@ namespace BackendTests.ServiceLayer
             string boardName = "testName";
             int limit = 10;
             int columnOrdinal = 2;
-            Response r = new Response(null, true);
-            Assert.AreEqual(_boardService.LimitColumn(email, boardName, columnOrdinal,limit), r.OKJson());
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.LimitColumn(email, boardName, columnOrdinal,limit), ToJson.toJson(r));
 
+        }
+        /// <summary>
+        /// This method tests a valid set of a column limit of certain board user in the system according to requirement  10.
+        /// </summary>
+        [TestMethod]
+        public void ValidLimitColumn2()
+        {
+            string email = "tamar@gmail.com";
+            string boardName = "testName";
+            int limit = 10;
+            int columnOrdinal = 1;
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.LimitColumn(email, "To do list", columnOrdinal, limit), ToJson.toJson(r));
         }
         /// <summary>
         /// This method tests a invalid set of a column limit of certain board user in the system according to requirement  10.
@@ -399,7 +416,7 @@ namespace BackendTests.ServiceLayer
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.boardController.GetBoardById(1), _boardService.boardController.GetBoard(email,boardName));
+            Assert.AreEqual(_boardService.boardController.GetBoardById(0), _boardService.boardController.GetBoard(email,boardName));
         }
         /// <summary>
         /// Tests if a board has an owner
@@ -417,22 +434,25 @@ namespace BackendTests.ServiceLayer
         {
             string email = "johndoe@gmail.com";
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.DeleteBoard(boardName,email), "{}");
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.DeleteBoard(boardName,email),ToJson.toJson(r));
         }
         /// <summary>
-        /// Tests the deletion of a board which doesn't exist
+        /// Tests the deletion of a board with a user that not related to this board. 
         /// </summary>
-        public void InvalidDeleteBoard()
+        public void InvalidDeleteBoard()//run this test before join this member to the board 
         {
             string boardName = "To do list";
-            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"), "THIS USER ISN'T THE OWNER OF THE BOARD ! ");
+            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"), " BOARD IS NOT EXIST AT THIS USER ! ");
         }
         /// <summary>
         /// Tests a deletion attempt of a board by a user who is not the owner
         /// </summary>
-        public void InvalidDeleteBoard_2()
+        public void InvalidDeleteBoard_2()//run this test after join this member to the board 
         {
-
+            string boardName = "To do list";
+            Assert.AreEqual(_boardService.DeleteBoard(boardName, "tamar@gmail.com"),
+                "THIS USER ISN'T THE OWNER OF THE BOARD !");
         }
 
 
@@ -441,7 +461,10 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void JoinBoardSuccessfully()
         {
+            Response r = new Response(null);
 
+            Assert.AreEqual(_boardService.JoinBoard(1, "tamar@gmail.com"),
+                ToJson.toJson(r));
         }
 
         /// <summary>
@@ -449,15 +472,15 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void JoinBoardUnsuccessfully()
         {
-
+            Assert.AreEqual(_boardService.JoinBoard(2, "tamar@gmail.com"), "THIS BOARD DOES NOT EXSIT");
         }
 
         /// <summary>
-        /// Tests an invalid enrollment to a board which was deleted.
+        /// Tests an invalid enrollment to a board that the user us a member of already
         /// </summary>
         public void JoinBoardUnsuccessfully_2()
         {
-
+            Assert.AreEqual(_boardService.JoinBoard(1, "tamar@gmail.com"), "user already joined that board");
         }
 
         /// <summary>
@@ -465,7 +488,8 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void LeaveBoardSuccessfully()
         {
-
+            Response r = new Response(true);
+            Assert.AreEqual(_boardService.LeaveBoard(1, "tamar@gmail.com"), ToJson.toJson(r));
         }
 
         /// <summary>
@@ -473,7 +497,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void LeaveBoardUnsuccessfully()
         {
-
+            Assert.AreEqual(_boardService.LeaveBoard(1, "itay@gmail.com"), "user doesn't have that board");
         }
 
         /// <summary>
@@ -481,6 +505,15 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void LeaveBoardUnsuccessfully_2()
         {
+            Assert.AreEqual(_boardService.LeaveBoard(1, "johndoe@gmail.com"), "OWNER CAN'T LEAVE HIS OWN BOARD!");
+
+        }
+        /// <summary>
+        /// Tests an attempt to leave a board that does not exist
+        /// </summary>
+        public void LeaveBoardUnsuccessfully_3()
+        {
+            Assert.AreEqual(_boardService.LeaveBoard(2, "johndoe@gmail.com"), "OWNER CAN'T LEAVE HIS OWN BOARD!");
 
         }
 
@@ -489,6 +522,8 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerSuccessfully()
         {
+            Response r = new Response(null);
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "tamar@gmail.com", "To do list"), ToJson.toJson(r));
 
         }
 
@@ -497,6 +532,7 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerUnsuccessfully()
         {
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "tamar@gmail.com", "To do list"), "USER DOES NOT A MEMBER OF THIS BOARD");
 
         }
 
@@ -505,22 +541,50 @@ namespace BackendTests.ServiceLayer
         /// </summary>
         public void ChangeOwnerUnsuccessfully_2()
         {
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do list"), "user not logged in");
 
+        }
+        /// <summary>
+        /// Tests an attempt to switch owner to board that does not exist
+        /// </summary>
+        public void ChangeOwnerUnsuccessfully_3()
+        {
+            Assert.AreEqual(_boardService.TransferOwnership("johndoe@gmail.com", "itay@gmail.com", "To do "), "user not logged in");
+
+        }
+        /// <summary>
+        /// Tests an attempt to switch owner to board with a user that not an owner of any board.
+        /// </summary>
+        public void ChangeOwnerUnsuccessfully_4()
+        {
+            Assert.AreEqual(_boardService.TransferOwnership("tamar@gmail.com", "itay@gmail.com", "To do list"), "not owner of any board");
+
+        }
+
+        // /// <summary>
+        // /// This methods checks that a task indeed has a user assigned to it.
+        // /// </summary>
+        // public void AddTask_2()
+        // {
+        //     Assert.AreEqual(_boardService.AddTask("tamar@gmail.com"), "not owner of any board");
+        // }
+
+        /// <summary>
+        /// This methods checks that u can actuallu assigne user mamber a the board sucessfully.
+        /// </summary>
+        public void AssignTaskSuccessfully(string email, string boardName)
+        {
+            Response r = new Response(null, email);
+            Assert.AreEqual(_boardService.AssignTask(email, boardName, 0, "itay@gmail.com", 1), ToJson.toJson(r));
         }
 
         /// <summary>
         /// This methods checks that a task indeed has a user assigned to it.
         /// </summary>
-        public void AddTask_2()
+        public void AssignTaskUnSuccessfully()
         {
-
-        }
-
-        /// <summary>
-        /// This methods checks that a task indeed has a user assigned to it.
-        /// </summary>
-        public void GetAssignee()
-        {
+            Response r = new Response(null, "tamar@gmail.com");
+            Assert.AreEqual(_boardService.AssignTask("tamar@gmail.com", "To do list", 0, "itay@gmail.com", 1), ToJson.toJson(r));
 
         }
 

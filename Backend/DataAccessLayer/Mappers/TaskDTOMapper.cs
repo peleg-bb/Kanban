@@ -6,10 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
+using System.Reflection;
+using log4net;
+using log4net.Config;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 {
-    internal class TaskDTOMapper
+    internal class TaskDTOMapper    //TODO: Add AssignUser method
     {
         private List<TaskDTO> taskDTOs;
         const string taskIDColumnName = "Task_ID";
@@ -21,17 +24,38 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         const string dueDateColumnName = "Due_Date";
         const string creationDateColumnName = "Creation_Time";
         const string tableName = "Tasks";
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+
         internal TaskDTOMapper()
         {
             this.taskDTOs = new List<TaskDTO>();
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            log.Info("Starting log!");
         }
-        public TaskDTO CreateTask(int taskID, int boardID, string assignee, string status, string title, string description, string dueDate, string creationTime)
+        /// <summary>
+        /// Creates a task in the database and instantiates a task DTO.
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="boardID"></param>
+        /// <param name="assignee"></param>
+        /// <param name="status"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="creationTime"></param>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
+        public TaskDTO CreateTask(int taskID, int boardID, string assignee, string status, string title,
+            string description, string dueDate, string creationTime)
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
 
@@ -70,6 +94,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
                     TaskDTO newTask = new TaskDTO(taskID, boardID, assignee, status, title, description, dueDate, creationTime);
                     taskDTOs.Add(newTask);
+                    String msg = String.Format("CreateTask Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     return newTask;
 
 
@@ -86,26 +112,32 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Create task failed because " + ex.Message);
                     // log error
                 }
                 finally
                 {
-
                     command.Dispose();
                     connection.Close();
                 }
             }
             return null; // If failed to create user
         }
-
+        /// <summary>
+        /// Edits a task title in the database (does not edit the DTO).
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="newTitle"></param>
+        /// <exception cref="DALException"></exception>
         public void EditTitle(int taskID, string newTitle)
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
 
@@ -127,6 +159,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(taskIDParam);
                     command.Parameters.Add(titleParam);
                     res = command.ExecuteNonQuery();
+                    String msg = String.Format("EditTitle Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     //
                     // command.CommandText = "Select * FROM Users";
                     //
@@ -139,7 +173,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 catch (SQLiteException ex)
                 {
                     //Console.WriteLine(command.CommandText);
+
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
+
                     throw new DALException($"Change task title failed because " + ex.Message);
                     // log error
                 }
@@ -151,14 +188,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
             }
         }
-            public void EditDescription(int taskID, string newDescription)
+        /// <summary>
+        /// Edits a task description in the database (does not edit the DTO).
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="newDescription"></param>
+        /// <exception cref="DALException"></exception>
+        public void EditDescription(int taskID, string newDescription)
             {
                 string path = Path.GetFullPath(Path.Combine(
                     Directory.GetCurrentDirectory(), "kanban.db"));
-                string connectionString = $"Data Source={path}; Version=3;";
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
+            string connectionString = $"Data Source={path}; Version=3;";
 
-                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-                {
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
+            {
                     SQLiteCommand command = new SQLiteCommand(null, connection);
 
 
@@ -179,19 +223,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                         command.Parameters.Add(taskIDParam);
                         command.Parameters.Add(descriptionParam);
                         res = command.ExecuteNonQuery();
-                        //
-                        // command.CommandText = "Select * FROM Users";
-                        //
-                        // SQLiteDataReader reader = command.ExecuteReader();
-                        // while (reader.Read())
-                        // {
-                        //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
-                        // }
+                        String msg = String.Format("EditTitle Successfully in TaskDTOM!!");
+                        log.Info(msg);
+
                     }
                     catch (SQLiteException ex)
                     {
                         //Console.WriteLine(command.CommandText);
                         Console.WriteLine(ex.Message);
+                        log.Warn(ex.Message);
                         throw new DALException($"Change task title failed because " + ex.Message);
                         // log error
                     }
@@ -204,13 +244,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 }
                 // If failed to create user
             }
+        /// <summary>
+        /// Edits a task DueDate in the database (does not edit the DTO).
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="newDueDate"></param>
+        /// <exception cref="DALException"></exception>
         public void EditDueDate(int taskID, string newDueDate)
         {
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
             string connectionString = $"Data Source={path}; Version=3;";
 
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
 
@@ -232,6 +279,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Parameters.Add(taskIDParam);
                     command.Parameters.Add(dueDateParam);
                     res = command.ExecuteNonQuery();
+                    String msg = String.Format("EditDueDate Successfully in TaskDTOM!!");
+                    log.Info(msg);
                     //
                     // command.CommandText = "Select * FROM Users";
                     //
@@ -245,6 +294,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                 {
                     //Console.WriteLine(command.CommandText);
                     Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
                     throw new DALException($"Change task title failed because " + ex.Message);
                     // log error
                 }
@@ -255,8 +305,67 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     connection.Close();
                 }
             }
-            // If failed to create user
+            
         }
+
+        internal void EditAssignee(int taskID, string newAssignee)
+        {
+            string path = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(), "kanban.db"));
+            SQLiteConnectionStringBuilder builder = new() { DataSource = path };
+            string connectionString = $"Data Source={path}; Version=3;";
+            using (SQLiteConnection connection = new SQLiteConnection(builder.ConnectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+                    command.Prepare();
+
+                    // Console.WriteLine(res);
+                    // Console.WriteLine("success!");
+                    command.CommandText = $"UPDATE {tableName}" +
+                                          $" SET {assigneeColumnName} = @assignee_val " +
+                                          $"WHERE {taskIDColumnName} = @taskID_val;";
+                    SQLiteParameter taskIDParam = new SQLiteParameter(@"taskID_val", taskID);
+                    SQLiteParameter assigneeParam = new SQLiteParameter(@"assignee_val", newAssignee);
+                    command.Parameters.Add(taskIDParam);
+                    command.Parameters.Add(assigneeParam);
+                    res = command.ExecuteNonQuery();
+                    String msg = String.Format("EditAssignee Successfully in TaskDTOM!!");
+                    log.Info(msg);
+                    //
+                    // command.CommandText = "Select * FROM Users";
+                    //
+                    // SQLiteDataReader reader = command.ExecuteReader();
+                    // while (reader.Read())
+                    // {
+                    //      Console.WriteLine(reader["email"] + ", " + reader["password"]);
+                    // }
+                }
+                catch (SQLiteException ex)
+                {
+                    //Console.WriteLine(command.CommandText);
+                    Console.WriteLine(ex.Message);
+                    log.Warn(ex.Message);
+                    throw new DALException($"Change task title failed because " + ex.Message);
+                    // log error
+                }
+                finally
+                {
+
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Redundant method. The Board DTO will load all of its tasks. Do not use.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="DALException"></exception>
         internal List<TaskDTO> LoadTasks()
         {
             throw new NotImplementedException("Redundant method, DO NOT USE!");
@@ -310,13 +419,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
 
             List<TaskDTO> ifFailed = new List<TaskDTO>();
             return ifFailed;
+            */
         }
 
-
+        /// <summary>
+        /// Redundant method. The BoardDTOMapper will delete all tasks. Do not use.
+        /// </summary>
         public void DeleteAllData()
         {
-            throw NotImplementedException("Redundant method, DO NOT USE!");
-            /*
+
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
@@ -351,8 +462,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Dispose();
                     connection.Close();
                 }
-            */
             }
         }
     }
-
+}

@@ -12,6 +12,7 @@ using System.Reflection;
 using System.IO;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using IntroSE.Kanban.Backend.DataAccessLayer.Mappers;
+using System.Text.RegularExpressions;
 
 namespace IntroSE.Kanban.Backend.Buissnes_Layer
 {
@@ -31,7 +32,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         [JsonIgnore]
         private int State;
         [JsonIgnore]
-        private static int ID = 1;
+        private static int ID = 0;
         public int BoardId;
         private TaskDTOMapper taskDTOMapper;
 
@@ -51,13 +52,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.State = 0;
             this.Assignee = assignee;
             ID += 1;
+            if (dueDate <= CreationTime)
+            {
+                throw ex;
+            }
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
             log.Info("Starting log!");
             BoardId = boardId;
             this.taskDTOMapper = new TaskDTOMapper();
             // Do NOT Load Data!
-
         }
         /// <summary>
         /// This method edit the title of a task
@@ -65,10 +69,12 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newTitle">The new Title of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        internal void EditTitle(string newTitle)
+        internal void EditTitle(string newTitle, string email)
         {
 
-            if (newTitle.Length==0 || newTitle.Length>50 || newTitle == null)
+
+            if (String.IsNullOrEmpty(newTitle) || this.State == Done || newTitle.Length>50 ||  IsOnlySpaces(newTitle) || IsHebrew(newTitle) || email!=this.Assignee)
+
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -122,9 +128,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newDescription">The description of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        internal void EditDescription(string newDescription)
+        internal void EditDescription(string newDescription, string email)
         {
-            if (newDescription.Length>300 || newDescription==null)
+            if (newDescription==null || this.State==Done || newDescription.Length > 300 || IsOnlySpaces(newDescription) || IsHebrew(newDescription) || email!=this.Assignee)
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -143,9 +149,9 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         ///  <param name="newDueDate">The new due date of the task</param>
         /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
-        internal void EditDueDate(DateTime newDueDate)
+        internal void EditDueDate(DateTime newDueDate, string email)
         {
-            if (newDueDate<=this.CreationTime || newDueDate == null)
+            if (newDueDate<=this.CreationTime || email!=this.Assignee || this.State == Done)
             {
                 log.Warn(ex.Message);
                 throw ex;
@@ -158,10 +164,17 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                 this.taskDTOMapper.EditDueDate(this.Id, newDueDate.ToString());
             }
         }
+        /// <summary>
+        /// This method edit the assignee of a task
+        /// </summary>
+        ///  <param name="userEmail">The new assignee of the task</param>
+        /// <returns> nothing, just change it in the tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
 
         internal void EditAssignee(string userEmail)
         {
             this.Assignee = userEmail;
+            this.taskDTOMapper.EditAssignee(this.Id, userEmail);
+            
         }
         public string GetTitle()
         {
@@ -174,6 +187,32 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         public string GetDueDate()
         {
             return this.DueDate.ToString();
+        }
+        private Boolean IsOnlySpaces(string str)
+        {
+            Regex reg = new Regex(@"^\s*$");
+            Match strMatch = reg.Match(str);
+            return strMatch.Success;
+        }
+        private bool IsHebrew(string str)
+        {
+            string[] heb =
+            {
+                "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש",
+                "ת", "ף", "ץ", "ך", "ן"
+            };
+            List<string> hebrew = new List<string>(heb);
+            for (int i = 0; i < heb.Length; i++)
+            {
+                if (str.Contains(heb[i]))
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+
         }
     }
 }

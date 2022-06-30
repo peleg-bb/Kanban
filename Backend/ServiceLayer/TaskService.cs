@@ -61,10 +61,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Task task = boardController.GetTask(email, boardName,taskId);
+                Task task = boardController.GetTask(email, boardName, taskId);
                 try
                 {
-                    task.EditTitle(newTitle);
+                    task.EditTitle(newTitle, email);
                     Response response = new Response(null, task);
                     String msg = String.Format("Task title edited! new title = {0}", newTitle);
                     log.Info(msg);
@@ -74,18 +74,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                     log.Warn(ex.Message);
-                    Response response = new Response(ex.Message, task);
-                    return response.BadJson();
+                    Response response = new Response(ex.Message);
+                    throw ex;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message, false);
-                return response.BadJson();
+                Response response = new Response(ex.Message);
+                throw ex;
             }
         }
 
@@ -104,7 +104,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Task task = boardController.GetTask(email, boardName,taskId);
                 try
                 {
-                    task.EditDescription(newDescription);
+                    task.EditDescription(newDescription, email);
                     Response response = new Response(null, task);
                     String msg = String.Format("Task description edited! new description = {0}", newDescription);
                     log.Info(msg);
@@ -115,16 +115,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     Console.WriteLine(ex.Message);
                     log.Warn(ex.Message);
-                    Response response = new Response(ex.Message, task);
-                    return response.BadJson();
+                    Response response = new Response(ex.Message);
+                    throw ex;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message, false);
-                return response.BadJson();
+                Response response = new Response(ex.Message);
+                throw ex;
             }
         }
 
@@ -140,31 +140,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Task task = boardController.GetTask(email, boardName,taskId);
-                try
-                {
-                    task.EditDueDate(newDueDate);
-                    Response response = new Response(null, task);
-                    String msg = String.Format("Task due date edited! new due date = {0}", newDueDate);
-                    log.Info(msg);
-                    Console.WriteLine(msg);
-                    return response.OKJson();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    log.Warn(ex.Message);
-                    Response response = new Response(ex.Message, task);
-                    return response.BadJson();
-                }
+                var task = boardController.GetTask(email, boardName, taskId);
+                task.EditDueDate(newDueDate,email);
+                var response = new Response(null);
+                var msg = $"Task due date edited! new due date = {newDueDate}";
+                log.Info(msg);
+                return ToJson.toJson(response);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 log.Warn(ex.Message);
-                Response response = new Response(ex.Message, false);
-                return response.BadJson();
+                var response = new Response(ex.Message);
+                throw ex;
             }
         }
+            
+        }
     }
-}
