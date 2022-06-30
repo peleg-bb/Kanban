@@ -12,22 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Frontend.ModelView;
 
 namespace Frontend.View
 {
     /// <summary>
-    /// Interaction logic for Boards.xaml
+    /// Interaction logic for Board.xaml
     /// </summary>
-    public partial class Boards : Page
+    public partial class Board : Page
     {
-        private BoardsVM _boardsVM;
-        public Boards()
+        public Board()
         {
             InitializeComponent();
-            _boardsVM = new BoardsVM();
         }
-
-        
     }
 }
