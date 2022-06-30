@@ -427,8 +427,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
         /// </summary>
         public void DeleteAllData()
         {
-            throw new NotImplementedException("Redundant method, DO NOT USE!");
-            /*
+
             string path = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(), "kanban.db"));
             string connectionString = $"Data Source={path}; Version=3;";
@@ -463,7 +462,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Mappers
                     command.Dispose();
                     connection.Close();
                 }
-            }*/
+            }
         }
     }
 }

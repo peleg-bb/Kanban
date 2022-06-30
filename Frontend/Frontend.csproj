@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="View\bgu-1.jpg" />
+    <None Remove="View\img1038337.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <Resource Include="View\bgu-1.jpg" />
+    <Resource Include="View\img1038337.jpg" />
   </ItemGroup>
 
 </Project>

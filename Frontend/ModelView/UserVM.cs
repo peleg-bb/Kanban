@@ -3,10 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Frontend.Model;
 
 namespace Frontend.ModelView
 {
     internal class UserVM
     {
+        private UserModel userModel;
+
+        public UserVM()
+        {
+            this.userModel = new UserModel();
+        }
+
+        public bool Login(string username, string password)
+        {
+            this.userModel.Login(username, password);
+            return true;
+        }
+
+        public bool Register(string username, string password)
+        {
+            this.userModel.Register(username, password);
+            return true;
+        }
+
+        public bool Logout(string email)
+        {
+            this.userModel.Logout(email);
+            return true;
+        }
     }
 }
