@@ -5,10 +5,25 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Frontend.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Boards">
+      d:DesignHeight="472.83" d:DesignWidth="827.637"
+      Title="Boards" Foreground="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
 
-    <Grid>
-        
+    <Grid Margin="-172,-69,-155,-58">
+        <Grid.Background>
+            <ImageBrush ImageSource="/View/bgu-1.jpg"/>
+        </Grid.Background>
+        <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="338" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
+            <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
+        </Border>
+        <ItemsControl x:Name="___listOfBoards_" 
+            ItemsSource="{Binding ListOfBoardsOfUser}" Margin="310,164,310,165" Foreground="#FFCA6D6D" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding NameOfThrBoard}"
+                            Command="{Binding GoToThisBoard} " 
+                            CommandParameter="{Binding NameOfThrBoard}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Page>

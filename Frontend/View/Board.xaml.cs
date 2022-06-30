@@ -16,15 +16,13 @@ using System.Windows.Shapes;
 namespace Frontend.View
 {
     /// <summary>
-    /// Interaction logic for Boards.xaml
+    /// Interaction logic for Board.xaml
     /// </summary>
-    public partial class Boards : Page
+    public partial class Board : Page
     {
-        public Boards()
+        public Board()
         {
             InitializeComponent();
         }
-
-        
     }
 }
