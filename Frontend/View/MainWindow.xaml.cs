@@ -49,7 +49,7 @@ namespace Frontend.View
             try
             {
                 userVM.Login(email.ToString(), password.ToString());
-                Boards boards = new Boards(email.ToString());
+                BoardsView boards = new BoardsView(email.ToString());
             }
             catch (Exception ex)
             {

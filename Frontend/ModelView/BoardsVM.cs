@@ -10,15 +10,16 @@ namespace Frontend.ModelView
     internal class BoardsVM
     {
         private BoardsModel _boardsModel;
-
-        public BoardsVM()
+        private string _email;
+        public BoardsVM(string email)
         {
-            _boardsModel = new BoardsModel();
+            _boardsModel = new BoardsModel(email);
+            _email = email;
         }
 
-        public string GetBoards()
+        public Dictionary<int, string> GetBoards(string email)
         {
-            return _boardsModel.GetBoards();
+            return _boardsModel.GetBoardNames(email);
         }
     }
 }

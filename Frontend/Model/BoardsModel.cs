@@ -15,20 +15,22 @@ namespace Frontend.Model
     {
         private BoardService boardService;
         private ServiceFactory serviceFactory;
+        private string _email;
 
-        public BoardsModel()
+        public BoardsModel(string email)
         {
             this.serviceFactory = ServiceFactory.getServiceFactrory();
             this.boardService = serviceFactory.boardService;
+            this._email = email;
         }
 
-        public List<string> GetUserBoards(string email)
+        public Dictionary<int, string> GetBoardNames(string email)
         {
 
             string boardNames = boardService.GetUserBoards(email);
 
             //deserialize boardNames JSON to List<Board>
-            List<string> boards = JsonConvert.DeserializeObject<List<string>>(boardNames); 
+            Dictionary<int, string> boards = JsonConvert.DeserializeObject<Dictionary<int, string>>(boardNames); 
             // Change so it happens in ServiceLayer?
             return boards;
         }

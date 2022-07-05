@@ -400,10 +400,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 List<int> boardIDs = boardController.GetUserBList(email);
-                List<string> boardNames = new List<string>();
+                Dictionary<int, string> boardNames = new Dictionary<int, string>();
                 foreach (int i in boardIDs)
                 {
-                    boardNames.Add(boardController.GetBoardById(i).name);
+                    boardNames[i] = boardController.GetBoardById(i).name;
                 }
                 Response r = new Response(null, boardNames);
                 return ToJson.toJson(r);
