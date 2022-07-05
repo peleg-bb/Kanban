@@ -10,7 +10,7 @@
 
     <Grid Margin="0,0,-81,-72">
         <Grid.Background>
-            <ImageBrush ImageSource="/View/bgu-1.jpg"/>
+            <ImageBrush ImageSource="/View/img1038337.jpg"/>
         </Grid.Background>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="288" Margin="0,87,0,0" VerticalAlignment="Top" Width="598" Background="#FFAE7A48">
             <Label Content="             Label" HorizontalAlignment="Left" Height="37" Margin="164,9,0,0" VerticalAlignment="Top" Width="234" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
