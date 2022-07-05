@@ -37,11 +37,24 @@ namespace Frontend.View
         {
             _boardsVM.GetBoards(email);
         }
-
-
+        private void Search_Board(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TasksView tx = new TasksView(Int32.Parse(IdT.ToString()), BoardNameT.ToString(),email);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void BoardNameT_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
     }
