@@ -38,6 +38,7 @@ namespace Frontend.View
             _boardsVM.GetBoards(email);
         }
 
+        
 
     }
 }

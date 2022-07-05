@@ -16,7 +16,7 @@
         <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="338" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
             <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
         </Border>
-        //binding the boards to the listbox
+
         <ListBox x:Name="boards" ItemsSource="{Binding Boards}" Margin="0,0,0,0" VerticalAlignment="Top" Width="737" Height="300" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -25,5 +25,6 @@
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Page>
