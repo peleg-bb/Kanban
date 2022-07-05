@@ -23,12 +23,13 @@ namespace Frontend.View
     {
         private BoardsVM _boardsVM;
         private string email;
-        Dictionary<int, string> boards;
+        private Dictionary<int, string> _boardsDictionary;
         public BoardsView(string userEmail)
         {
             InitializeComponent();
             this._boardsVM = new BoardsVM(email);
-            this.boards = _boardsVM.GetBoards(email);
+            this._boardsDictionary = new Dictionary<int, string>();
+            this._boardsDictionary = _boardsVM.GetBoards(email);
         }
 
 
