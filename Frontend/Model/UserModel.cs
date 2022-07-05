@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using Newtonsoft.Json;
 
 namespace Frontend.Model
 {
@@ -21,7 +22,8 @@ namespace Frontend.Model
         //login
         public string Login(string username, string password)
         {
-            return userService.Login(username, password);
+            string response = userService.Login(username, password);
+            return JsonConvert.DeserializeObject<string>(response);
         }
 
         public void Logout(string username)
