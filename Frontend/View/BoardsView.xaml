@@ -16,14 +16,12 @@
         <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="338" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
             <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
         </Border>
-        //binding the boards to the listbox
-        <ListBox x:Name="boards" ItemsSource="{Binding Boards}" Margin="0,0,0,0" VerticalAlignment="Top" Width="737" Height="300" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="50" Margin="0,0,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
-                        <Label Content="{Binding Name}" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        <DataGrid x:Name="dg" ItemsSource="{Binding Boards}" AutoGenerateColumns="False" Margin="312,254,318,170" SelectionChanged="dg_SelectionChanged" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="  id   " Binding="{Binding Key}"/>
+                <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>
