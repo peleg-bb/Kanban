@@ -29,16 +29,25 @@ namespace Frontend.View
             userVM = new UserVM();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public void UserEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            _email = e.ToString();
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                userVM.Register(email.ToString(), Password.ToString());
+                this._email = email.Text;
+                this._password = Password.Password.ToString();
+                if (userVM.Register(_email, _password))
+                {
+                    userVM.Login(_email, _password);
+                }
+                else
+                {
+                    MessageBox.Show("Something Went wrong ;(");
+                }
             }
             catch (Exception ex)
             {
@@ -50,9 +59,10 @@ namespace Frontend.View
         {
             try
             {
-            this._email = email.Text;
+                this._email = email.Text;
+                this._password = Password.Password.ToString();
 
-                if (userVM.Login(_email, Password.Password.ToString()))
+                if (userVM.Login(_email, _password))
                 {
                     BoardsView boards = new BoardsView(_email);
                 }

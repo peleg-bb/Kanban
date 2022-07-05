@@ -24,8 +24,7 @@ namespace Frontend.Model
         {
             string response = userService.Login(username, password);
             Console.WriteLine(response);
-            JsonConvert.DeserializeObject<Object>(response);
-            return response;
+            return JsonConvert.DeserializeObject<string>(response);
         }
 
         public void Logout(string username)
@@ -33,9 +32,16 @@ namespace Frontend.Model
             userService.logout(username);
         }
 
-        public void Register(string Username, string Password)
+        public Boolean Register(string Username, string Password)
         {
-            userService.CreateUser(Username, Password);
+            if(userService.CreateUser(Username, Password) == "{}")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
