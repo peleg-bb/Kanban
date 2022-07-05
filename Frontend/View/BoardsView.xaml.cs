@@ -38,8 +38,10 @@ namespace Frontend.View
             _boardsVM.GetBoards(email);
         }
 
+
         private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
 
         }
     }

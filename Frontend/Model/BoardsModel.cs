@@ -28,11 +28,11 @@ namespace Frontend.Model
         {
 
             string boardNames = boardService.GetUserBoards(email);
-
-            //deserialize boardNames JSON to List<Board>
-            Dictionary<int, string> boards = JsonConvert.DeserializeObject<Dictionary<int, string>>(boardNames); 
-            // Change so it happens in ServiceLayer?
+            Dictionary<int, string> boards = JsonConvert.DeserializeObject<Dictionary<int, string>>(boardNames);
             return boards;
         }
+
+        
+
     }
 }

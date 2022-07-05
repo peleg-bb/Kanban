@@ -21,15 +21,15 @@ namespace Frontend.View
     /// </summary>
     public partial class TasksView : Page
     {
-        Dictionary<int, string> boards;
-        BoardsVM _boardsVM;
+        private TasksVM _tasksVM;
         public TasksView(string email)
         {
             InitializeComponent();
-            this._boardsVM = new BoardsVM(email);
-            this.boards = _boardsVM.GetBoards(email);
+            this._tasksVM = new TasksVM();
+            
         }
 
+        
         
 
         
