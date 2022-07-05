@@ -9,7 +9,14 @@ namespace Frontend.ModelView
     internal class TasksVM
     {
         private List<Task> tasks;
+        public TasksVM()
+        {
+            tasks = new List<Task>();
+        }
 
-        
+        public void GetCol(int colId,string email)
+        {
+
+        }
     }
 }
