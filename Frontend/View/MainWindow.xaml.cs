@@ -21,6 +21,8 @@ namespace Frontend.View
     public partial class MainWindow : Window
     {
         private UserVM userVM;
+        private string _email;
+        private string _password;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,7 +38,7 @@ namespace Frontend.View
         {
             try
             {
-                userVM.Register(email.ToString(), password.ToString());
+                userVM.Register(email.ToString(), Password.ToString());
             }
             catch (Exception ex)
             {
@@ -48,13 +50,19 @@ namespace Frontend.View
         {
             try
             {
-                userVM.Login(email.ToString(), password.ToString());
+                userVM.Login(email.ToString(), Password.ToString());
                 BoardsView boards = new BoardsView(email.ToString());
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void Register_Click(object sender, RoutedEventArgs e)
+        {
+            
+            
         }
     }
 }

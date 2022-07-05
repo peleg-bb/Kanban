@@ -18,8 +18,14 @@ namespace Frontend.ModelView
 
         public bool Login(string username, string password)
         {
-            this.userModel.Login(username, password);
-            return true;
+            if (userModel.Login(username, password) == username)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool Register(string username, string password)

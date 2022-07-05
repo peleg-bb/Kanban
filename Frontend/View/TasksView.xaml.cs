@@ -19,11 +19,11 @@ namespace Frontend.View
     /// <summary>
     /// Interaction logic for Board.xaml
     /// </summary>
-    public partial class BoardView : Page
+    public partial class TasksView : Page
     {
         Dictionary<int, string> boards;
         BoardsVM _boardsVM;
-        public BoardView(string email)
+        public TasksView(string email)
         {
             InitializeComponent();
             this._boardsVM = new BoardsVM(email);

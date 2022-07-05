@@ -8,5 +8,6 @@ namespace Frontend.ModelView
 {
     internal class TasksVM
     {
+        
     }
 }
