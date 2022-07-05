@@ -54,18 +54,6 @@ namespace Frontend.View
             _email = e.ToString();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                userVM.Register(email.ToString(), Password.ToString());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -89,8 +77,15 @@ namespace Frontend.View
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+            try
+            {
+                userVM.Register(email.ToString(), Password.ToString());
+                userVM.Login(email.ToString(), Password.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
