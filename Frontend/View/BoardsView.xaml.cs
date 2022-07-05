@@ -19,15 +19,24 @@ namespace Frontend.View
     /// <summary>
     /// Interaction logic for Boards.xaml
     /// </summary>
-    public partial class Boards : Page
+    public partial class BoardsView : Page
     {
         private BoardsVM _boardsVM;
-        public Boards()
+        private string email;
+        Dictionary<int, string> boards;
+        public BoardsView(string userEmail)
         {
             InitializeComponent();
-            _boardsVM = new BoardsVM();
+            this._boardsVM = new BoardsVM(email);
+            this.boards = _boardsVM.GetBoards(email);
         }
 
-        
+
+        public void Boards(object sender, RoutedEventArgs e, string email)
+        {
+            _boardsVM.GetBoards(email);
+        }
+
+
     }
 }

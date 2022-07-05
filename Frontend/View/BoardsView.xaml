@@ -1,4 +1,4 @@
-﻿<Page x:Class="Frontend.View.Boards"
+﻿<Page x:Class="Frontend.View.BoardsView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,15 +15,6 @@
         <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="338" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
             <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
         </Border>
-        <ItemsControl x:Name="___listOfBoards_" 
-            ItemsSource="{Binding ListOfBoardsOfUser}" Margin="310,164,310,165" Foreground="#FFCA6D6D" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding NameOfThrBoard}"
-                            Command="{Binding GoToThisBoard} " 
-                            CommandParameter="{Binding NameOfThrBoard}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+
     </Grid>
 </Page>
