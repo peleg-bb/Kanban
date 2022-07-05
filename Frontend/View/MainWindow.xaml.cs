@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,21 +18,8 @@ namespace Frontend.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-    
-    
         private UserVM userVM;
         private string _email;
         private string _password;
@@ -41,7 +27,6 @@ namespace Frontend.View
         {
             InitializeComponent();
             userVM = new UserVM();
-            this.DataContext = userVM;
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -49,18 +34,27 @@ namespace Frontend.View
 
         }
 
-        public void UserEmail_TextChanged(object sender, TextChangedEventArgs e)
+        private void Register_Click(object sender, RoutedEventArgs e)
         {
-            _email = e.ToString();
+            try
+            {
+                userVM.Register(email.ToString(), Password.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (userVM.Login(email.ToString(), Password.ToString()))
+            this._email = email.Text;
+
+                if (userVM.Login(_email, Password.Password.ToString()))
                 {
-                    BoardsView boards = new BoardsView(email.ToString());
+                    BoardsView boards = new BoardsView(_email);
                 }
                 else
                 {
@@ -68,6 +62,7 @@ namespace Frontend.View
                 }
                 
                 
+
             }
             catch (Exception ex)
             {
@@ -75,17 +70,5 @@ namespace Frontend.View
             }
         }
 
-        private void Register_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                userVM.Register(email.ToString(), Password.ToString());
-                userVM.Login(email.ToString(), Password.ToString());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }

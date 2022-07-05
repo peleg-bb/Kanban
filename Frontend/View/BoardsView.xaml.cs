@@ -22,14 +22,15 @@ namespace Frontend.View
     public partial class BoardsView : Page
     {
         private BoardsVM _boardsVM;
-        private string email;
+        private string _email;
         private Dictionary<int, string> _boardsDictionary;
         public BoardsView(string userEmail)
         {
             InitializeComponent();
-            this._boardsVM = new BoardsVM(email);
+            this._email = userEmail;
+            this._boardsVM = new BoardsVM(_email);
             this._boardsDictionary = new Dictionary<int, string>();
-            this._boardsDictionary = _boardsVM.GetBoards(email);
+            this._boardsDictionary = _boardsVM.GetBoards(_email);
         }
 
 
@@ -37,11 +38,24 @@ namespace Frontend.View
         {
             _boardsVM.GetBoards(email);
         }
-
-
+        private void Search_Board(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TasksView tx = new TasksView(Int32.Parse(IdT.ToString()), BoardNameT.ToString(),email);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void BoardNameT_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
     }

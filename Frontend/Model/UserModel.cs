@@ -23,7 +23,9 @@ namespace Frontend.Model
         public string Login(string username, string password)
         {
             string response = userService.Login(username, password);
-            return JsonConvert.DeserializeObject<string>(response);
+            Console.WriteLine(response);
+            JsonConvert.DeserializeObject<Object>(response);
+            return response;
         }
 
         public void Logout(string username)
