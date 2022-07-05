@@ -24,15 +24,21 @@ namespace Frontend.View
         Dictionary<int, string> boards;
         TasksVM _tasksView;
         private string colId;
-        private List<Task> colList;
+        private List<string> colList0;
+        private List<string> colList1;
+        private List<string> colList2;
         private string email;
         public TasksView(int Id,string BoardName,string email)
         {
             InitializeComponent();
             this.colId = colId;
             this.email = email;
-            this.colList = new List<Task>();
-            //this.colList = _tasksView.GetCol(Int32.Parse(colId.ToString()), email);
+            this.colList0 = new List<string>();
+            this.colList1 = new List<string>();
+            this.colList2 = new List<string>();
+            this.colList0 = _tasksView.GetCol(0, email);
+            this.colList1 = _tasksView.GetCol(1, email);
+            this.colList2 = _tasksView.GetCol(2, email);
             this._tasksView = new TasksVM();
             //
             // this._boardsVM = new BoardsVM(email);
@@ -44,7 +50,9 @@ namespace Frontend.View
             
         }
 
+        private void GetCoumn(object sender, SelectionChangedEventArgs e)
+        {
 
-
+        }
     }
 }

@@ -14,9 +14,9 @@ namespace Frontend.ModelView
             tasks = new List<Task>();
         }
 
-        public void GetCol(int colId,string email)
+        public List<string> GetCol(int colId,string email)
         {
-
+            return new List<string>();
         }
     }
 }
