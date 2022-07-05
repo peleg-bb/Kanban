@@ -70,9 +70,11 @@ namespace Frontend.View
         {
             try
             {
-                if (userVM.Login(email.ToString(), Password.ToString()))
+                this._email = email.Text;
+
+                if (userVM.Login(_email, Password.Password.ToString()))
                 {
-                    BoardsView boards = new BoardsView(email.ToString());
+                    BoardsView boards = new BoardsView(_email);
                 }
                 else
                 {

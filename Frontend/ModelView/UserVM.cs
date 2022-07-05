@@ -24,8 +24,9 @@ namespace Frontend.ModelView
             }
             else
             {
-                return false;
+                return true;
             }
+            
         }
 
         public bool Register(string username, string password)
