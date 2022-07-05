@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,21 +18,8 @@ namespace Frontend.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-    
-    
         private UserVM userVM;
         private string _email;
         private string _password;
@@ -41,7 +27,6 @@ namespace Frontend.View
         {
             InitializeComponent();
             userVM = new UserVM();
-            this.DataContext = userVM;
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -49,12 +34,7 @@ namespace Frontend.View
 
         }
 
-        public void UserEmail_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _email = e.ToString();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Register_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -70,7 +50,7 @@ namespace Frontend.View
         {
             try
             {
-                this._email = email.Text;
+            this._email = email.Text;
 
                 if (userVM.Login(_email, Password.Password.ToString()))
                 {
@@ -82,6 +62,7 @@ namespace Frontend.View
                 }
                 
                 
+
             }
             catch (Exception ex)
             {
@@ -89,10 +70,5 @@ namespace Frontend.View
             }
         }
 
-        private void Register_Click(object sender, RoutedEventArgs e)
-        {
-            
-            
-        }
     }
 }

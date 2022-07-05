@@ -21,17 +21,30 @@ namespace Frontend.View
     /// </summary>
     public partial class TasksView : Page
     {
-        private TasksVM _tasksVM;
-        public TasksView(string email)
+        Dictionary<int, string> boards;
+        TasksVM _tasksView;
+        private string colId;
+        private List<Task> colList;
+        private string email;
+        public TasksView(int Id,string BoardName,string email)
         {
             InitializeComponent();
-            this._tasksVM = new TasksVM();
+            this.colId = colId;
+            this.email = email;
+            this.colList = new List<Task>();
+            //this.colList = _tasksView.GetCol(Int32.Parse(colId.ToString()), email);
+            this._tasksView = new TasksVM();
+            //
+            // this._boardsVM = new BoardsVM(email);
+            // this.boards = _boardsVM.GetBoards(email);
+        }
+
+        public void GetCoumn(object sender, RoutedEventArgs e)
+        {
             
         }
 
-        
-        
 
-        
+
     }
 }
