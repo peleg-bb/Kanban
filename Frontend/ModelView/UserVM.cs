@@ -31,8 +31,7 @@ namespace Frontend.ModelView
 
         public bool Register(string username, string password)
         {
-            this.userModel.Register(username, password);
-            return true;
+            return this.userModel.Register(username, password);
         }
 
         public bool Logout(string email)

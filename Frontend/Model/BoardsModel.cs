@@ -28,8 +28,16 @@ namespace Frontend.Model
         {
 
             string boardNames = boardService.GetUserBoards(email);
-            Dictionary<int, string> boards = JsonConvert.DeserializeObject<Dictionary<int, string>>(boardNames);
-            return boards;
+            try
+            {
+                Dictionary<int, string> boards = JsonConvert.DeserializeObject<Dictionary<int, string>>(boardNames);
+                return boards;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("it's not work");
+            }
         }
 
         

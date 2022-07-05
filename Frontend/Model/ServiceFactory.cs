@@ -18,6 +18,8 @@ public class ServiceFactory
         this.userController = new UserController();
         userService = new UserService(userController);
         boardService = new BoardService(userController);
+        userService.LoadData();
+        boardService.LoadData();
         instance = this;
     }
 
