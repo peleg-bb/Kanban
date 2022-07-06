@@ -34,6 +34,7 @@
             </Label.Effect>
         </Label>
         <Label x:Name="Passwordlbl" Content="Password:" HorizontalAlignment="Left" Margin="270,162,0,0" VerticalAlignment="Top"  Height="25" Width="63"/>
+        <Frame x:Name="Main"></Frame>
     </Grid>
 
 </Window>
