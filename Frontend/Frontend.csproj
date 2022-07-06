@@ -23,4 +23,10 @@
     <Resource Include="View\img1038337.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="kanban.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
