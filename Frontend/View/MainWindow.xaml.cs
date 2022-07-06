@@ -67,11 +67,14 @@ namespace Frontend.View
 
                 if (userVM.Login(_email, _password))
                 {
+                    MessageBox.Show("Login successful");
                     BoardsView boards = new BoardsView(_email);
+                    MessageBox.Show("No boards to show");
                 }
                 else
                 {
                     MessageBox.Show("Login failed");
+                    BoardsView boards = new BoardsView(_email);
                 }
                 
                 
