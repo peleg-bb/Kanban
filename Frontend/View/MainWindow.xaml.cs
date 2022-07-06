@@ -69,6 +69,7 @@ namespace Frontend.View
                 {
                     MessageBox.Show("Login successful");
                     BoardsView boards = new BoardsView(_email);
+                    Main.Content = boards;
                     MessageBox.Show("No boards to show");
                 }
                 else
