@@ -10,6 +10,7 @@ namespace Frontend.ModelView
     internal class UserVM
     {
         private UserModel userModel;
+        public string email { get; set; }
 
         public UserVM()
         {
@@ -18,7 +19,8 @@ namespace Frontend.ModelView
 
         public bool Login(string username, string password)
         {
-            if (userModel.Login(username, password) == username)
+            email = userModel.Login(username, password);
+            if (email == username)
             {
                 return true;
             }
