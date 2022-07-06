@@ -21,7 +21,7 @@
         <Button x:Name="IDB" HorizontalAlignment="Center" Height="28" Margin="0,221,0,0" VerticalAlignment="Top" Width="87" FontWeight="Bold" FontSize="17" FontFamily="Arial Black" Content="Search" Click="Search_Board"/>
 
 
-        <DataGrid x:Name="dboard" ItemsSource="{Binding _boardsDictionary}" AutoGenerateColumns="False" Margin="312,254,318,170" SelectionChanged="Search_Board" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
+        <DataGrid x:Name="board" ItemsSource="{Binding Path= _boardsDictionary, ElementName=BoardsView}" AutoGenerateColumns="False" Margin="312,254,318,170" SelectionChanged="Search_Board" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="  id   " Binding="{Binding Key}"/>
                 <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
