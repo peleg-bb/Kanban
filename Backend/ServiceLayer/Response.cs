@@ -30,6 +30,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.ReturnValue = returnValue;
         }
 
+        
+     
+
         public Response(string errorMessage)
         {
             this.ErrorMessage = errorMessage;
@@ -39,6 +42,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.ReturnValue = returnValue;
         }
+
+        public Response(){}
 
         public string OKJson()
         {
