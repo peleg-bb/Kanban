@@ -26,11 +26,7 @@ namespace Frontend.Model
 
         public Dictionary<int, string> GetBoardNames(string email)
         {
-
-            string boardNames = boardService.GetUserBoards(email);
-            Dictionary<int, string> boards = JsonConvert.DeserializeObject<Dictionary<int, string>>(boardNames);
-            return boards;
-
+            return boardService.GetUserBoards(email);
         }
 
         

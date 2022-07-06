@@ -38,7 +38,6 @@ namespace Frontend.View
             this._boardsDictionary = new Dictionary<int, string>();
             this._boardsDictionary = _boardsVM.GetBoards(_email);
             this.DataContext = this._boardsDictionary;
-          
         }
 
 

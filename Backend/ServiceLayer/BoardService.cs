@@ -395,7 +395,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public string GetUserBoards(string email)
+        public Dictionary<int, string> GetUserBoards(string email)
         {
             try
             {
@@ -405,13 +405,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     boardNames[i] = boardController.GetBoardById(i).name;
                 }
-                Response r = new Response(null, boardNames);
-                return ToJson.toJson(r);
+
+                return boardNames;
             }
             catch (Exception e)
             {
-                Response response = new Response(e.Message, null);
-                return ToJson.toJson(response);
+                throw new ArgumentException(e.Message); // I hate this!
             }
         }
     }
