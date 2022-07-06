@@ -16,7 +16,9 @@ namespace Frontend.ModelView
 
         public List<string> GetCol(int colId,string email)
         {
-            return new List<string>();
+            //TODO: Implement me!
+            throw new NotImplementedException("Implement me!");
         }
+        
     }
 }
