@@ -40,7 +40,9 @@ namespace Frontend.View
             this.colList1 = _tasksView.GetCol(1, email);
             this.colList2 = _tasksView.GetCol(2, email);
             this._tasksView = new TasksVM();
-            //
+            DataContext = this.colList0;
+            DataContext = this.colList1;
+            DataContext = this.colList2;
             // this._boardsVM = new BoardsVM(email);
             // this.boards = _boardsVM.GetBoards(email);
         }

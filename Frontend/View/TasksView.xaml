@@ -22,17 +22,17 @@
             <Label Content="    inProgress" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top" Width="130" FontWeight="Bold" FontFamily="Arial Black" FontSize="13"/>
         </Grid>
         <Label Content="         Backlog" HorizontalAlignment="Left" Height="27" Margin="183,116,0,0" VerticalAlignment="Top" Width="150" FontWeight="Bold" FontFamily="Arial Black" FontSize="13" RenderTransformOrigin="0.541,-0.954"/>
-        <DataGrid x:Name="backlog" ItemsSource="{Binding colList0}" AutoGenerateColumns="False" Margin="183,148,548,172" SelectionChanged="GetCoumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
+        <DataGrid x:Name="backlog" ItemsSource="{Binding Path=colList0, ElementName=TasksView}" AutoGenerateColumns="False" Margin="183,148,548,172" SelectionChanged="GetCoumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="   Name    " Binding="{Binding  Value[0]}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="done" ItemsSource="{Binding Path=colList2, ElementName=TasksView}" AutoGenerateColumns="False" Margin="554,148,177,172" SelectionChanged="GetCoumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid x:Name="done" ItemsSource="{Binding colList2}" AutoGenerateColumns="False" Margin="554,148,177,172" SelectionChanged="GetCoumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid x:Name="inprogress" ItemsSource="{Binding colList1}" AutoGenerateColumns="False" Margin="366,150,365,170" SelectionChanged="GetCoumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
+        <DataGrid x:Name="inprogress" ItemsSource="{Binding Path=colList1, ElementName=TasksView}" AutoGenerateColumns="False" Margin="366,150,365,170" SelectionChanged="GetCoumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
             </DataGrid.Columns>
