@@ -149,6 +149,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             ;
         }
+        public string login(string username, string password)
+        {
+            try
+            {
+                userController.Login(username, password);
+                String msg = String.Format("Login successful for user - {0}", username);
+                log.Info(msg);
+                return username;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            } ;
+        }
+
 
         /// <summary>
         /// This method logs out a logged in user. 

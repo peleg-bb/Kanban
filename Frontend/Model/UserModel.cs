@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,7 @@ namespace Frontend.Model
         //login
         public string Login(string username, string password)
         {
-            string response = userService.Login(username, password);
-            Console.WriteLine(response);
-            return JsonConvert.DeserializeObject<string>(response);
+            return userService.login(username, password);
         }
 
         public void Logout(string username)
