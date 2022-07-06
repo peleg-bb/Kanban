@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="477" Width="809">
+
     <Grid>
         <Grid.Background>
             <ImageBrush TileMode="None" ImageSource="/View/img1038337.jpg" Stretch="Fill"/>
