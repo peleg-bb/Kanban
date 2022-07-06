@@ -35,8 +35,8 @@ namespace Frontend.View
             InitializeComponent();
             this._email = userEmail;
             this._boardsVM = new BoardsVM(_email);
-            // this._boardsDictionary = new Dictionary<int, string>();
-            // this._boardsDictionary = _boardsVM.GetBoards(_email);
+            this._boardsDictionary = new Dictionary<int, string>();
+            this._boardsDictionary = _boardsVM.GetBoards(_email);
         }
 
 
