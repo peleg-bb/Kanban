@@ -23,6 +23,9 @@ namespace Frontend.View
         private UserVM userVM;
         private string _email;
         private string _password;
+        [System.ComponentModel.Bindable(true)]
+        [System.ComponentModel.SettingsBindable(true)]
+        public bool Checked { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -33,14 +36,14 @@ namespace Frontend.View
         {
             _email = email.Text;
         }
-
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                Checked = Convert.ToBoolean(CheckBox1.IsChecked.Value);
                 this._email = email.Text;
                 this._password = Password.Password.ToString();
-                if (userVM.Register(_email, _password))
+                if (userVM.Register(_email, _password) && Checked)
                 {
                     userVM.Login(_email, _password);
                 }
