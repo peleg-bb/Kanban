@@ -49,7 +49,7 @@ namespace Frontend.View
         {
             try
             {
-                TasksView tx = new TasksView(Int32.Parse(IdT.ToString()), BoardNameT.ToString(),_email);
+                TasksView tx = new TasksView(Int32.Parse(IdT.Text.ToString()), BoardNameT.Text.ToString(),_email);
             }
             catch (Exception ex)
             {
