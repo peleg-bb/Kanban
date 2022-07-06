@@ -31,7 +31,7 @@ namespace Frontend.View
 
         public void UserEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _email = e.ToString();
+            _email = email.Text;
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
@@ -46,7 +46,7 @@ namespace Frontend.View
                 }
                 else
                 {
-                    MessageBox.Show("Something Went wrong ;(");
+                    MessageBox.Show("Something Went wrong ;");
                 }
             }
             catch (Exception ex)
