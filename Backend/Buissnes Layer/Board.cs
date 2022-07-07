@@ -62,6 +62,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.boardDTO = boardDto;
             this.BoardId = boardDto.ID;
             this.Owner = boardDto.Owner;
+            this.tasks = boardDto.taskDTOs.ToDictionary(x => x.taskID, x => new Task(x));
         }
 
         public string GetName()   

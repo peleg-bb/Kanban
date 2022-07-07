@@ -248,6 +248,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
                             this.ownerBoards[userEmail].Add(newBoard.name);
                             BID++;
                             this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
+                            
                         }
                         else
                         {

@@ -41,6 +41,7 @@ namespace Frontend.View
             // _backlog.ConvertAll(new Converter<Task, string>(
             //     (Task t) => { return t.GetTitle(); }));
             backlog1.ItemsSource = _backlog;
+            MessageBox.Show(_backlog[0]);
             inprogress.ItemsSource = _inProgress;
             done.ItemsSource = _done;
             

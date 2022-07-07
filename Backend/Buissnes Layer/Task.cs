@@ -63,6 +63,26 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.taskDTOMapper = new TaskDTOMapper();
             // Do NOT Load Data!
         }
+
+        /// <summary>
+        /// Constructor from TaskDTO - to be used when loading data
+        /// </summary>
+        /// <param name="taskDto"></param>
+        public Task(TaskDTO taskDto)
+        {
+            this.Title = taskDto.title;
+            this.Description = taskDto.description;
+            this.Assignee = taskDto.assignee;
+            this.DueDate = new DateTime();
+            this.Id = taskDto.taskID;
+            this.BoardId = taskDto.boardID;
+            this.CreationTime = DateTime.Today;
+            this.State = taskDto.GetState();
+            this.taskDTOMapper = new TaskDTOMapper(); // bad?
+        }
+        
+
+
         /// <summary>
         /// This method edit the title of a task
         /// </summary>
