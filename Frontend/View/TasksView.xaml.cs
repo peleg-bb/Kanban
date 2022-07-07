@@ -29,7 +29,7 @@ namespace Frontend.View
         private List<Task> _inProgress;
         private List<Task> _done;
         private string email;
-        public TasksView(int id,string boardName, string email)
+        public TasksView(string email, string boardName)
         {
             InitializeComponent();
             this._tasksVM = new TasksVM();
@@ -40,11 +40,6 @@ namespace Frontend.View
             DataContext = this._inProgress;
             DataContext = this._done;
         }
-
-        // public void GetColumn(object sender, RoutedEventArgs e)
-        // {
-        //     
-        // }
 
         private void GetColumn(object sender, SelectionChangedEventArgs e)
         {

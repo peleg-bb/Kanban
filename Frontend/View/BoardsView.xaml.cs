@@ -23,6 +23,7 @@ namespace Frontend.View
     {
         private BoardsVM _boardsVM;
         private string _email;
+        private string selectedBoardName;
 
         private Dictionary<int, string> _boardsDictionary;
         // {
@@ -41,17 +42,15 @@ namespace Frontend.View
             InitializeComponent();
 
         }
-
-
-        public void Boards(object sender, RoutedEventArgs e, string email)
-        {
-            _boardsVM.GetBoards(email);
-        }
+        // public void Boards(object sender, RoutedEventArgs e, string email)
+        // {
+        //     _boardsVM.GetBoards(email);
+        // }
         private void Search_Board(object sender, RoutedEventArgs e)
         {
             try
             {
-                TasksView tx = new TasksView(Int32.Parse(IdT.Text), BoardNameT.Text, _email);
+                TasksView tx = new TasksView(_email, selectedBoardName);
                 // Note that the board is searched using board name and email only!
                 // I deem the ID box is redundant
             }
@@ -60,14 +59,14 @@ namespace Frontend.View
                 MessageBox.Show(ex.Message);
             }
         }
-        private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+        // private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // {
+        // What is this nonsense of a name?!
+        // }
 
         private void BoardNameT_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            this.selectedBoardName = BoardNameText.Text;
         }
     }
 }

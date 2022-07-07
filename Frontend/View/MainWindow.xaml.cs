@@ -64,19 +64,17 @@ namespace Frontend.View
             try
             {
                 this._email = email.Text;
-                this._password = Password.Password.ToString();
+                this._password = Password.Password;
 
                 if (userVM.Login(_email, _password))
                 {
                     MessageBox.Show("Login successful");
                     BoardsView boards = new BoardsView(_email);
                     Main.Content = boards;
-                    MessageBox.Show("No boards to show");
                 }
                 else
                 {
                     MessageBox.Show("Login failed");
-                    BoardsView boards = new BoardsView(_email);
                 }
                 
                 

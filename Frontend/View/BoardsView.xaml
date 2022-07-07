@@ -17,7 +17,7 @@
             <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
         </Border>
         <TextBox x:Name="IdT" HorizontalAlignment="Left" Height="28" Margin="406,186,0,0" VerticalAlignment="Top" Width="127" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Board Id" TextAlignment="Center"/>
-        <TextBox x:Name="BoardNameT" HorizontalAlignment="Left" Height="28" Margin="648,186,0,0" VerticalAlignment="Top" Width="143" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Board Name" TextChanged="BoardNameT_TextChanged" TextAlignment="Center"/>
+        <TextBox x:Name="BoardNameText" HorizontalAlignment="Left" Height="28" Margin="648,186,0,0" VerticalAlignment="Top" Width="143" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Board Name" TextChanged="BoardNameT_TextChanged" TextAlignment="Center"/>
         <Button x:Name="IDB" HorizontalAlignment="Center" Height="28" Margin="0,221,0,0" VerticalAlignment="Top" Width="87" FontWeight="Bold" FontSize="17" FontFamily="Arial Black" Content="Search" Click="Search_Board"/>
 
 
