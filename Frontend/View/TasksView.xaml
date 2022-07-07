@@ -8,22 +8,21 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Board">
 
-    <Grid Margin="0,0,-81,-72">
+    <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/View/img1038337.jpg"/>
         </Grid.Background>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="321" Margin="0,18,0,0" VerticalAlignment="Top" Width="860" Background="#FFAE7A48">
-        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" Height="316" Margin="80,25,97,0" VerticalAlignment="Top" Background="#FFAE7A48"/>
 
-        <ListView Margin="27,43,603,200" Name="backlog1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+        <ListView Margin="122,60,540,150" Name="backlog1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03" HorizontalAlignment="Stretch">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Backlog" Width="150" />
+                    <GridViewColumn Header="Backlog" Width="150"  />
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView Margin="319,43,319,196" Name="inprogress1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+        <ListView Margin="321,60,338,150" Name="inprogress1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="In Progress" Width="150" />
@@ -32,7 +31,7 @@
             </ListView.View>
         </ListView>
 
-        <ListView Margin="604,43,25,200" Name="done1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+        <ListView Margin="521,60,141,150" Name="done1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Done" Width="150"/>

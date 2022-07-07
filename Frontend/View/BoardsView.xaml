@@ -13,12 +13,12 @@
         <Grid.Background>
             <ImageBrush ImageSource="/View/img1038337.jpg"/>
         </Grid.Background>
-        <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="314" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
+        <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="314" Margin="234,96,0,0" VerticalAlignment="Top" Width="567" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
             <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
         </Border>
-        <TextBox x:Name="BoardNameText" HorizontalAlignment="Left" Height="28" Margin="328,221,0,0" VerticalAlignment="Top" Width="190" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Enter board name" TextChanged="BoardNameT_TextChanged" TextAlignment="Center" RenderTransformOrigin="-1.562,1.95" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
-        <Button x:Name="IDB" HorizontalAlignment="Left" Height="28" Margin="555,221,0,0" VerticalAlignment="Top" Width="138" FontWeight="Bold" FontSize="17" FontFamily="Arial Black" Content="Show Board" Click="Search_Board" RenderTransformOrigin="0.885,0.7"/>
-        <ListView Margin="328,264,327,186" Name="UserBoards" SelectionChanged="UserBoards_SelectionChanged" FontSize="16" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+        <TextBox x:Name="BoardNameText" HorizontalAlignment="Left" Height="28" Margin="271,209,0,0" VerticalAlignment="Top" Width="190" FontWeight="Normal" FontSize="12" FontFamily="Arial Black" Text="Enter board name" TextChanged="BoardNameT_TextChanged" TextAlignment="Left" RenderTransformOrigin="-1.562,1.95" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
+        <Button x:Name="IDB" HorizontalAlignment="Left" Height="21" Margin="272,249,0,0" VerticalAlignment="Top" Width="81" FontWeight="Normal" FontFamily="Arial Black" FontSize="10" Content="Show Board"  Click="Search_Board" RenderTransformOrigin="0.885,0.7" HorizontalContentAlignment="Stretch"/>
+        <ListView Margin="595,209,0,226" Name="UserBoards" SelectionChanged="UserBoards_SelectionChanged" FontSize="16" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03" HorizontalAlignment="Left" Width="161">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Board Names" Width="150" />
@@ -27,6 +27,6 @@
             </ListView.View>
         </ListView>
         <TextBlock Name="TextBlock1"  
-                   Text="Enter the board name you'd like to view into the textbox" Foreground="#FF210F0F" RenderTransformOrigin="0.275,-3.21" Margin="300,168,325,365" TextAlignment="Center" FontFamily="Arial Black" FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                   Text="Enter the board name you'd like to view into the textbox:" Foreground="#FF210F0F" RenderTransformOrigin="0.275,-3.21" Margin="273,152,352,430" TextAlignment="left" FontFamily="Arial Black" FontSize="12" FontWeight="Normal" FontStyle="Italic"/>
     </Grid>
 </Page>
