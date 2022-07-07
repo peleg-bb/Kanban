@@ -46,11 +46,12 @@ namespace Frontend.View
                 this._password = Password.Password.ToString();
                 if (userVM.Register(_email, _password) && Checked)
                 {
-                    userVM.Login(_email, _password);
+                    MessageBox.Show("You registered successfully!");
+                    Login_Click(sender, e);
                 }
                 else
                 {
-                    MessageBox.Show("Something Went wrong ;");
+                    MessageBox.Show("Can't register, illegal input");
                 }
             }
             catch (Exception ex)

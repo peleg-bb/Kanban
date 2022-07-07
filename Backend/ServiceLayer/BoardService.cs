@@ -302,11 +302,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
-        public List<Task> GetColumn(string email, string boardName, int columnOrdinal)
+        public List<string> GetColumn(string email, string boardName, int columnOrdinal)
         {
             
-            List<Task> allCol = boardController.GetColum(email, boardName, columnOrdinal);
-            
+            List<string> allCol = boardController.GetColum(email, boardName, columnOrdinal).ConvertAll(new Converter<Task, string>(
+                (Task t) => { return t.ToString(); }));
+            // lambda expression to get names
             String msg = String.Format("Got the Column! columnOrdinal = {0} ", columnOrdinal);
             return allCol;
         }

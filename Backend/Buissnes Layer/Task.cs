@@ -214,5 +214,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             return false;
 
         }
+
+        // generate ToString
+        public override string ToString()
+        {
+            return "Title: " + this.Title + " Description: " + this.Description + " Due Date: " + this.DueDate + " Assignee: " + this.Assignee;
+        }
     }
 }

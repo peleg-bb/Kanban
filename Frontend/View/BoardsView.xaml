@@ -13,19 +13,20 @@
         <Grid.Background>
             <ImageBrush ImageSource="/View/img1038337.jpg"/>
         </Grid.Background>
-        <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="338" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
+        <Border x:Name="borders" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="314" Margin="0,116,0,0" VerticalAlignment="Top" Width="737" Background="#FFAE723C" OpacityMask="Black" AutomationProperties.HelpText="">
             <Label Content="                         Your Boards" HorizontalAlignment="Center" Height="31" Margin="0,9,0,0" VerticalAlignment="Top" Width="493" FontWeight="Bold" FontSize="20" FontFamily="Arial Black"/>
         </Border>
-        <TextBox x:Name="IdT" HorizontalAlignment="Left" Height="28" Margin="406,186,0,0" VerticalAlignment="Top" Width="127" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Board Id" TextAlignment="Center"/>
-        <TextBox x:Name="BoardNameText" HorizontalAlignment="Left" Height="28" Margin="648,186,0,0" VerticalAlignment="Top" Width="143" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Board Name" TextChanged="BoardNameT_TextChanged" TextAlignment="Center"/>
-        <Button x:Name="IDB" HorizontalAlignment="Center" Height="28" Margin="0,221,0,0" VerticalAlignment="Top" Width="87" FontWeight="Bold" FontSize="17" FontFamily="Arial Black" Content="Search" Click="Search_Board"/>
-
-
-        <DataGrid x:Name="board" ItemsSource="{Binding Path= _boardsDictionary, ElementName=BoardsView}" AutoGenerateColumns="False" Margin="312,254,318,170" SelectionChanged="Search_Board" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="  id   " Binding="{Binding Key}"/>
-                <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <TextBox x:Name="BoardNameText" HorizontalAlignment="Left" Height="28" Margin="328,221,0,0" VerticalAlignment="Top" Width="190" FontWeight="Normal" FontSize="15" FontFamily="Arial Black" Text="Enter board name" TextChanged="BoardNameT_TextChanged" TextAlignment="Center" RenderTransformOrigin="-1.562,1.95" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
+        <Button x:Name="IDB" HorizontalAlignment="Left" Height="28" Margin="555,221,0,0" VerticalAlignment="Top" Width="138" FontWeight="Bold" FontSize="17" FontFamily="Arial Black" Content="Show Board" Click="Search_Board" RenderTransformOrigin="0.885,0.7"/>
+        <ListView Margin="328,264,327,186" Name="UserBoards" SelectionChanged="UserBoards_SelectionChanged" FontSize="16" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Board Names" Width="150" />
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock Name="TextBlock1"  
+                   Text="Enter the board name you'd like to view into the textbox" Foreground="#FF210F0F" RenderTransformOrigin="0.275,-3.21" Margin="300,168,325,365" TextAlignment="Center" FontFamily="Arial Black" FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
     </Grid>
 </Page>

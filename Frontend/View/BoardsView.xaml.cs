@@ -24,7 +24,7 @@ namespace Frontend.View
         private BoardsVM _boardsVM;
         private string _email;
         private string selectedBoardName;
-
+        private List<string> _boardNames;
         private Dictionary<int, string> _boardsDictionary;
         // {
         //     set => this._boardsDictionary = _boardsVM.GetBoards(_email);
@@ -33,14 +33,14 @@ namespace Frontend.View
 
         public BoardsView(string userEmail)
         {
-            
+            InitializeComponent();
             this._email = userEmail;
             this._boardsVM = new BoardsVM(_email);
             this._boardsDictionary = new Dictionary<int, string>();
             this._boardsDictionary = _boardsVM.GetBoards(_email);
-            this.DataContext = this._boardsDictionary;
-            InitializeComponent();
-
+            this._boardNames = _boardsDictionary.Values.ToList();
+            UserBoards.ItemsSource = _boardNames;
+            // this.DataContext = this._boardsDictionary;
         }
         // public void Boards(object sender, RoutedEventArgs e, string email)
         // {
@@ -68,6 +68,16 @@ namespace Frontend.View
         private void BoardNameT_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.selectedBoardName = BoardNameText.Text;
+        }
+
+        private void Search_Board(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void UserBoards_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

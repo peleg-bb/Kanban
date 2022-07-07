@@ -22,7 +22,7 @@
             <Label Content="    inProgress" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top" Width="130" FontWeight="Bold" FontFamily="Arial Black" FontSize="13"/>
         </Grid>
         <Label Content="         Backlog" HorizontalAlignment="Left" Height="27" Margin="183,116,0,0" VerticalAlignment="Top" Width="150" FontWeight="Bold" FontFamily="Arial Black" FontSize="13" RenderTransformOrigin="0.541,-0.954"/>
-        <DataGrid x:Name="backlog" ItemsSource="{Binding Path=_backlog, ElementName=TasksView}" AutoGenerateColumns="False" Margin="183,148,548,172" SelectionChanged="GetColumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
+        <DataGrid x:Name="backlog" ItemsSource="{Binding Path=backlog, ElementName=TasksView}" AutoGenerateColumns="False" Margin="183,148,548,172" SelectionChanged="GetColumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="   Name    " Binding="{Binding  Value[0]}"/>
             </DataGrid.Columns>
@@ -37,6 +37,14 @@
                 <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <ListView Margin="67,168,10,98" Name="backlog1" SelectionChanged="UserBoards_SelectionChanged" FontSize="16" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Board Names" Width="150" />
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
 
 

@@ -25,27 +25,34 @@ namespace Frontend.View
         Dictionary<int, string> boards;
         TasksVM _tasksVM;
         private string colId;
-        private List<Task> _backlog;
-        private List<Task> _inProgress;
-        private List<Task> _done;
+        private List<string> _backlog;
+        private List<string> _inProgress;
+        private List<string> _done;
         private string _email;
         private string _boardName;
         public TasksView(string email, string boardName)
         {
-            
+            InitializeComponent();
             this._tasksVM = new TasksVM();
             this._backlog = _tasksVM.GetColumn(email, boardName, 0);
             this._inProgress = _tasksVM.GetColumn(email, boardName, 1);
             this._done = _tasksVM.GetColumn(email, boardName, 2);
-            DataContext = this._backlog;
-            DataContext = this._inProgress;
-            DataContext = this._done;
-            InitializeComponent();
+            // lambda expression to get names
+            // _backlog.ConvertAll(new Converter<Task, string>(
+            //     (Task t) => { return t.GetTitle(); }));
+            backlog1.ItemsSource = _backlog;
+            inprogress.ItemsSource = _inProgress;
+            done.ItemsSource = _done;
+            
         }
 
         private void GetColumn(object sender, SelectionChangedEventArgs e)
         {
             
+        }
+        private void UserBoards_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
