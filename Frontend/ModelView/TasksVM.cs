@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
+using Frontend.Model;
+using IntroSE.Kanban.Backend.Buissnes_Layer;
 
 namespace Frontend.ModelView
 {
     internal class TasksVM
     {
-        private List<Task> tasks;
+        private TasksModel tasksModel;
         public TasksVM()
         {
-            tasks = new List<Task>();
+            tasksModel = new TasksModel("email", "boardName");
         }
 
-        public List<string> GetCol(int colId,string email)
+        public List<Task> GetColumn(string email, string boardName, int colId)
         {
-            //TODO: Implement me!
-            throw new NotImplementedException("Implement me!");
+
+            return tasksModel.GetColumn(email, boardName, colId);
         }
-        
+     
     }
 }
