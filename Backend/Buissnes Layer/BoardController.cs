@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
         private const int BacklogState = 0;
         private const int inProgressState = 1;
         private const int Done = 2;
+        
         public int BID
         {
             get
@@ -229,7 +230,68 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
-         /// <summary>
+
+        internal void LoadBoard(string userEmail, string boardName, BoardDTO boardDto)
+        {
+            try
+            {
+                if (UserHasAnyBoard(userEmail))
+                {
+                    if (!UserHasThisBoard(userEmail, boardName))
+                    {
+                        if (isOwnerOfAnyBoard(userEmail))
+                        {
+                            Board newBoard = new Board(boardDto);
+                            //new Board(boardName, this.bId, userEmail); - old constructor, do not use
+                            newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                            this.boardById.Add(newBoard.BoardID, newBoard);
+                            this.ownerBoards[userEmail].Add(newBoard.name);
+                            BID++;
+                            this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
+                        }
+                        else
+                        {
+                            Board newBoard = new Board(boardDto);
+                            List<string> listBoard = new List<string>();
+                            listBoard.Add(newBoard.name);
+                            newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                            this.boardById.Add(newBoard.BoardID, newBoard);
+                            this.ownerBoards.Add(userEmail, listBoard);
+                            BID++;
+                            this.BoardsOfUsers[userEmail].Add(boardName, newBoard);
+                        }
+                    }
+                    else
+                    {
+                        log.Warn("USER CANNOT CREATE THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY");
+                        throw new ArgumentException("USER CANNOT CREATE THIS BOARD! USER HAS A BOARD WITH THIS NAME ALREADY");
+                    }
+
+                }
+                else
+                {
+                    Board newBoard = new Board(boardDto);
+                    List<string> listBoard = new List<string>();
+                    listBoard.Add(newBoard.name);
+                    newBoard.AddToJoinList(userEmail);// the owner is a joiner as well
+                    this.boardById.Add(newBoard.BoardID, newBoard);
+                    this.ownerBoards.Add(userEmail, listBoard);
+                    BID++;
+                    Dictionary<string, Board> board = new Dictionary<string, Board>();
+                    board.Add(boardName, newBoard);
+                    BoardsOfUsers.Add(userEmail, board);
+                }
+                String msg = String.Format("Board created Successfully in BuissnesLayer! The Board {0} to email :{1}", boardName, userEmail);
+                log.Info(msg);
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message);
+                throw new ArgumentException(e.Message);
+            }
+
+        }
+        /// <summary>
         /// This method add new task.
         /// </summary>
         /// <param name="email">Email of the user. The user must be logged in.</param>
@@ -932,6 +994,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             foreach (var boardDTO in boardDTOs)
             {
                 boardDTO.LoadBoard();
+                LoadBoard(boardDTO.Owner, boardDTO.Name, boardDTO);
                 // Create Board object
                 // Load info based on boardDTOs (don't forget board_count)
             }

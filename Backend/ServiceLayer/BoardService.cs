@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using log4net;
 using log4net.Config;
+using Task = IntroSE.Kanban.Backend.Buissnes_Layer.Task;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -300,6 +301,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
 
         }
+
+        public List<Task> GetColumn(string email, string boardName, int columnOrdinal)
+        {
+            
+            List<Task> allCol = boardController.GetColum(email, boardName, columnOrdinal);
+            
+            String msg = String.Format("Got the Column! columnOrdinal = {0} ", columnOrdinal);
+            return allCol;
+        }
+
 
         /// <summary>
         /// This method limits the number of tasks in a specific column.

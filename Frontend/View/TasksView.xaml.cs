@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Frontend.ModelView;
+using Task = IntroSE.Kanban.Backend.Buissnes_Layer.Task;
 
 namespace Frontend.View
 {
@@ -22,37 +23,30 @@ namespace Frontend.View
     public partial class TasksView : Page
     {
         Dictionary<int, string> boards;
-        TasksVM _tasksView;
+        TasksVM _tasksVM;
         private string colId;
-        private List<string> colList0;
-        private List<string> colList1;
-        private List<string> colList2;
+        private List<Task> _backlog;
+        private List<Task> _inProgress;
+        private List<Task> _done;
         private string email;
-        public TasksView(int Id,string BoardName,string email)
+        public TasksView(int id,string boardName, string email)
         {
             InitializeComponent();
-            this.colId = colId;
-            this.email = email;
-            this.colList0 = new List<string>();
-            this.colList1 = new List<string>();
-            this.colList2 = new List<string>();
-            this.colList0 = _tasksView.GetCol(0, email);
-            this.colList1 = _tasksView.GetCol(1, email);
-            this.colList2 = _tasksView.GetCol(2, email);
-            this._tasksView = new TasksVM();
-            DataContext = this.colList0;
-            DataContext = this.colList1;
-            DataContext = this.colList2;
-            // this._boardsVM = new BoardsVM(email);
-            // this.boards = _boardsVM.GetBoards(email);
+            this._tasksVM = new TasksVM();
+            this._backlog = _tasksVM.GetColumn(email, boardName, 0);
+            this._inProgress = _tasksVM.GetColumn(email, boardName, 1);
+            this._done = _tasksVM.GetColumn(email, boardName, 2);
+            DataContext = this._backlog;
+            DataContext = this._inProgress;
+            DataContext = this._done;
         }
 
-        public void GetCoumn(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        // public void GetColumn(object sender, RoutedEventArgs e)
+        // {
+        //     
+        // }
 
-        private void GetCoumn(object sender, SelectionChangedEventArgs e)
+        private void GetColumn(object sender, SelectionChangedEventArgs e)
         {
 
         }

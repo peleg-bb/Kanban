@@ -32,12 +32,14 @@ namespace Frontend.View
 
         public BoardsView(string userEmail)
         {
-            InitializeComponent();
+            
             this._email = userEmail;
             this._boardsVM = new BoardsVM(_email);
             this._boardsDictionary = new Dictionary<int, string>();
             this._boardsDictionary = _boardsVM.GetBoards(_email);
             this.DataContext = this._boardsDictionary;
+            InitializeComponent();
+
         }
 
 
@@ -49,7 +51,9 @@ namespace Frontend.View
         {
             try
             {
-                TasksView tx = new TasksView(Int32.Parse(IdT.Text.ToString()), BoardNameT.Text.ToString(),_email);
+                TasksView tx = new TasksView(Int32.Parse(IdT.Text), BoardNameT.Text, _email);
+                // Note that the board is searched using board name and email only!
+                // I deem the ID box is redundant
             }
             catch (Exception ex)
             {
