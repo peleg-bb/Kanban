@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             this.Title = taskDto.title;
             this.Description = taskDto.description;
             this.Assignee = taskDto.assignee;
-            this.DueDate = new DateTime();
+            this.DueDate = DateTime.Today;
             this.Id = taskDto.taskID;
             this.BoardId = taskDto.boardID;
             this.CreationTime = DateTime.Today;
