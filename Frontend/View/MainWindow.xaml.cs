@@ -30,6 +30,7 @@ namespace Frontend.View
         {
             InitializeComponent();
             userVM = new UserVM();
+            ResizeMode = ResizeMode.NoResize;
         }
 
         public void UserEmail_TextChanged(object sender, TextChangedEventArgs e)

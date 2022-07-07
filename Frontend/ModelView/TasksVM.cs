@@ -18,8 +18,9 @@ namespace Frontend.ModelView
 
         public List<Task> GetColumn(string email, string boardName, int colId)
         {
+
             return tasksModel.GetColumn(email, boardName, colId);
         }
-       
+     
     }
 }
