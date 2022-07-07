@@ -16,7 +16,7 @@ namespace Frontend.ModelView
             tasksModel = new TasksModel("email", "boardName");
         }
 
-        public List<Task> GetColumn(string email, string boardName, int colId)
+        public List<string> GetColumn(string email, string boardName, int colId)
         {
 
             return tasksModel.GetColumn(email, boardName, colId);

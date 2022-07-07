@@ -46,11 +46,8 @@ namespace Frontend.View
                 this._password = Password.Password.ToString();
                 if (userVM.Register(_email, _password) && Checked)
                 {
-                    userVM.Login(_email, _password);
-                }
-                else
-                {
-                    MessageBox.Show("Something Went wrong ;");
+                    MessageBox.Show("You registered successfully!");
+                    Login_Click(sender, e);
                 }
             }
             catch (Exception ex)
@@ -64,19 +61,18 @@ namespace Frontend.View
             try
             {
                 this._email = email.Text;
-                this._password = Password.Password.ToString();
+                this._password = Password.Password;
 
                 if (userVM.Login(_email, _password))
                 {
                     MessageBox.Show("Login successful");
                     BoardsView boards = new BoardsView(_email);
                     Main.Content = boards;
-                    MessageBox.Show("No boards to show");
+                    
                 }
                 else
                 {
                     MessageBox.Show("Login failed");
-                    BoardsView boards = new BoardsView(_email);
                 }
                 
                 

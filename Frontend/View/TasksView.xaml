@@ -12,31 +12,34 @@
         <Grid.Background>
             <ImageBrush ImageSource="/View/img1038337.jpg"/>
         </Grid.Background>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="288" Margin="0,87,0,0" VerticalAlignment="Top" Width="598" Background="#FFAE7A48">
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="321" Margin="0,18,0,0" VerticalAlignment="Top" Width="860" Background="#FFAE7A48">
         </Border>
-        <Grid x:Name="Backlog" HorizontalAlignment="Left" Height="236" Margin="183,116,0,0" VerticalAlignment="Top" Width="150" Background="#FFF4F2ED"/>
-        <Grid x:Name="Done" HorizontalAlignment="Left" Height="236" Margin="554,116,0,0" VerticalAlignment="Top" Width="150" Background="#FFF4F2ED">
-            <Label Content="         Done " HorizontalAlignment="Left" Height="36" Margin="13,0,0,0" VerticalAlignment="Top" Width="127" FontWeight="Bold" FontSize="13" FontFamily="Arial Black"/>
-        </Grid>
-        <Grid x:Name="InProgress" HorizontalAlignment="Center" Height="236" Margin="0,116,0,0" VerticalAlignment="Top" Width="150" Background="#FFF4F2ED">
-            <Label Content="    inProgress" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top" Width="130" FontWeight="Bold" FontFamily="Arial Black" FontSize="13"/>
-        </Grid>
-        <Label Content="         Backlog" HorizontalAlignment="Left" Height="27" Margin="183,116,0,0" VerticalAlignment="Top" Width="150" FontWeight="Bold" FontFamily="Arial Black" FontSize="13" RenderTransformOrigin="0.541,-0.954"/>
-        <DataGrid x:Name="backlog" ItemsSource="{Binding Path=colList0, ElementName=TasksView}" AutoGenerateColumns="False" Margin="183,148,548,172" SelectionChanged="GetColumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="   Name    " Binding="{Binding  Value[0]}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid x:Name="done" ItemsSource="{Binding Path=colList2, ElementName=TasksView}" AutoGenerateColumns="False" Margin="554,148,177,172" SelectionChanged="GetColumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid x:Name="inprogress" ItemsSource="{Binding Path=colList1, ElementName=TasksView}" AutoGenerateColumns="False" Margin="366,150,365,170" SelectionChanged="GetColumn" FontSize="16" FontFamily="Arial Black" FontWeight="Normal">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="   Name    " Binding="{Binding Value[0]}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+
+        <ListView Margin="27,43,603,200" Name="backlog1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Backlog" Width="150" />
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Margin="319,43,319,196" Name="inprogress1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="In Progress" Width="150" />
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView Margin="604,43,25,200" Name="done1" SelectionChanged="UserBoards_SelectionChanged" FontSize="10" FontFamily="Arial Black" FontWeight="Normal" RenderTransformOrigin="0.495,0.03">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Done" Width="150"/>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
 
 

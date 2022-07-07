@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
-    internal class TaskDTO
+    public class TaskDTO
     {
-        int taskID;
-        int boardID;
-        string assignee;
-        string status;
-        string title;
-        string description;
-        string dueDate;
-        string creationTime;
+        public int taskID;
+        public int boardID;
+        public string assignee;
+        public string status;
+        public string title;
+        public string description;
+        public string dueDate;
+        public string creationTime;
 
         /// <summary>
         /// Constructor for a task DTO.
@@ -38,6 +38,26 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             this.description = description;
             this.dueDate = dueDate;
             this.creationTime = creationTime;
+        }
+
+        public int GetState()
+        {
+            if (status == "backlog")
+            {
+                return 0;
+            }
+            else if (status == "in progress")
+            {
+                return 1;
+            }
+            else if (status == "Done")
+            {
+                return 2;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
 

@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public int DoneMax => doneMax;
         private string TasksTable = "Tasks";
         private string BoardUsersTable = "Board_Users";
-        private List<TaskDTO> taskDTOs = new List<TaskDTO>();
+        public List<TaskDTO> taskDTOs = new List<TaskDTO>();
         private List<string> BoardUsers = new List<string>();
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private TaskDTOMapper taskDTOMapper;

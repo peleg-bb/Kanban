@@ -18,7 +18,7 @@ public class TasksModel
         this._boardName = boardName;
     }
 
-    public List<Task> GetColumn(string email, string boardName, int columnOrdinal)
+    public List<string> GetColumn(string email, string boardName, int columnOrdinal)
     {
         return boardService.GetColumn(email, boardName, columnOrdinal);
     }

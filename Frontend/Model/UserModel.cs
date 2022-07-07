@@ -33,13 +33,14 @@ namespace Frontend.Model
 
         public Boolean Register(string Username, string Password)
         {
-            if(userService.CreateUser(Username, Password) == "{}")
+            string userCreation = userService.Create_User(Username, Password);
+            if (userCreation == "{}")
             {
                 return true;
             }
             else
             {
-                return false;
+                throw new ArgumentException(userCreation);
             }
         }
     }

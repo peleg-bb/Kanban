@@ -97,6 +97,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             }
         }
+        public string Create_User(string email, string password)
+
+        {
+            try
+            {
+                userController.CreateUser(email, password);
+                userController.Login(email, password);
+
+                String msg = String.Format("User created! email = {0}", email);
+                log.Info(msg);
+
+                Response response = new Response(null, null);
+                // If successful returns user object in JSON
+                return ToJson.toJson(response);
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
 
         /// <summary>
         ///  This method changes the password of a given user.

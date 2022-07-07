@@ -23,7 +23,8 @@ namespace Frontend.View
     {
         private BoardsVM _boardsVM;
         private string _email;
-
+        private string selectedBoardName;
+        private List<string> _boardNames;
         private Dictionary<int, string> _boardsDictionary;
         // {
         //     set => this._boardsDictionary = _boardsVM.GetBoards(_email);
@@ -32,40 +33,49 @@ namespace Frontend.View
 
         public BoardsView(string userEmail)
         {
-            
+            InitializeComponent();
             this._email = userEmail;
             this._boardsVM = new BoardsVM(_email);
             this._boardsDictionary = new Dictionary<int, string>();
             this._boardsDictionary = _boardsVM.GetBoards(_email);
-            this.DataContext = this._boardsDictionary;
-            InitializeComponent();
-
+            this._boardNames = _boardsDictionary.Values.ToList();
+            UserBoards.ItemsSource = _boardNames;
+            // this.DataContext = this._boardsDictionary;
         }
-
-
-        public void Boards(object sender, RoutedEventArgs e, string email)
-        {
-            _boardsVM.GetBoards(email);
-        }
+        // public void Boards(object sender, RoutedEventArgs e, string email)
+        // {
+        //     _boardsVM.GetBoards(email);
+        // }
         private void Search_Board(object sender, RoutedEventArgs e)
         {
             try
             {
-                TasksView tx = new TasksView(Int32.Parse(IdT.Text), BoardNameT.Text, _email);
+                TasksView tx = new TasksView(_email, selectedBoardName);
                 // Note that the board is searched using board name and email only!
                 // I deem the ID box is redundant
+                this.Content = new Frame() {Content = tx};
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("You do not have a board by that name!");
             }
         }
-        private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+        // private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // {
+        // What is this nonsense of a name?!
+        // }
 
         private void BoardNameT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.selectedBoardName = BoardNameText.Text;
+        }
+
+        private void Search_Board(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void UserBoards_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
