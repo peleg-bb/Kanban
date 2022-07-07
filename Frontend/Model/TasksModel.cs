@@ -17,7 +17,13 @@ public class TasksModel
         this._email = email;
         this._boardName = boardName;
     }
-
+    /// <summary>
+    /// This method get the Column from the right board .
+    /// </summary>
+    /// <param name="email">The email address of the user.</param>
+    /// <param name="boardName">The name of the board.</param>
+    /// <param name="columnOrdinal">The asked column.</param>
+    /// <returns>return a list with the Column from the right board . </returns>
     public List<string> GetColumn(string email, string boardName, int columnOrdinal)
     {
         return boardService.GetColumn(email, boardName, columnOrdinal);

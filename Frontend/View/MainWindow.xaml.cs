@@ -32,11 +32,18 @@ namespace Frontend.View
             userVM = new UserVM();
             ResizeMode = ResizeMode.NoResize;
         }
-
+        /// <summary>
+        /// This method change the email of the user to text .
+        /// </summary>
+        /// <returns>void.</returns>
         public void UserEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             _email = email.Text;
         }
+        /// <summary>
+        /// This Register the user.
+        /// </summary>
+        /// <returns>bool. </returns>
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -55,7 +62,10 @@ namespace Frontend.View
                 MessageBox.Show(ex.Message);
             }
         }
-
+        /// <summary>
+        /// This login the user.
+        /// </summary>
+        /// <returns>void. </returns>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             try
