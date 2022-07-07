@@ -53,6 +53,7 @@ namespace Frontend.View
                 TasksView tx = new TasksView(_email, selectedBoardName);
                 // Note that the board is searched using board name and email only!
                 // I deem the ID box is redundant
+                this.Content = new Frame() {Content = tx};
             }
             catch (Exception ex)
             {

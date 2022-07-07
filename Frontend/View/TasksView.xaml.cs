@@ -28,10 +28,11 @@ namespace Frontend.View
         private List<Task> _backlog;
         private List<Task> _inProgress;
         private List<Task> _done;
-        private string email;
+        private string _email;
+        private string _boardName;
         public TasksView(string email, string boardName)
         {
-            InitializeComponent();
+            
             this._tasksVM = new TasksVM();
             this._backlog = _tasksVM.GetColumn(email, boardName, 0);
             this._inProgress = _tasksVM.GetColumn(email, boardName, 1);
@@ -39,11 +40,12 @@ namespace Frontend.View
             DataContext = this._backlog;
             DataContext = this._inProgress;
             DataContext = this._done;
+            InitializeComponent();
         }
 
         private void GetColumn(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
     }
 }
