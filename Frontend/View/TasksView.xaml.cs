@@ -37,14 +37,9 @@ namespace Frontend.View
             this._backlog = _tasksVM.GetColumn(email, boardName, 0);
             this._inProgress = _tasksVM.GetColumn(email, boardName, 1);
             this._done = _tasksVM.GetColumn(email, boardName, 2);
-            // lambda expression to get names
-            // _backlog.ConvertAll(new Converter<Task, string>(
-            //     (Task t) => { return t.GetTitle(); }));
             backlog1.ItemsSource = _backlog;
-            MessageBox.Show(_backlog[0]);
-            inprogress.ItemsSource = _inProgress;
-            done.ItemsSource = _done;
-            
+            inprogress1.ItemsSource = _inProgress;
+            done1.ItemsSource = _done;
         }
 
         private void GetColumn(object sender, SelectionChangedEventArgs e)

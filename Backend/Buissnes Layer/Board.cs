@@ -190,6 +190,34 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             }
             
         }
+
+        public List<Task> GetColList(int columnO, string assignee = "Unassigned")
+        {
+            if (columnO == BacklogState || columnO == InProgressState || columnO == Done)
+            {
+                List<Task> taskListO = new List<Task>();
+            
+
+                foreach (var item in this.tasks.Values)
+                {
+                    if (item.GetState() == columnO)
+                    {
+                        taskListO.Add(item);// get all the func that the user has at that column.
+                    }
+                }
+
+                return taskListO;
+            
+            String msg = String.Format("Got the column {0} Successfully in BuissnesLayer!", GetNameOrdinal(columnO));
+            log.Info(msg);
+            }
+            else
+            {
+                log.Warn("this column state does not exist!");
+                throw new ArgumentException("this column state does not exist!");
+            }
+
+        }
         /// <summary>
         /// This method gets the name of a specific column
         /// </summary>
