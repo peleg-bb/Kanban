@@ -36,10 +36,11 @@ namespace Frontend.View
             this.colList0 = new List<string>();
             this.colList1 = new List<string>();
             this.colList2 = new List<string>();
+            this._tasksView = new TasksVM();
             this.colList0 = _tasksView.GetCol(0, email);
             this.colList1 = _tasksView.GetCol(1, email);
             this.colList2 = _tasksView.GetCol(2, email);
-            this._tasksView = new TasksVM();
+            
             DataContext = this.colList0;
             DataContext = this.colList1;
             DataContext = this.colList2;
