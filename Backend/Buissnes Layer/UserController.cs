@@ -110,16 +110,16 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (UserExists(Email))
                 {
-                    throw new ArgumentException("User already exists");
+                    throw new ArgumentException("Can't Register - User already exists");
                 }
                 if (!IsValidEmail(Email)||!IsValidEmail2(Email))
                 {
-                    throw new ArgumentException("Not a valid email address");
+                    throw new ArgumentException("Can't Register - Not a valid email address");
                 }
 
                 if (!IsLegalPassword(password))
                 {
-                    throw new ArgumentException("Illegal password. A legal password must be 6-20 characters" +
+                    throw new ArgumentException("Can't Register - Illegal password. A legal password must be 6-20 characters" +
                                                 " and must contain an Upper case, a lower case and a number");
                 }
                 else
@@ -134,11 +134,11 @@ namespace IntroSE.Kanban.Backend.Buissnes_Layer
             {
                 if (!IsValidEmail(Email))
                 {
-                    throw new ArgumentException("Not a valid email address");
+                    throw new ArgumentException("Can't Register - not a valid email address");
                 }
                 if (!IsLegalPassword(password))
                 {
-                    throw new ArgumentException("Illegal password. A legal password must be 6-20 characters" +
+                    throw new ArgumentException("Can't Register - Illegal password. A legal password must be 6-20 characters" +
                                                 " and must contain an Upper case, a lower case and a number");
                 }
                 else

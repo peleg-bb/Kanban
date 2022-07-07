@@ -49,10 +49,6 @@ namespace Frontend.View
                     MessageBox.Show("You registered successfully!");
                     Login_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Can't register, illegal input");
-                }
             }
             catch (Exception ex)
             {

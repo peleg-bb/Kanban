@@ -57,7 +57,7 @@ namespace Frontend.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("You do not have a board by that name!");
             }
         }
         // private void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
