@@ -26,10 +26,7 @@ namespace Frontend.View
         private string selectedBoardName;
         private List<string> _boardNames;
         private Dictionary<int, string> _boardsDictionary;
-        // {
-        //     set => this._boardsDictionary = _boardsVM.GetBoards(_email);
-        //     get => this._boardsDictionary;
-        // }
+    
 
         public BoardsView(string userEmail)
         {
@@ -42,10 +39,10 @@ namespace Frontend.View
             UserBoards.ItemsSource = _boardNames;
             // this.DataContext = this._boardsDictionary;
         }
-        // public void Boards(object sender, RoutedEventArgs e, string email)
-        // {
-        //     _boardsVM.GetBoards(email);
-        // }
+        /// <summary>
+        /// This method search the name of the board .
+        /// </summary>
+        /// <returns>void . </returns>
         private void Search_Board(object sender, RoutedEventArgs e)
         {
             try
@@ -65,6 +62,10 @@ namespace Frontend.View
         // What is this nonsense of a name?!
         // }
 
+        /// <summary>
+        /// This method change the name of the board to text .
+        /// </summary>
+        /// <returns>void.</returns>
         private void BoardNameT_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.selectedBoardName = BoardNameText.Text;
@@ -74,7 +75,7 @@ namespace Frontend.View
         {
             
         }
-
+      
         private void UserBoards_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 

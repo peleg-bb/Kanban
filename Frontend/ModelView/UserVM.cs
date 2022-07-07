@@ -16,7 +16,12 @@ namespace Frontend.ModelView
         {
             this.userModel = new UserModel();
         }
-
+        /// <summary>
+        /// This login the user.
+        /// </summary>
+        /// <param name="username">The email address of the user.</param>
+        /// <param name="password">The password of the user.</param>
+        /// <returns>bool. </returns>
         public bool Login(string username, string password)
         {
             email = userModel.Login(username, password);
@@ -30,12 +35,21 @@ namespace Frontend.ModelView
             }
             
         }
-
+        /// <summary>
+        /// This Register the user.
+        /// </summary>
+        /// <param name="username">The email address of the user.</param>
+        /// <param name="password">The password of the user.</param>
+        /// <returns>bool. </returns>
         public bool Register(string username, string password)
         {
             return this.userModel.Register(username, password);
         }
-
+        /// <summary>
+        /// This logout the user.
+        /// </summary>
+        /// <param name="username">The email address of the user.</param>
+        /// <returns>bool. </returns>
         public bool Logout(string email)
         {
             this.userModel.Logout(email);
